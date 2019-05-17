@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <LPTPins>
+    <StepperMotor name="X">
+      <Step>16</Step>
+      <Dir>1</Dir>
+      <Enable>4</Enable>
+    </StepperMotor>
+    <StepperMotor name="Y">
+      <Step>14</Step>
+      <Dir>7</Dir>
+      <Enable>17</Enable>
+    </StepperMotor>
+    <StepperMotor name="Z">
+      <Step>3</Step>
+      <Dir>6</Dir>
+      <Enable>5</Enable>
+    </StepperMotor>
+    <StepperMotor name="C">
+      <Step>9</Step>
+      <Dir>8</Dir>
+      <Enable>5</Enable>
+    </StepperMotor>
+  </LPTPins>
+</Settings>
