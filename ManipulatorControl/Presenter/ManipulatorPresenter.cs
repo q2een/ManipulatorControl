@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using UM160CalculationLib;
 using Newtonsoft.Json;
 using System.IO;
+using ManipulatorControl.Model;
 
 namespace ManipulatorControl
 {
@@ -35,6 +36,10 @@ namespace ManipulatorControl
       //  private LeverPosition nullPos = new LeverPosition() { Lever = LeverType.Horizontal, Position = 50 };
 
         private Dictionary<string, StepDirPin> pins;
+
+
+        private List<RobotWorkspace> robotWorkspaces;
+        private RobotWorkspace activeWorkspace;
 
 
         public ManipulatorPresenter(IManipulatorControlView view)
@@ -76,20 +81,41 @@ namespace ManipulatorControl
 
         private void Settings_SaveSettings(object sender, EventArgs e)
         {
-            File.WriteAllText("design.settings", JsonConvert.SerializeObject(settings.DesignParameters));
-            parameters = settings.DesignParameters;
+            var settings = new JsonSerializerSettings();
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+
+            File.WriteAllText("design.settings", JsonConvert.SerializeObject(this.settings.DesignParameters, settings));
+
+            parameters = this.settings.DesignParameters;
         }
 
         private void View_OpenSettings(object sender, EventArgs e)
         {
-            settings.Show();
+            this.settings.Show();
         }
 
 
         // TODO: Загрузка параметров из настроек. Сейчас заглушка.
         private DesignParameters LoadDesignParameters()
         {
-            return JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
+            //return JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
+             var par = JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
+            par.Lever1.Workspace = new LeverWorkspace(520, 500, 540);
+            return par;
+        }
+
+        private List<RobotWorkspace> LoadWorkspaces()
+        {
+            return new List<RobotWorkspace>();
+        }
+
+        private void SetActiveWorksace(RobotWorkspace workspace)
+        {
+            parameters.Lever1.Workspace = workspace.Lever1Workspace;
+            parameters.Lever2.Workspace = workspace.Lever2Workspace;
+            parameters.HorizontalLever.Workspace = workspace.HorizontalLeverWorkspace;
+
+            activeWorkspace = workspace;
         }
 
         private IEnumerable<RobotLever> GetRobotLever()

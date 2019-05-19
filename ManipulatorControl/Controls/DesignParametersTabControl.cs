@@ -130,7 +130,7 @@ namespace ManipulatorControl
 
                 AB = Convert.ToInt32(value.AB);
                 ABmin = Convert.ToInt32(value.ABmin);
-                ABmax = Convert.ToInt32(value.ABmax);
+                ABmax = Convert.ToInt32(value.ABmax);   
                 Ro = value.Coefficient;
             }
         }

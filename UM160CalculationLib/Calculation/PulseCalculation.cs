@@ -37,15 +37,15 @@ namespace UM160CalculationLib
         /// </summary>
         public static long GetPulsesCount(HorizontalLeverDesignParameters lever, double newValue)
         {
-            if (!lever.IsNewABValueCorrect(newValue))
+            if (!lever.Workspace.IsNewABValueCorrect(newValue))
                 throw new DesignParametersException("Новое значение координаты Z не удовлетворяет конструктивным параметрам робота");
 
-            var stepsCount = ((newValue - lever.AB) * lever.Coefficient);
+            var stepsCount = ((newValue - lever.Workspace.AB) * lever.Coefficient);
 
             return Convert.ToInt64(stepsCount);
         }
 
-        public static long GetPulsesCount(IPartMovable lever, double param)
+        public static long GetPulsesCount(IRobotLever lever, double param)
         {
             if (lever is LeverDesignParameters)
                 return GetPulsesCount(lever as LeverDesignParameters, param);
@@ -66,7 +66,7 @@ namespace UM160CalculationLib
         {
             double newValue = CalculateAB(ldp, pulsesCount);
 
-            if (!ldp.IsNewABValueCorrect(newValue))
+            if (!ldp.Workspace.IsNewABValueCorrect(newValue))
                 throw new DesignParametersException("Новое значение расстояния от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта не удовлетворяет конструктивным параметрам робота");
 
             return newValue;
@@ -74,15 +74,15 @@ namespace UM160CalculationLib
 
         public static double GetNewAB(HorizontalLeverDesignParameters lever, long pulsesCount)
         {
-            double newValue = Math.Round(lever.AB + (pulsesCount / lever.Coefficient), 0);
+            double newValue = Math.Round(lever.Workspace.AB + (pulsesCount / lever.Coefficient), 0);
 
-            if (!lever.IsNewABValueCorrect(newValue))
+            if (!lever.Workspace.IsNewABValueCorrect(newValue))
                 throw new DesignParametersException("Новое значение координаты Z не удовлетворяет конструктивным параметрам робота");
 
             return newValue;
         }
 
-        public static double GetNewAB(IPartMovable lever, long pulsesCount)
+        public static double GetNewAB(IRobotLever lever, long pulsesCount)
         {
             if (lever is LeverDesignParameters)
                 return GetNewAB(lever as LeverDesignParameters, pulsesCount);
@@ -93,17 +93,17 @@ namespace UM160CalculationLib
             throw new Exception("Расчеты для данного экземпляра не реализованы");
         }
 
-        public static long GetPulsesCountToMaxValue(IPartMovable lever)
+        public static long GetPulsesCountToMaxValue(IRobotLever lever)
         {
-            return GetPulsesCountToAB(lever, lever.ABmax);
+            return GetPulsesCountToAB(lever, lever.Workspace.ABmax);
         }
 
-        public static long GetPulsesCountToMinValue(IPartMovable lever)
+        public static long GetPulsesCountToMinValue(IRobotLever lever)
         {
-            return GetPulsesCountToAB(lever, lever.ABmin);
+            return GetPulsesCountToAB(lever, lever.Workspace.ABmin);
         }
 
-        public static long GetPulsesCountToAB(IPartMovable lever, double ab)
+        public static long GetPulsesCountToAB(IRobotLever lever, double ab)
         {
             if (lever is HorizontalLeverDesignParameters)
                 return GetPulsesCount(lever as HorizontalLeverDesignParameters, ab);
@@ -130,7 +130,7 @@ namespace UM160CalculationLib
         private static long CalculatePulsesCount(LeverDesignParameters ldp, double phi)
         {
             phi *= deg;  
-            double pulsesCount = (85.0 * (ldp.AB - Math.Sqrt(Math.Pow(ldp.AO, 2) + Math.Pow(ldp.BO, 2) - (2 * ldp.AO * ldp.BO * Math.Cos(ldp.AlphaRad + ldp.BetaRad + phi))))) / (51.0 * ldp.P * ldp.RoRad);
+            double pulsesCount = (85.0 * (ldp.Workspace.AB - Math.Sqrt(Math.Pow(ldp.AO, 2) + Math.Pow(ldp.BO, 2) - (2 * ldp.AO * ldp.BO * Math.Cos(ldp.AlphaRad + ldp.BetaRad + phi))))) / (51.0 * ldp.P * ldp.RoRad);
 
             return Convert.ToInt64(Math.Round(pulsesCount));
         }
@@ -143,7 +143,7 @@ namespace UM160CalculationLib
         /// <returns>Истина, если pulsesCount допустимое значение</returns>
         private static bool IsPulsesCountCorrect(LeverDesignParameters ldp, long pulsesCount)
         {
-            return ldp.IsNewABValueCorrect(CalculateAB(ldp, pulsesCount));
+            return ldp.Workspace.IsNewABValueCorrect(CalculateAB(ldp, pulsesCount));
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace UM160CalculationLib
         private static double CalculateAB(LeverDesignParameters ldp, long pulsesCount)
         {
             // Округляем сотые значение миллиментов.
-            return Math.Round(ldp.AB + (ldp.RoRad * -pulsesCount * (51.0 / 85.0) * ldp.P), 0);
+            return Math.Round(ldp.Workspace.AB + (ldp.RoRad * -pulsesCount * (51.0 / 85.0) * ldp.P), 0);
         }
 
         #endregion

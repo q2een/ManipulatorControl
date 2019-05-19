@@ -34,7 +34,7 @@ namespace ManipulatorControl
         {
             x = AnglesCalculation.GetCurrentX(this.dp);
             y = AnglesCalculation.GetCurrentY(this.dp);
-            z = this.dp.HorizontalLever.AB;
+            z = this.dp.HorizontalLever.Workspace.AB;
         }
 
         // валидация для парсера.
@@ -48,7 +48,10 @@ namespace ManipulatorControl
         public void SetNewAB(LeverType type, long stepsCount)
         {
             var lever = GetPartMovableByLeverType(type);
-            lever.AB = PulseCalculation.GetNewAB(lever, stepsCount);            
+            var newABvalue = PulseCalculation.GetNewAB(lever, stepsCount);
+
+            lever.Workspace.AB = newABvalue;
+            lever.AB = newABvalue;
         }
 
         // Максимальное и минимальное значение, для ручного управления.
@@ -88,7 +91,7 @@ namespace ManipulatorControl
             yield return new StepLever(LeverType.Horizontal, PulseCalculation.GetPulsesCount(dp.HorizontalLever,z));*/
         }
 
-        private IPartMovable GetPartMovableByLeverType(LeverType type)
+        private IRobotLever GetPartMovableByLeverType(LeverType type)
         {
             if (type == LeverType.Horizontal)
                 return this.dp.HorizontalLever;

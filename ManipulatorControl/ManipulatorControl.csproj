@@ -82,9 +82,9 @@
     </Compile>
     <Compile Include="Model\GCodeInterpreter.cs" />
     <Compile Include="Model\ICoordinateDirection.cs" />
-    <Compile Include="Model\Lever\LeverPosition.cs" />
     <Compile Include="Model\Lever\LeverType.cs" />
     <Compile Include="Model\Lever\StepLever.cs" />
+    <Compile Include="Model\RobotWorkspace.cs" />
     <Compile Include="Settings\StepDirName.cs" />
     <Compile Include="Settings\StepDirPinType.cs" />
     <Compile Include="View\IManipulatorControlView.cs" />
