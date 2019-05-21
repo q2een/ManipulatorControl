@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UM160CalculationLib
+﻿namespace UM160CalculationLib
 {
     /// <summary>
     /// Предоставляет класс, содержащий свойства конструктивных параметров робота.
@@ -65,6 +63,7 @@ namespace UM160CalculationLib
             this.Lever1 = lever1;
             this.Lever2 = lever2;
         }
+
         #endregion
     }
 }

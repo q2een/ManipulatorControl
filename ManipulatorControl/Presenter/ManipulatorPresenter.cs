@@ -16,6 +16,9 @@ using ManipulatorControl.Model;
 
 namespace ManipulatorControl
 {
+
+    // TODO: рабочие зоны робота, установка значений, изменение значений, установка нулевого значения.
+    // Обновление текущего положения робота и корректное его сохранение.
     public class ManipulatorPresenter
     {
         private readonly IManipulatorControlView view;
@@ -91,6 +94,13 @@ namespace ManipulatorControl
 
         private void View_OpenSettings(object sender, EventArgs e)
         {
+            parameters.Lever1.IsPhiIncreasesWithAB = false;
+            parameters.Lever2.IsPhiIncreasesWithAB = true;
+
+            parameters.Lever1.Workspace = parameters.Lever1;
+
+            var a = calculation.CalculateStepsToAbValue(LeverType.Lever2, 540);
+            var b = calculation.CalculateStepsToAbValue(LeverType.Lever1, 540);
             this.settings.Show();
         }
 
@@ -99,7 +109,7 @@ namespace ManipulatorControl
         private DesignParameters LoadDesignParameters()
         {
             //return JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
-             var par = JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
+            var par = JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
             par.Lever1.Workspace = new LeverWorkspace(520, 500, 540);
             return par;
         }
@@ -125,8 +135,8 @@ namespace ManipulatorControl
             yield return new RobotLever(LeverType.Lever1, GetStepper(LeverType.Lever1),
                 CoordinateDirections.XPositive | CoordinateDirections.YPositive, CoordinateDirections.XNegative | CoordinateDirections.YNegative);
 
-            yield return new RobotLever(LeverType.Lever2, GetStepper(LeverType.Lever2),
-                CoordinateDirections.XPositive | CoordinateDirections.YNegative, CoordinateDirections.XNegative | CoordinateDirections.YPositive);
+            yield return new RobotLever(LeverType.Lever2, GetStepper(LeverType.Lever2), 
+                CoordinateDirections.XNegative | CoordinateDirections.YPositive, CoordinateDirections.XPositive | CoordinateDirections.YNegative);
         }
 
 

@@ -218,26 +218,6 @@ namespace ManipulatorControl
         private void button1_Click(object sender, EventArgs e)
         {
             directionPanel.IsZeroEnabled = true;
-
-            
-            /* var lever1 = new LeverDesignParameters(825, 530, 320, 320, 1000, 12, 1.0 / 240.0, 112.07, 55.62);
-             var lever2 = new LeverDesignParameters(670, 360, 320, 320, 1000, 12, 1.0 / 240.0, 0, 0) { PhiMax = 360, PhiMin = 0 };
-             var leverz = new HorizontalLeverDesignParameters(0, 1000, 0, 2.94);
-
-             var des = new DesignParameters(710, 1000, 615, leverz, lever1, lever2);
-
-             var calc = new Calculation(des);
-
-             var z = AnglesCalculation.GetAngles(des, -130.37, 1444.17);
-
-             var d = PulseCalculation.GetPulsesCount(lever1, lever1.PhiMin); 
-
-
-             var zs = calc.CalculateStepsToAbValue(LeverType.Lever1, 340);
-
-             var asd = PulseCalculation.GetNewAB(lever1, -zs);
-
-             var sad = PulseCalculation.GetPulsesCount(leverz, 250);   */
         }
 
 

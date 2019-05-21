@@ -62,12 +62,12 @@
             return newABValue >= this.ABmin && newABValue <= this.ABmax;
         }
 
-
         public LeverWorkspace(double AB, double abmin, double abmax)
         {
             ABmax = abmax;
             ABmin = abmin;
             this.AB = AB;
+            this.abZero = IsNewABValueCorrect(abZero) ? abZero : ab;
         }
     }
 }

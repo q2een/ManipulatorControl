@@ -129,8 +129,9 @@ namespace UM160CalculationLib
         /// <returns>Число импульсов</returns>
         private static long CalculatePulsesCount(LeverDesignParameters ldp, double phi)
         {
-            phi *= deg;  
-            double pulsesCount = (85.0 * (ldp.Workspace.AB - Math.Sqrt(Math.Pow(ldp.AO, 2) + Math.Pow(ldp.BO, 2) - (2 * ldp.AO * ldp.BO * Math.Cos(ldp.AlphaRad + ldp.BetaRad + phi))))) / (51.0 * ldp.P * ldp.RoRad);
+            phi *= deg;
+            double pulsesCount = ldp.IsPhiIncreasesWithAB ? -1 : 1;
+            pulsesCount *= (85.0 * (ldp.Workspace.AB - Math.Sqrt(Math.Pow(ldp.AO, 2) + Math.Pow(ldp.BO, 2) - (2 * ldp.AO * ldp.BO * Math.Cos(ldp.AlphaRad + ldp.BetaRad + phi))))) / (51.0 * ldp.P * ldp.RoRad);
 
             return Convert.ToInt64(Math.Round(pulsesCount));
         }
@@ -154,8 +155,9 @@ namespace UM160CalculationLib
         /// <returns>Новое значение AB</returns>
         private static double CalculateAB(LeverDesignParameters ldp, long pulsesCount)
         {
+            pulsesCount = ldp.IsPhiIncreasesWithAB ? pulsesCount : -pulsesCount;
             // Округляем сотые значение миллиментов.
-            return Math.Round(ldp.Workspace.AB + (ldp.RoRad * -pulsesCount * (51.0 / 85.0) * ldp.P), 0);
+            return Math.Round(ldp.Workspace.AB + (ldp.RoRad * pulsesCount * (51.0 / 85.0) * ldp.P), 0);
         }
 
         #endregion

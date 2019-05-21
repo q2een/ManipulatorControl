@@ -16,7 +16,7 @@ namespace ManipulatorControl
         {
             get
             {
-                return new UM160CalculationLib.LeverDesignParameters(AO, BO, AB, ABmin, ABmax, P, Ro, Alpha, Beta);
+                return new UM160CalculationLib.LeverDesignParameters(AO, BO, AB, ABmin, ABmax, P, Ro, Alpha, Beta, IsPhiIncreasesWithAB);
             }
             set
             {
@@ -32,6 +32,7 @@ namespace ManipulatorControl
                 Ro = value.Ro;
                 Alpha = value.Alpha;
                 Beta = value.Beta;
+                IsPhiIncreasesWithAB = value.IsPhiIncreasesWithAB;
             }
         }
 
@@ -182,6 +183,19 @@ namespace ManipulatorControl
             set
             {
                 tbABmin.Text = value.ToString();
+            }
+        }
+
+        [Browsable(false)]
+        public bool IsPhiIncreasesWithAB
+        {
+            get
+            {
+                return cmbIncreases.SelectedIndex == 0;
+            }
+            set
+            {
+                cmbIncreases.SelectedIndex = value ? 0 : 1;
             }
         }
 

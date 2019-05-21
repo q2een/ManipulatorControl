@@ -100,6 +100,8 @@ namespace UM160CalculationLib
             }
         }
 
+        public bool IsPhiIncreasesWithAB { get; set; }
+
         #endregion
 
         #region Методы.
@@ -125,7 +127,7 @@ namespace UM160CalculationLib
         /// <param name="ro">Характеристика шагового электродвигателя, градусы</param>
         /// <param name="alpha">Конструктивные параметры плеча робота, градусы</param>
         /// <param name="beta">Конструктивные параметры плеча робота, грудусы</param>
-        public LeverDesignParameters(double AO, double BO, double AB, double abmin, double abmax, double p, double ro, double alpha, double beta) : base(AB, abmin, abmax)
+        public LeverDesignParameters(double AO, double BO, double AB, double abmin, double abmax, double p, double ro, double alpha, double beta, bool isPhiIncreasesWithAB) : base(AB, abmin, abmax)
         {
             this.AO = AO;
             this.BO = BO;
@@ -136,6 +138,7 @@ namespace UM160CalculationLib
             Beta = beta;
             P = p;
             Ro = ro;
+            this.IsPhiIncreasesWithAB = isPhiIncreasesWithAB;
         }
 
         #endregion
