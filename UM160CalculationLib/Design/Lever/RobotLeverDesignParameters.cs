@@ -40,7 +40,7 @@
             }
         }
 
-        public RobotLeverDesignParameters(double AB, double abmin, double abmax) : base(AB, abmin, abmax)
+        public RobotLeverDesignParameters(double AB, double abmin, double abmax) : base(AB, abmin, abmax, AB)
         {
         }
     }

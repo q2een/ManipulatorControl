@@ -1,4 +1,5 @@
 ﻿using GCodeParser;
+using ManipulatorControl.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +14,7 @@ namespace ManipulatorControl
 {
     public partial class MainForm : Form, IManipulatorControlView
     {
-        private bool isHotKeyMode, isManualControlMode;
+        private bool isHotKeyMode, isManualControlMode, isSetWorkspaceMode;
 
         public bool IsHotKeyMode
         {
@@ -31,7 +32,7 @@ namespace ManipulatorControl
                 isHotKeyMode = value;
             }
         }
-         
+
         public bool IsManualControlMode
         {
             get { return isManualControlMode; }
@@ -76,7 +77,7 @@ namespace ManipulatorControl
             }
             set
             {
-                gbErrors.Visible = value != null && value.Count > 0; 
+                gbErrors.Visible = value != null && value.Count > 0;
                 lstErrors.Items.Clear();
                 lstErrors.Items.AddRange(value.ToArray());
             }
@@ -106,6 +107,57 @@ namespace ManipulatorControl
             }
         }
 
+        public bool IsSetWorkspaceMode
+        {
+            get
+            {
+                return isSetWorkspaceMode;
+                return true;
+                throw new NotImplementedException();
+            }
+            set
+            {
+                if (value == isSetWorkspaceMode)
+                    return;
+
+                isSetWorkspaceMode = value;
+
+                ToogleLeverNameLablesAndRadiobuttons(!value);
+                // SetWorkspaceModeChanged(this, EventArgs.Empty);
+            }
+        }
+
+        private RobotWorkspace activeWorkspace;
+
+        public void SetRobotWorkspaceParams(RobotWorkspace workspace)
+        {
+            if (activeWorkspace != workspace)
+                activeWorkspace = workspace;
+
+            this.Invoke(new Action(() =>
+            {
+                gbWorkspaceInfo.Text = "Рабочая зона: " + workspace.Name;
+
+                var lever = workspace.GetLeverByType(GetSetWorkspaceModeActiveLever());
+
+                lblWorkspaceAB.Text = lever.AB.ToString();
+                lblWorkspaceABmax.Text = lever.ABmax.ToString();
+                lblWorkspaceABmin.Text = lever.ABmin.ToString();
+                lblWorkspaceABZero.Text = lever.ABzero.ToString();
+            }));
+        }
+
+        private LeverType GetSetWorkspaceModeActiveLever()
+        {
+            if (rbHorizontalLever.Checked)
+                return LeverType.Horizontal;
+            if (rbLever1.Checked)
+                return LeverType.Lever1;
+
+            return LeverType.Lever2;
+        }
+
+
         public MainForm()
         {
             InitializeComponent();
@@ -117,7 +169,7 @@ namespace ManipulatorControl
                                  };
 
             IsHotKeyMode = true;
-        }                                                                                                
+        }
 
         private readonly ManualControlItem[] controlItems;
 
@@ -128,6 +180,9 @@ namespace ManipulatorControl
         public event EventHandler InvokeStepperStop = delegate { };
         public event EventHandler RunGCodeInterpreter = delegate { };
         public event EventHandler OpenSettings = delegate { };
+
+        public event EventHandler<WorkspaceEventArgs> InvokeWorkspaceValueChange;
+        public event EventHandler SetWorkspaceModeChanged = delegate { };
 
         private ManualControlItem activeControlItem;
 
@@ -140,7 +195,7 @@ namespace ManipulatorControl
 
             if (activeControlItem != null)
             {
-                if(controlItem != activeControlItem)
+                if (controlItem != activeControlItem)
                 {
                     controlItem.Active = null;
                     return;
@@ -159,7 +214,7 @@ namespace ManipulatorControl
 
             if (!IsManualControlMode || controlItem == null || activeControlItem == null)
                 return;
-  
+
             if (controlItem != activeControlItem)
             {
                 controlItem.Active = null;
@@ -174,14 +229,15 @@ namespace ManipulatorControl
         private void MainForm_Load(object sender, EventArgs e)
         {
             IsManualControlMode = true;
+            IsSetWorkspaceMode = true;
 
-             foreach (var item in controlItems)
-             {
-                 this.KeyDown += item.HandleKeyDown;
-                 this.KeyUp += item.HandleKeyUp;
-                 item.OnInvokeStart += HandleStartManualMove;
-                 item.OnInvokeStop += HandleStopManualMove;
-             }
+            foreach (var item in controlItems)
+            {
+                this.KeyDown += item.HandleKeyDown;
+                this.KeyUp += item.HandleKeyUp;
+                item.OnInvokeStart += HandleStartManualMove;
+                item.OnInvokeStop += HandleStopManualMove;
+            }
 
             btnStop.Click += InvokeStepperStop;
             btnAbort.Click += InvokeStepperAbort;
@@ -207,7 +263,8 @@ namespace ManipulatorControl
 
         private void tabControlType_Selected(object sender, TabControlEventArgs e)
         {
-            IsManualControlMode = tabControlType.SelectedTab == tpManualControl;
+            if(tabControlType.SelectedTab == tpManualControl || tabControlType.SelectedTab == tpGCodes)
+                IsManualControlMode = tabControlType.SelectedTab == tpManualControl;
         }
 
         private void buttonsTypeControlMI_Click(object sender, EventArgs e)
@@ -215,11 +272,70 @@ namespace ManipulatorControl
             IsManualControlMode = (sender as ToolStripMenuItem) == manualControlMI;
         }
 
+        private void TableHeaderRadiobuttons_CheckedChanged(object sender, EventArgs e)
+        {
+            var rb = sender as RadioButton;
+            
+            tlpManualControl.Invalidate();
+            tlpManualControl.Update();
+
+            var index = rb == rbHorizontalLever ? 0 : (sender == rbLever1 ? 1 : 2);  
+            var width = tlpManualControl.Width * (tlpManualControl.ColumnStyles[0].Width / 100.0f);
+
+            tlpManualControl.CreateGraphics().FillRectangle(Brushes.DarkGray, width * index, rb.Location.Y + rb.Height, width, tlpManualControl.Height);
+
+            SetRobotWorkspaceParams(activeWorkspace);
+        }
+
+
+        private void lstWorkspaces_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var workspace = lstWorkspaces.SelectedItem as RobotWorkspace;
+
+            if (workspace == null)
+                return;
+
+            lblHorizontalMax.Text = workspace.HorizontalLeverWorkspace.ABmax.ToString();
+            lblHorizontalMin.Text = workspace.HorizontalLeverWorkspace.ABmin.ToString();
+            lblHorizontalZero.Text = workspace.HorizontalLeverWorkspace.ABzero.ToString();
+            lblLever1Max.Text = workspace.Lever1Workspace.ABmax.ToString();
+            lblLever1Min.Text = workspace.Lever1Workspace.ABmin.ToString();
+            lblLever1Zero.Text = workspace.Lever1Workspace.ABzero.ToString();
+            lblLever2Max.Text = workspace.Lever2Workspace.ABmax.ToString();
+            lblLever2Min.Text = workspace.Lever2Workspace.ABmin.ToString();
+            lblLever2Zero.Text = workspace.Lever2Workspace.ABzero.ToString();
+        }
+
+
         private void button1_Click(object sender, EventArgs e)
         {
             directionPanel.IsZeroEnabled = true;
         }
 
 
+        private void ToogleLeverNameLablesAndRadiobuttons(bool showLabels)
+        {
+            Control remove1 = showLabels ? rbHorizontalLever : (Control)lblHorizontalLever;
+            Control remove2 = showLabels ? rbLever1 : (Control)lblLever1;
+            Control remove3 = showLabels ? rbLever2 : (Control)lblLever2;
+
+            Control add1 = !showLabels ? rbHorizontalLever : (Control)lblHorizontalLever;
+            Control add2 = !showLabels ? rbLever1 : (Control)lblLever1;
+            Control add3 = !showLabels ? rbLever2 : (Control)lblLever2;
+
+            tlpManualControl.Controls.Remove(remove1);
+            tlpManualControl.Controls.Remove(remove2);
+            tlpManualControl.Controls.Remove(remove3);
+
+            tlpManualControl.Controls.Add(add1, 0, 0);
+            tlpManualControl.Controls.Add(add2, 1, 0);
+            tlpManualControl.Controls.Add(add3, 2, 0);
+        }
+
+        public void SetWorkspaces(RobotWorkspace[] workspaces)
+        {
+            lstWorkspaces.Items.Clear();
+            lstWorkspaces.Items.AddRange(workspaces);
+        }
     }
 }

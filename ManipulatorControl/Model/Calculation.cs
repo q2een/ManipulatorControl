@@ -91,7 +91,7 @@ namespace ManipulatorControl
             yield return new StepLever(LeverType.Horizontal, PulseCalculation.GetPulsesCount(dp.HorizontalLever,z));*/
         }
 
-        private IRobotLever GetPartMovableByLeverType(LeverType type)
+        public IRobotLever GetPartMovableByLeverType(LeverType type)
         {
             if (type == LeverType.Horizontal)
                 return this.dp.HorizontalLever;

@@ -2,7 +2,7 @@
 
 namespace UM160CalculationLib
 {
-    class DesignParametersException : Exception
+    public class DesignParametersException : Exception
     {
         public DesignParametersException(string message):base(message)
         {

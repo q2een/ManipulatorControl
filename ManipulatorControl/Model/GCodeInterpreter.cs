@@ -98,7 +98,6 @@ namespace ManipulatorControl
                 return;
             }
 
-            //Continue();
             new System.Threading.Tasks.Task(Continue).Start();
         }
 

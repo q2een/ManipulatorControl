@@ -36,7 +36,7 @@
         /// </summary>
         public virtual double ABmin { get; set; }
 
-        public virtual double AbZero
+        public virtual double ABzero
         {
             get
             {
@@ -62,11 +62,30 @@
             return newABValue >= this.ABmin && newABValue <= this.ABmax;
         }
 
-        public LeverWorkspace(double AB, double abmin, double abmax)
+        public static DesignParametersException GetDesignParametersException(double ab, double abmin, double abmax, double abzero)
         {
+            if (abmax < abmin)
+                return new DesignParametersException("Минимально допустимое значение не может быть больше максимально допустимого значения");
+
+            if (!(ab >= abmin && ab <= abmax))
+                return new DesignParametersException("Значение расстояния от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта не удовлетворяет установленной рабочей зоне");
+
+            if (!(abzero >= abmin && abzero <= abmax))
+                return new DesignParametersException("Значение расстояния нулевой точки не удовлетворяет установленной рабочей зоне");
+
+            return null;
+        }
+
+        public LeverWorkspace(double ab, double abmin, double abmax, double abzero)
+        {
+            var exception = GetDesignParametersException(ab, abmin, abmax, abzero);
+
+            if (exception != null)
+                throw exception;
+
             ABmax = abmax;
             ABmin = abmin;
-            this.AB = AB;
+            AB = ab;
             this.abZero = IsNewABValueCorrect(abZero) ? abZero : ab;
         }
     }

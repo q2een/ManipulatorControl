@@ -1,5 +1,4 @@
 ﻿using LptStepperMotorControl.Stepper;
-using UM160CalculationLib;
 
 namespace ManipulatorControl
 {

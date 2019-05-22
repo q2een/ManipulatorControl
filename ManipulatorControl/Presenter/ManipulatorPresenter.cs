@@ -36,7 +36,7 @@ namespace ManipulatorControl
         private readonly RobotLever[] levers;
         private RobotLever movingLever;
 
-      //  private LeverPosition nullPos = new LeverPosition() { Lever = LeverType.Horizontal, Position = 50 };
+        //  private LeverPosition nullPos = new LeverPosition() { Lever = LeverType.Horizontal, Position = 50 };
 
         private Dictionary<string, StepDirPin> pins;
 
@@ -65,10 +65,12 @@ namespace ManipulatorControl
             this.view.InvokeStepperStop += View_InvokeStepperStop;
             this.view.RunGCodeInterpreter += View_RunGCodeInterpreter;
             this.view.OpenSettings += View_OpenSettings;
+            this.view.SetWorkspaceModeChanged += View_SetWorkspaceModeChanged;
+            this.view.InvokeWorkspaceValueChange += View_InvokeWorkspaceValueChange;
 
 
             this.worker.OnStart += Worker_OnStart;
-            this.worker.OnStop += Worker_OnStop;      
+            this.worker.OnStop += Worker_OnStop;
             this.worker.OnStop += interpreter.OnStepperStop;
 
             this.interpreter.OnInterpreterStart += Interpreter_OnInterpreterStart;
@@ -80,6 +82,26 @@ namespace ManipulatorControl
             this.motors = SettingsReader.GetMotors();
 
             this.levers = GetRobotLever().ToArray();
+
+
+            //!!!
+            activeWorkspace = new RobotWorkspace();
+            activeWorkspace.Name = "Детали для станка";
+            activeWorkspace.HorizontalLeverWorkspace = parameters.HorizontalLever;
+            activeWorkspace.Lever1Workspace = parameters.Lever1;
+            activeWorkspace.Lever2Workspace = parameters.Lever2;
+
+            view.SetWorkspaces(new[] { activeWorkspace });
+        }
+
+        private void View_SetWorkspaceModeChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void View_InvokeWorkspaceValueChange(object sender, WorkspaceEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void Settings_SaveSettings(object sender, EventArgs e)
@@ -110,7 +132,7 @@ namespace ManipulatorControl
         {
             //return JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
             var par = JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
-            par.Lever1.Workspace = new LeverWorkspace(520, 500, 540);
+            par.Lever1.Workspace = new LeverWorkspace(520, 500, 540,500);
             return par;
         }
 
@@ -135,7 +157,7 @@ namespace ManipulatorControl
             yield return new RobotLever(LeverType.Lever1, GetStepper(LeverType.Lever1),
                 CoordinateDirections.XPositive | CoordinateDirections.YPositive, CoordinateDirections.XNegative | CoordinateDirections.YNegative);
 
-            yield return new RobotLever(LeverType.Lever2, GetStepper(LeverType.Lever2), 
+            yield return new RobotLever(LeverType.Lever2, GetStepper(LeverType.Lever2),
                 CoordinateDirections.XNegative | CoordinateDirections.YPositive, CoordinateDirections.XPositive | CoordinateDirections.YNegative);
         }
 
@@ -153,7 +175,7 @@ namespace ManipulatorControl
         private void View_RunGCodeInterpreter(object sender, EventArgs e)
         {
             if (view.IsManualControlMode)
-                return;         
+                return;
 
             var result = parser.Parse(view.GCodeLines);
             view.ParserErrors = parser.Errors;
@@ -171,20 +193,27 @@ namespace ManipulatorControl
             motor.Pins = pins[driverMotorName];
 
             return motor;
-        }     
+        }
+
+        private void SetNewABValue(LeverType type, long stepsCount)
+        {
+            if (view.IsSetWorkspaceMode)
+                view.SetRobotWorkspaceParams(activeWorkspace);
+            //calculation.SetNewAB(type, stepsCount);
+        }
 
         private void Worker_OnStop(object sender, EventArgs e)
         {
             view.Directions ^= movingLever.ActiveDirection;
 
-            Debug.WriteLine((sender as StepperWorker).StopReason);
+            SetNewABValue(movingLever.Type, movingLever.Stepper.CurrentStepsCount);
+           /*
+            var leverDesignParams = calculation.GetPartMovableByLeverType(movingLever.Type);
 
-            //calculation.SetNewAB(movingLever.Type, movingLever.Stepper.CurrentStepsCount);
+            if (leverDesignParams.AB == leverDesignParams.AbZero)
+                  view.Directions = CoordinateDirections.OnZZero;  */ 
 
-          /*  if (nullPos.Position == 50)
-                view.Directions = CoordinateDirections.OnZZero;   */
-
-           movingLever = null;
+            movingLever = null;
         }
 
         private void Worker_OnStart(object sender, EventArgs e)
@@ -235,7 +264,7 @@ namespace ManipulatorControl
 
             Debug.WriteLine(worker.Stepper.Direction + " " + worker.Stepper.TargetStepsCount);
 
-            new Task(() => worker.Start()).Start(); 
+            new Task(worker.Start).Start(); 
         }
     }
 }
