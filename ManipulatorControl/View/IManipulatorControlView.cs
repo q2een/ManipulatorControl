@@ -1,5 +1,5 @@
 ﻿using GCodeParser;
-using ManipulatorControl.Model;
+using ManipulatorControl.Workspace;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace ManipulatorControl
     {
         bool IsHotKeyMode { get; set; }
         bool IsManualControlMode { get; set; }
-        bool IsSetWorkspaceMode { get; set; }
+        bool IsEditWorkspaceMode { get;}
 
         bool IsZeroPositionSet { get; set; }
 
@@ -19,10 +19,17 @@ namespace ManipulatorControl
         string[] GCodeLines { get; set; }
 
         void SetRobotWorkspaceParams(RobotWorkspace workspace);
+
+        void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueType editValues);
+
         void SetWorkspaces(RobotWorkspace[] workspaces);
 
         event EventHandler SetWorkspaceModeChanged;
-        event EventHandler<WorkspaceEventArgs> InvokeWorkspaceValueChange;
+        event EventHandler<EditWorkspaceEventArgs> InvokeWorkspaceValueChange;
+
+        event EventHandler<WorkspaceEventArgs> InvokeSetEditWorkspaceMode;
+        event EventHandler<WorkspaceEventArgs> InvokeCloseEditWorkspaceMode;
+        event EventHandler<WorkspaceEventArgs> InvokeSaveWorkspaceValues;
 
         event EventHandler RunGCodeInterpreter;
 

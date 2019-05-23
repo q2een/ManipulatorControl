@@ -1,5 +1,5 @@
 ﻿using GCodeParser;
-using ManipulatorControl.Model;
+using ManipulatorControl.Workspace;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +14,7 @@ namespace ManipulatorControl
 {
     public partial class MainForm : Form, IManipulatorControlView
     {
-        private bool isHotKeyMode, isManualControlMode, isSetWorkspaceMode;
+        private bool isHotKeyMode, isManualControlMode, isEditWorkspaceMode;
 
         public bool IsHotKeyMode
         {
@@ -107,22 +107,34 @@ namespace ManipulatorControl
             }
         }
 
-        public bool IsSetWorkspaceMode
+        public bool IsEditWorkspaceMode
         {
             get
             {
-                return isSetWorkspaceMode;
-                return true;
-                throw new NotImplementedException();
+                return isEditWorkspaceMode;
             }
-            set
+            private set
             {
-                if (value == isSetWorkspaceMode)
+                if (value == isEditWorkspaceMode)
                     return;
 
-                isSetWorkspaceMode = value;
-
+                gbWorkspaceInfo.Visible = value;  
                 ToogleLeverNameLablesAndRadiobuttons(!value);
+
+                tabControlType.SelectedTab = value ? tpManualControl : tpWorkspaces;
+
+                gCodesControlMI.Visible = !value;
+
+                rbHorizontalLever.Checked = true;
+
+                if (!value)
+                {
+                    tlpManualControl.Invalidate();
+                    tlpManualControl.Update();
+                }
+
+                isEditWorkspaceMode = value;
+
                 // SetWorkspaceModeChanged(this, EventArgs.Empty);
             }
         }
@@ -131,14 +143,11 @@ namespace ManipulatorControl
 
         public void SetRobotWorkspaceParams(RobotWorkspace workspace)
         {
-            if (activeWorkspace != workspace)
-                activeWorkspace = workspace;
-
             this.Invoke(new Action(() =>
             {
                 gbWorkspaceInfo.Text = "Рабочая зона: " + workspace.Name;
 
-                var lever = workspace.GetLeverByType(GetSetWorkspaceModeActiveLever());
+                var lever = workspace.GetLeverByType(GetEditWorkspaceModeActiveLever());
 
                 lblWorkspaceAB.Text = lever.AB.ToString();
                 lblWorkspaceABmax.Text = lever.ABmax.ToString();
@@ -147,7 +156,7 @@ namespace ManipulatorControl
             }));
         }
 
-        private LeverType GetSetWorkspaceModeActiveLever()
+        private LeverType GetEditWorkspaceModeActiveLever()
         {
             if (rbHorizontalLever.Checked)
                 return LeverType.Horizontal;
@@ -181,8 +190,11 @@ namespace ManipulatorControl
         public event EventHandler RunGCodeInterpreter = delegate { };
         public event EventHandler OpenSettings = delegate { };
 
-        public event EventHandler<WorkspaceEventArgs> InvokeWorkspaceValueChange;
+        public event EventHandler<EditWorkspaceEventArgs> InvokeWorkspaceValueChange = delegate { };
         public event EventHandler SetWorkspaceModeChanged = delegate { };
+        public event EventHandler<WorkspaceEventArgs> InvokeSetEditWorkspaceMode = delegate { };
+        public event EventHandler<WorkspaceEventArgs> InvokeCloseEditWorkspaceMode;
+        public event EventHandler<WorkspaceEventArgs> InvokeSaveWorkspaceValues = delegate { };
 
         private ManualControlItem activeControlItem;
 
@@ -229,7 +241,7 @@ namespace ManipulatorControl
         private void MainForm_Load(object sender, EventArgs e)
         {
             IsManualControlMode = true;
-            IsSetWorkspaceMode = true;
+            IsEditWorkspaceMode = false;
 
             foreach (var item in controlItems)
             {
@@ -312,6 +324,20 @@ namespace ManipulatorControl
             directionPanel.IsZeroEnabled = true;
         }
 
+        private void editWorkspaceValuesMI_Click(object sender, EventArgs e)
+        {
+            var index = lstWorkspaces.SelectedIndex;
+
+            if (index == -1)
+                return;
+
+            InvokeSetEditWorkspaceMode(this, new WorkspaceEventArgs() { Index = index });
+        }
+
+        private void saveWorkspaceValuesMI_Click(object sender, EventArgs e)
+        {
+            InvokeSaveWorkspaceValues(this, null);
+        }
 
         private void ToogleLeverNameLablesAndRadiobuttons(bool showLabels)
         {
@@ -332,10 +358,36 @@ namespace ManipulatorControl
             tlpManualControl.Controls.Add(add3, 2, 0);
         }
 
+        private void InvokeWorkspaceValueChangeMI_Click(object sender, EventArgs e)
+        {
+            var mi = sender as ToolStripMenuItem;
+
+            if (mi == null)
+                return;
+
+            var valueType = mi == setMaxValueMI ? MovableValueType.Max : (mi == setMinValueMI ? MovableValueType.Min : MovableValueType.Zero);
+
+            InvokeWorkspaceValueChange(this, new EditWorkspaceEventArgs(GetEditWorkspaceModeActiveLever(), valueType));
+        }
+
+
+
         public void SetWorkspaces(RobotWorkspace[] workspaces)
         {
             lstWorkspaces.Items.Clear();
             lstWorkspaces.Items.AddRange(workspaces);
+        }
+
+        public void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueType editValues)
+        {
+            activeWorkspace = workspace;
+            IsEditWorkspaceMode = enable;
+
+            var a = !editValues.HasFlag(MovableValueType.None) && editValues.HasFlag(MovableValueType.Max);
+
+            setMaxValueMI.Visible = !editValues.HasFlag(MovableValueType.None) && editValues.HasFlag(MovableValueType.Max);
+            setMinValueMI.Visible = !editValues.HasFlag(MovableValueType.None) && editValues.HasFlag(MovableValueType.Min);
+            setZeroValueMI.Visible = !editValues.HasFlag(MovableValueType.None) && editValues.HasFlag(MovableValueType.Zero);
         }
     }
 }

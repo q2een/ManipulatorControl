@@ -84,9 +84,10 @@
     <Compile Include="Model\ICoordinateDirection.cs" />
     <Compile Include="Model\Lever\LeverType.cs" />
     <Compile Include="Model\Lever\StepLever.cs" />
-    <Compile Include="Model\Workspace\MovableValueType.cs" />
-    <Compile Include="Model\Workspace\RobotWorkspace.cs" />
-    <Compile Include="Model\Workspace\WorkspaceEventArgs.cs" />
+    <Compile Include="Workspace\MovableValueType.cs" />
+    <Compile Include="Workspace\RobotWorkspace.cs" />
+    <Compile Include="Workspace\EditWorkspaceEventArgs.cs" />
+    <Compile Include="Workspace\WorkspaceEventArgs.cs" />
     <Compile Include="Settings\StepDirName.cs" />
     <Compile Include="Settings\StepDirPinType.cs" />
     <Compile Include="View\IManipulatorControlView.cs" />

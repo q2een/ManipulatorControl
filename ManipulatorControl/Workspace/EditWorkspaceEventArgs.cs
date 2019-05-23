@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace ManipulatorControl.Model
+namespace ManipulatorControl.Workspace
 {
-    public class WorkspaceEventArgs: EventArgs
+    public class EditWorkspaceEventArgs: EventArgs
     {
         public LeverType LeverType { get; set; }
 
         public MovableValueType ValueType { get; set; }
 
-        public WorkspaceEventArgs(LeverType leverType, MovableValueType valueType)
+        public EditWorkspaceEventArgs(LeverType leverType, MovableValueType valueType)
         {
             LeverType = leverType;
             ValueType = valueType;

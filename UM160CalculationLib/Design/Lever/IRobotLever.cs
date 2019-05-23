@@ -3,5 +3,7 @@
     public interface IRobotLever : IPartMovable
     {
         IPartMovable Workspace { get; set; }
+
+        bool IsABIncreasesOnStepperCW { get; set; }
     }
 }

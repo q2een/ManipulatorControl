@@ -42,7 +42,7 @@ namespace UM160CalculationLib
 
             var stepsCount = ((newValue - lever.Workspace.AB) * lever.Coefficient);
 
-            return Convert.ToInt64(stepsCount);
+            return Convert.ToInt64(stepsCount) * (lever.IsABIncreasesOnStepperCW ? 1 : -1);
         }
 
         public static long GetPulsesCount(IRobotLever lever, double param)
@@ -74,7 +74,7 @@ namespace UM160CalculationLib
 
         public static double GetNewAB(HorizontalLeverDesignParameters lever, long pulsesCount)
         {
-            double newValue = Math.Round(lever.Workspace.AB + (pulsesCount / lever.Coefficient), 0);
+            double newValue = Math.Round(lever.Workspace.AB + ((lever.IsABIncreasesOnStepperCW ? 1 : -1) * (pulsesCount / lever.Coefficient)), 0);
 
             if (!lever.Workspace.IsNewABValueCorrect(newValue))
                 throw new DesignParametersException("Новое значение координаты Z не удовлетворяет конструктивным параметрам робота");
@@ -93,9 +93,25 @@ namespace UM160CalculationLib
             throw new Exception("Расчеты для данного экземпляра не реализованы");
         }
 
+        public static long GetPulsesCountByDirection(IRobotLever lever, bool isCWDirection)
+        {
+            var target = lever.IsABIncreasesOnStepperCW && isCWDirection ? lever.ABmax : lever.ABmin;
+
+            if (!lever.IsABIncreasesOnStepperCW && !isCWDirection)
+                target = lever.ABmax;
+
+            return GetPulsesCountToAB(lever, target);
+        }
+
         public static long GetPulsesCountToMaxValue(IRobotLever lever)
         {
+            
             return GetPulsesCountToAB(lever, lever.Workspace.ABmax);
+        }
+
+        public static long GetPulsesCountToZeroValue(IRobotLever lever)
+        {
+            return GetPulsesCountToAB(lever, lever.Workspace.ABzero);
         }
 
         public static long GetPulsesCountToMinValue(IRobotLever lever)
@@ -130,7 +146,7 @@ namespace UM160CalculationLib
         private static long CalculatePulsesCount(LeverDesignParameters ldp, double phi)
         {
             phi *= deg;
-            double pulsesCount = ldp.IsPhiIncreasesWithAB ? -1 : 1;
+            double pulsesCount = ldp.IsABIncreasesOnStepperCW ? -1 : 1;
             pulsesCount *= (85.0 * (ldp.Workspace.AB - Math.Sqrt(Math.Pow(ldp.AO, 2) + Math.Pow(ldp.BO, 2) - (2 * ldp.AO * ldp.BO * Math.Cos(ldp.AlphaRad + ldp.BetaRad + phi))))) / (51.0 * ldp.P * ldp.RoRad);
 
             return Convert.ToInt64(Math.Round(pulsesCount));
@@ -155,7 +171,7 @@ namespace UM160CalculationLib
         /// <returns>Новое значение AB</returns>
         private static double CalculateAB(LeverDesignParameters ldp, long pulsesCount)
         {
-            pulsesCount = ldp.IsPhiIncreasesWithAB ? pulsesCount : -pulsesCount;
+            pulsesCount = ldp.IsABIncreasesOnStepperCW ? pulsesCount : -pulsesCount;
             // Округляем сотые значение миллиментов.
             return Math.Round(ldp.Workspace.AB + (ldp.RoRad * pulsesCount * (51.0 / 85.0) * ldp.P), 0);
         }

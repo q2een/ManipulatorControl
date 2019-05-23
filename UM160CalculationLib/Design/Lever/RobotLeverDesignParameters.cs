@@ -40,8 +40,12 @@
             }
         }
 
-        public RobotLeverDesignParameters(double AB, double abmin, double abmax) : base(AB, abmin, abmax, AB)
+        public virtual bool IsABIncreasesOnStepperCW { get; set; }
+
+
+        public RobotLeverDesignParameters(double AB, double abmin, double abmax, bool isABIncreasesOnStepperCW) : base(AB, abmin, abmax, AB)
         {
+            IsABIncreasesOnStepperCW = isABIncreasesOnStepperCW;
         }
     }
 }

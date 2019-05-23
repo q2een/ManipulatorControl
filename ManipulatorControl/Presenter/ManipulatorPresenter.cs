@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using UM160CalculationLib;
 using Newtonsoft.Json;
 using System.IO;
-using ManipulatorControl.Model;
+using ManipulatorControl.Workspace;
 
 namespace ManipulatorControl
 {
@@ -40,9 +40,9 @@ namespace ManipulatorControl
 
         private Dictionary<string, StepDirPin> pins;
 
-
+        private int editingWorkspaceIndex = -1;
         private List<RobotWorkspace> robotWorkspaces;
-        private RobotWorkspace activeWorkspace;
+        private RobotWorkspace activeWorkspace, editingWorkspace;
 
 
         public ManipulatorPresenter(IManipulatorControlView view)
@@ -67,6 +67,8 @@ namespace ManipulatorControl
             this.view.OpenSettings += View_OpenSettings;
             this.view.SetWorkspaceModeChanged += View_SetWorkspaceModeChanged;
             this.view.InvokeWorkspaceValueChange += View_InvokeWorkspaceValueChange;
+            this.view.InvokeSetEditWorkspaceMode += View_InvokeSetEditWorkspaceMode;
+            this.view.InvokeSaveWorkspaceValues += View_InvokeSaveWorkspaceValues;
 
 
             this.worker.OnStart += Worker_OnStart;
@@ -85,13 +87,54 @@ namespace ManipulatorControl
 
 
             //!!!
-            activeWorkspace = new RobotWorkspace();
-            activeWorkspace.Name = "Детали для станка";
-            activeWorkspace.HorizontalLeverWorkspace = parameters.HorizontalLever;
-            activeWorkspace.Lever1Workspace = parameters.Lever1;
-            activeWorkspace.Lever2Workspace = parameters.Lever2;
+            activeWorkspace = new RobotWorkspace("Детали для станка");
+            activeWorkspace.HorizontalLeverWorkspace = parameters.HorizontalLever.Clone() as IPartMovable; ;
+            activeWorkspace.Lever1Workspace = parameters.Lever1.Clone() as IPartMovable; ;
+            activeWorkspace.Lever2Workspace = parameters.Lever2.Clone() as IPartMovable; ;
 
-            view.SetWorkspaces(new[] { activeWorkspace });
+            var he = new RobotWorkspace("Конструктивные параметры");
+            he.HorizontalLeverWorkspace = parameters.HorizontalLever.Clone() as IPartMovable; ;
+            he.Lever1Workspace = parameters.Lever1.Clone() as IPartMovable; ;
+            he.Lever2Workspace = parameters.Lever2.Clone() as IPartMovable; ;
+
+            robotWorkspaces = new List<RobotWorkspace> { he, activeWorkspace };
+
+            view.SetWorkspaces(robotWorkspaces.ToArray());
+        }
+
+        private void View_InvokeSaveWorkspaceValues(object sender, WorkspaceEventArgs e)
+        {
+            if (!view.IsEditWorkspaceMode || editingWorkspace == null)
+                return;
+
+            var errors = editingWorkspace.GetDesignParametersExceptions();
+
+            if(errors.Count() == 0)
+            {
+                view.SetEditWorkspaceMode(false, null, MovableValueType.None);
+                this.robotWorkspaces[editingWorkspaceIndex] = editingWorkspace;
+                editingWorkspace = null;
+                editingWorkspaceIndex = -1;
+                view.SetWorkspaces(robotWorkspaces.ToArray());
+                return;
+            }
+
+            throw errors.First().Value;
+        }
+
+        private void View_InvokeSetEditWorkspaceMode(object sender, WorkspaceEventArgs e)
+        {
+            SetDefaultWorkspace();   
+            editingWorkspace = robotWorkspaces[e.Index].Clone() as RobotWorkspace;
+
+            var editValues = MovableValueType.Zero;
+
+            if (e.Index != 0)
+                editValues |= MovableValueType.Max | MovableValueType.Min;
+
+            editingWorkspaceIndex = e.Index;
+
+            view.SetEditWorkspaceMode(true, editingWorkspace, editValues);
         }
 
         private void View_SetWorkspaceModeChanged(object sender, EventArgs e)
@@ -99,9 +142,14 @@ namespace ManipulatorControl
             throw new NotImplementedException();
         }
 
-        private void View_InvokeWorkspaceValueChange(object sender, WorkspaceEventArgs e)
+        private void View_InvokeWorkspaceValueChange(object sender, EditWorkspaceEventArgs e)
         {
-            throw new NotImplementedException();
+            if (editingWorkspace == null || e.ValueType == MovableValueType.None)
+                return;
+
+            editingWorkspace.SetValue(e.LeverType, e.ValueType);
+
+            view.SetRobotWorkspaceParams(editingWorkspace);
         }
 
         private void Settings_SaveSettings(object sender, EventArgs e)
@@ -116,8 +164,8 @@ namespace ManipulatorControl
 
         private void View_OpenSettings(object sender, EventArgs e)
         {
-            parameters.Lever1.IsPhiIncreasesWithAB = false;
-            parameters.Lever2.IsPhiIncreasesWithAB = true;
+            parameters.Lever1.IsABIncreasesOnStepperCW = false;
+            parameters.Lever2.IsABIncreasesOnStepperCW = true;
 
             parameters.Lever1.Workspace = parameters.Lever1;
 
@@ -132,10 +180,19 @@ namespace ManipulatorControl
         {
             //return JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
             var par = JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
-            par.Lever1.Workspace = new LeverWorkspace(520, 500, 540,500);
+            //par.Lever1.Workspace = new LeverWorkspace(520, 500, 540,500);
             return par;
         }
 
+        private void SetDefaultWorkspace()
+        {
+            parameters.Lever1.Workspace = null;
+            parameters.Lever2.Workspace = null;
+            parameters.HorizontalLever.Workspace = null;
+
+            activeWorkspace = null;    
+        }
+        
         private List<RobotWorkspace> LoadWorkspaces()
         {
             return new List<RobotWorkspace>();
@@ -155,7 +212,7 @@ namespace ManipulatorControl
             yield return new RobotLever(LeverType.Horizontal, GetStepper(LeverType.Horizontal), CoordinateDirections.ZPositive, CoordinateDirections.ZNegative);
 
             yield return new RobotLever(LeverType.Lever1, GetStepper(LeverType.Lever1),
-                CoordinateDirections.XPositive | CoordinateDirections.YPositive, CoordinateDirections.XNegative | CoordinateDirections.YNegative);
+                 CoordinateDirections.XNegative | CoordinateDirections.YNegative, CoordinateDirections.XPositive | CoordinateDirections.YPositive);
 
             yield return new RobotLever(LeverType.Lever2, GetStepper(LeverType.Lever2),
                 CoordinateDirections.XNegative | CoordinateDirections.YPositive, CoordinateDirections.XPositive | CoordinateDirections.YNegative);
@@ -197,9 +254,17 @@ namespace ManipulatorControl
 
         private void SetNewABValue(LeverType type, long stepsCount)
         {
-            if (view.IsSetWorkspaceMode)
-                view.SetRobotWorkspaceParams(activeWorkspace);
-            //calculation.SetNewAB(type, stepsCount);
+            var ab = calculation.GetNewAB(type, stepsCount);
+
+            if (view.IsEditWorkspaceMode)
+            {
+                editingWorkspace.GetLeverByType(type).AB = ab;
+                view.SetRobotWorkspaceParams(editingWorkspace);
+            }
+
+            calculation.SetNewAB(type, stepsCount);
+
+            Debug.WriteLine(ab + " " + stepsCount + " | " + calculation.GetPartMovableByLeverType(type).AB + " " + stepsCount);
         }
 
         private void Worker_OnStop(object sender, EventArgs e)
@@ -207,11 +272,11 @@ namespace ManipulatorControl
             view.Directions ^= movingLever.ActiveDirection;
 
             SetNewABValue(movingLever.Type, movingLever.Stepper.CurrentStepsCount);
-           /*
+           
             var leverDesignParams = calculation.GetPartMovableByLeverType(movingLever.Type);
 
-            if (leverDesignParams.AB == leverDesignParams.AbZero)
-                  view.Directions = CoordinateDirections.OnZZero;  */ 
+            //if (leverDesignParams.AB == leverDesignParams.ABzero)
+                //view.Directions = CoordinateDirections.OnZZero;   
 
             movingLever = null;
         }
@@ -246,23 +311,22 @@ namespace ManipulatorControl
 
             if (view.IsManualControlMode)
             {
-                // Хранить нулевое положение (AB).
-                /*
-                 if (stepsCount == 0)
-                     stepsCount = calculation.CalculateStepsToAbValue(type, AB);
-                 else
-                     stepsCount = stepsCount == -1 ? calculation.CalculateStepsToLeverMax(type) : calculation.CalculateStepsToLeverMin(type);
-                 */
 
-                stepLever.StepsCount = stepLever.StepsCount == -1 ? -long.MaxValue : long.MaxValue;
+                if (stepLever.StepsCount == 0)
+                    stepLever.StepsCount = calculation.CalculateStepsToLeverZero(stepLever.Lever);
+                else
+                    stepLever.StepsCount = calculation.CalculateStepsByDirection(stepLever.Lever, stepLever.StepsCount == 1);
+
+                //stepLever.StepsCount = stepLever.StepsCount == -1 ? -long.MaxValue : long.MaxValue;
             }
+
+            if (stepLever.StepsCount == 0)
+                return;
 
             movingLever = levers.Single(lever => lever.Type == stepLever.Lever);
 
             worker.Stepper = movingLever.Stepper;
             worker.Stepper.TargetStepsCount = stepLever.StepsCount;
-
-            Debug.WriteLine(worker.Stepper.Direction + " " + worker.Stepper.TargetStepsCount);
 
             new Task(worker.Start).Start(); 
         }

@@ -76,6 +76,16 @@
             return null;
         }
 
+        public static DesignParametersException GetDesignParametersException(IPartMovable movable)
+        {
+            return GetDesignParametersException(movable.AB, movable.ABmin, movable.ABmax, movable.ABzero);
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
         public LeverWorkspace(double ab, double abmin, double abmax, double abzero)
         {
             var exception = GetDesignParametersException(ab, abmin, abmax, abzero);

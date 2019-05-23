@@ -4,7 +4,7 @@
     {
         public double Coefficient { get; set; }
 
-        public HorizontalLeverDesignParameters(double AB, double abmin, double abmax, double coefficient) : base(AB, abmin, abmax)
+        public HorizontalLeverDesignParameters(double AB, double abmin, double abmax, double coefficient, bool isABIncreasesOnStepperCW) : base(AB, abmin, abmax, isABIncreasesOnStepperCW)
         {
             Coefficient = coefficient;
         }

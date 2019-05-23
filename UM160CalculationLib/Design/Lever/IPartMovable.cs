@@ -1,6 +1,8 @@
-﻿namespace UM160CalculationLib
+﻿using System;
+
+namespace UM160CalculationLib
 {
-    public interface IPartMovable
+    public interface IPartMovable: ICloneable
     {
         ///// <summary>
         ///// Возвращает максимальное расстояние от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта, мм.

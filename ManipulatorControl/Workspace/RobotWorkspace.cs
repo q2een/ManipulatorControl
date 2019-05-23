@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using UM160CalculationLib;
 
-namespace ManipulatorControl.Model
+namespace ManipulatorControl.Workspace
 {
-    public class RobotWorkspace
+    public class RobotWorkspace : ICloneable
     {
         public string Name { get; set; }
 
@@ -15,6 +15,36 @@ namespace ManipulatorControl.Model
         public IPartMovable Lever2Workspace { get; set; }
 
         public IPartMovable HorizontalLeverWorkspace { get; set; }
+
+        public RobotWorkspace(string name)
+        {
+            Name = name;
+        }
+
+        public IEnumerable<KeyValuePair<LeverType, DesignParametersException>> GetDesignParametersExceptions()
+        {
+            var horizontal = LeverWorkspace.GetDesignParametersException(HorizontalLeverWorkspace);
+            if (horizontal != null)
+                yield return new KeyValuePair<LeverType, DesignParametersException>(LeverType.Horizontal, horizontal);
+
+            var lever1 = LeverWorkspace.GetDesignParametersException(Lever1Workspace);
+            if (lever1 != null)
+                yield return new KeyValuePair<LeverType, DesignParametersException>(LeverType.Lever1, lever1);
+
+            var lever2 = LeverWorkspace.GetDesignParametersException(Lever2Workspace);
+            if (lever2 != null)
+                yield return new KeyValuePair<LeverType, DesignParametersException>(LeverType.Lever2, lever2);
+        }
+
+        public object Clone()
+        {
+            var workspace = new RobotWorkspace(this.Name);
+            workspace.HorizontalLeverWorkspace = (IPartMovable)this.HorizontalLeverWorkspace.Clone();
+            workspace.Lever1Workspace = (IPartMovable)this.Lever1Workspace;
+            workspace.Lever2Workspace = (IPartMovable)this.Lever2Workspace;
+
+            return workspace;
+        }
 
         public IPartMovable GetLeverByType(LeverType type)
         {
@@ -30,7 +60,6 @@ namespace ManipulatorControl.Model
                     throw new NotImplementedException();                         
             }
         }
-
 
         public void SetValue(LeverType type, MovableValueType valueType)
         {
@@ -62,7 +91,7 @@ namespace ManipulatorControl.Model
 
         public override string ToString()
         {
-            return Name;
+            return Name;                    
         }
     }
 }

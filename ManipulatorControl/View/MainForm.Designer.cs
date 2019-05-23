@@ -39,10 +39,19 @@
             this.interpreteGCodesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsMI = new System.Windows.Forms.ToolStripMenuItem();
             this.рабочаяЗонаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.установитьМаксимальныйПределToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.установитьМинимальныйПределToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.установитьНольToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.рабочиеЗоныРоботаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.установитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.добавитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editWorkspaceValuesMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.переименоватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.setMaxValueMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.setMinValueMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.setZeroValueMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.saveWorkspaceValuesMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeEditWorkspaceMode = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnStop = new System.Windows.Forms.Button();
@@ -97,10 +106,10 @@
             this.lblLever1Zero = new System.Windows.Forms.Label();
             this.lblLever2Zero = new System.Windows.Forms.Label();
             this.lstWorkspaces = new System.Windows.Forms.ListBox();
-            this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
             this.rbHorizontalLever = new System.Windows.Forms.RadioButton();
             this.rbLever1 = new System.Windows.Forms.RadioButton();
             this.rbLever2 = new System.Windows.Forms.RadioButton();
+            this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tlpManualControl.SuspendLayout();
@@ -201,37 +210,102 @@
             // рабочаяЗонаToolStripMenuItem
             // 
             this.рабочаяЗонаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.установитьМаксимальныйПределToolStripMenuItem,
-            this.установитьМинимальныйПределToolStripMenuItem,
-            this.установитьНольToolStripMenuItem,
-            this.рабочиеЗоныРоботаToolStripMenuItem});
+            this.установитьToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.добавитьToolStripMenuItem,
+            this.удалитьToolStripMenuItem,
+            this.editWorkspaceValuesMI,
+            this.переименоватьToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.setMaxValueMI,
+            this.setMinValueMI,
+            this.setZeroValueMI,
+            this.toolStripMenuItem3,
+            this.saveWorkspaceValuesMI,
+            this.closeEditWorkspaceMode});
             this.рабочаяЗонаToolStripMenuItem.Name = "рабочаяЗонаToolStripMenuItem";
             this.рабочаяЗонаToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
             this.рабочаяЗонаToolStripMenuItem.Text = "Рабочая зона";
             // 
-            // установитьМаксимальныйПределToolStripMenuItem
+            // установитьToolStripMenuItem
             // 
-            this.установитьМаксимальныйПределToolStripMenuItem.Name = "установитьМаксимальныйПределToolStripMenuItem";
-            this.установитьМаксимальныйПределToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
-            this.установитьМаксимальныйПределToolStripMenuItem.Text = "Установить максимальный предел";
+            this.установитьToolStripMenuItem.Name = "установитьToolStripMenuItem";
+            this.установитьToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.установитьToolStripMenuItem.Text = "Установить";
             // 
-            // установитьМинимальныйПределToolStripMenuItem
+            // toolStripMenuItem1
             // 
-            this.установитьМинимальныйПределToolStripMenuItem.Name = "установитьМинимальныйПределToolStripMenuItem";
-            this.установитьМинимальныйПределToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
-            this.установитьМинимальныйПределToolStripMenuItem.Text = "Установить минимальный предел";
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(263, 6);
             // 
-            // установитьНольToolStripMenuItem
+            // добавитьToolStripMenuItem
             // 
-            this.установитьНольToolStripMenuItem.Name = "установитьНольToolStripMenuItem";
-            this.установитьНольToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
-            this.установитьНольToolStripMenuItem.Text = "Установить ноль";
+            this.добавитьToolStripMenuItem.Name = "добавитьToolStripMenuItem";
+            this.добавитьToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.добавитьToolStripMenuItem.Text = "Добавить";
             // 
-            // рабочиеЗоныРоботаToolStripMenuItem
+            // удалитьToolStripMenuItem
             // 
-            this.рабочиеЗоныРоботаToolStripMenuItem.Name = "рабочиеЗоныРоботаToolStripMenuItem";
-            this.рабочиеЗоныРоботаToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
-            this.рабочиеЗоныРоботаToolStripMenuItem.Text = "Рабочие зоны...";
+            this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
+            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.удалитьToolStripMenuItem.Text = "Удалить";
+            // 
+            // editWorkspaceValuesMI
+            // 
+            this.editWorkspaceValuesMI.Name = "editWorkspaceValuesMI";
+            this.editWorkspaceValuesMI.Size = new System.Drawing.Size(266, 22);
+            this.editWorkspaceValuesMI.Text = "Изменить значения";
+            this.editWorkspaceValuesMI.Click += new System.EventHandler(this.editWorkspaceValuesMI_Click);
+            // 
+            // переименоватьToolStripMenuItem
+            // 
+            this.переименоватьToolStripMenuItem.Name = "переименоватьToolStripMenuItem";
+            this.переименоватьToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
+            this.переименоватьToolStripMenuItem.Text = "Переименовать";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(263, 6);
+            // 
+            // setMaxValueMI
+            // 
+            this.setMaxValueMI.Name = "setMaxValueMI";
+            this.setMaxValueMI.Size = new System.Drawing.Size(266, 22);
+            this.setMaxValueMI.Text = "Установить максимальный предел";
+            this.setMaxValueMI.Click += new System.EventHandler(this.InvokeWorkspaceValueChangeMI_Click);
+            // 
+            // setMinValueMI
+            // 
+            this.setMinValueMI.Name = "setMinValueMI";
+            this.setMinValueMI.Size = new System.Drawing.Size(266, 22);
+            this.setMinValueMI.Text = "Установить минимальный предел";
+            this.setMinValueMI.Click += new System.EventHandler(this.InvokeWorkspaceValueChangeMI_Click);
+            // 
+            // setZeroValueMI
+            // 
+            this.setZeroValueMI.Name = "setZeroValueMI";
+            this.setZeroValueMI.Size = new System.Drawing.Size(266, 22);
+            this.setZeroValueMI.Text = "Установить ноль";
+            this.setZeroValueMI.Click += new System.EventHandler(this.InvokeWorkspaceValueChangeMI_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(263, 6);
+            // 
+            // saveWorkspaceValuesMI
+            // 
+            this.saveWorkspaceValuesMI.Name = "saveWorkspaceValuesMI";
+            this.saveWorkspaceValuesMI.Size = new System.Drawing.Size(266, 22);
+            this.saveWorkspaceValuesMI.Text = "Сохранить изменения";
+            this.saveWorkspaceValuesMI.Click += new System.EventHandler(this.saveWorkspaceValuesMI_Click);
+            // 
+            // closeEditWorkspaceMode
+            // 
+            this.closeEditWorkspaceMode.Name = "closeEditWorkspaceMode";
+            this.closeEditWorkspaceMode.Size = new System.Drawing.Size(266, 22);
+            this.closeEditWorkspaceMode.Text = "Отменить изменения";
             // 
             // statusStrip1
             // 
@@ -508,6 +582,7 @@
             this.gbWorkspaceInfo.TabIndex = 1;
             this.gbWorkspaceInfo.TabStop = false;
             this.gbWorkspaceInfo.Text = "Рабочая зона";
+            this.gbWorkspaceInfo.Visible = false;
             // 
             // tableLayoutPanel1
             // 
@@ -903,9 +978,75 @@
             this.lstWorkspaces.TabIndex = 0;
             this.lstWorkspaces.SelectedIndexChanged += new System.EventHandler(this.lstWorkspaces_SelectedIndexChanged);
             // 
+            // rbHorizontalLever
+            // 
+            this.rbHorizontalLever.AutoSize = true;
+            this.rbHorizontalLever.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rbHorizontalLever.Location = new System.Drawing.Point(0, 0);
+            this.rbHorizontalLever.Name = "rbHorizontalLever";
+            this.rbHorizontalLever.Size = new System.Drawing.Size(32, 17);
+            this.rbHorizontalLever.TabIndex = 7;
+            this.rbHorizontalLever.TabStop = true;
+            this.rbHorizontalLever.Text = "Z";
+            this.rbHorizontalLever.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rbHorizontalLever.UseVisualStyleBackColor = true;
+            this.rbHorizontalLever.CheckedChanged += new System.EventHandler(this.TableHeaderRadiobuttons_CheckedChanged);
+            // 
+            // rbLever1
+            // 
+            this.rbLever1.AutoSize = true;
+            this.rbLever1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rbLever1.Location = new System.Drawing.Point(0, 0);
+            this.rbLever1.Name = "rbLever1";
+            this.rbLever1.Size = new System.Drawing.Size(65, 17);
+            this.rbLever1.TabIndex = 7;
+            this.rbLever1.TabStop = true;
+            this.rbLever1.Text = "Плечо 1";
+            this.rbLever1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rbLever1.UseVisualStyleBackColor = true;
+            this.rbLever1.CheckedChanged += new System.EventHandler(this.TableHeaderRadiobuttons_CheckedChanged);
+            // 
+            // rbLever2
+            // 
+            this.rbLever2.AutoSize = true;
+            this.rbLever2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rbLever2.Location = new System.Drawing.Point(0, 0);
+            this.rbLever2.Name = "rbLever2";
+            this.rbLever2.Size = new System.Drawing.Size(65, 17);
+            this.rbLever2.TabIndex = 7;
+            this.rbLever2.TabStop = true;
+            this.rbLever2.Text = "Плечо 2";
+            this.rbLever2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rbLever2.UseVisualStyleBackColor = true;
+            this.rbLever2.CheckedChanged += new System.EventHandler(this.TableHeaderRadiobuttons_CheckedChanged);
+            // 
             // directionPanel
             // 
             this.directionPanel.ColumnCount = 4;
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -1150,51 +1291,33 @@
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.Size = new System.Drawing.Size(357, 176);
             this.directionPanel.TabIndex = 0;
             this.directionPanel.TabStop = true;
-            // 
-            // rbHorizontalLever
-            // 
-            this.rbHorizontalLever.AutoSize = true;
-            this.rbHorizontalLever.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rbHorizontalLever.Location = new System.Drawing.Point(0, 0);
-            this.rbHorizontalLever.Name = "rbHorizontalLever";
-            this.rbHorizontalLever.Size = new System.Drawing.Size(32, 17);
-            this.rbHorizontalLever.TabIndex = 7;
-            this.rbHorizontalLever.TabStop = true;
-            this.rbHorizontalLever.Text = "Z";
-            this.rbHorizontalLever.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rbHorizontalLever.UseVisualStyleBackColor = true;
-            this.rbHorizontalLever.CheckedChanged += new System.EventHandler(this.TableHeaderRadiobuttons_CheckedChanged);
-            // 
-            // rbLever1
-            // 
-            this.rbLever1.AutoSize = true;
-            this.rbLever1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rbLever1.Location = new System.Drawing.Point(0, 0);
-            this.rbLever1.Name = "rbLever1";
-            this.rbLever1.Size = new System.Drawing.Size(65, 17);
-            this.rbLever1.TabIndex = 7;
-            this.rbLever1.TabStop = true;
-            this.rbLever1.Text = "Плечо 1";
-            this.rbLever1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rbLever1.UseVisualStyleBackColor = true;
-            this.rbLever1.CheckedChanged += new System.EventHandler(this.TableHeaderRadiobuttons_CheckedChanged);
-            // 
-            // rbLever2
-            // 
-            this.rbLever2.AutoSize = true;
-            this.rbLever2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rbLever2.Location = new System.Drawing.Point(0, 0);
-            this.rbLever2.Name = "rbLever2";
-            this.rbLever2.Size = new System.Drawing.Size(65, 17);
-            this.rbLever2.TabIndex = 7;
-            this.rbLever2.TabStop = true;
-            this.rbLever2.Text = "Плечо 2";
-            this.rbLever2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rbLever2.UseVisualStyleBackColor = true;
-            this.rbLever2.CheckedChanged += new System.EventHandler(this.TableHeaderRadiobuttons_CheckedChanged);
             // 
             // MainForm
             // 
@@ -1268,10 +1391,9 @@
         private System.Windows.Forms.TabPage tpGCodes;
         private System.Windows.Forms.ToolStripMenuItem settingsMI;
         private System.Windows.Forms.ToolStripMenuItem рабочаяЗонаToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem установитьМаксимальныйПределToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem установитьМинимальныйПределToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem установитьНольToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem рабочиеЗоныРоботаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setMaxValueMI;
+        private System.Windows.Forms.ToolStripMenuItem setMinValueMI;
+        private System.Windows.Forms.ToolStripMenuItem setZeroValueMI;
         private System.Windows.Forms.Label lblWorkspaceAB;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
@@ -1306,6 +1428,16 @@
         private System.Windows.Forms.Label lblLever1Zero;
         private System.Windows.Forms.Label lblLever2Zero;
         private System.Windows.Forms.ListBox lstWorkspaces;
+        private System.Windows.Forms.ToolStripMenuItem переименоватьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editWorkspaceValuesMI;
+        private System.Windows.Forms.ToolStripMenuItem saveWorkspaceValuesMI;
+        private System.Windows.Forms.ToolStripMenuItem добавитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem установитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem closeEditWorkspaceMode;
     }
 }
 

@@ -54,6 +54,16 @@ namespace ManipulatorControl
             lever.AB = newABvalue;
         }
 
+        public double GetNewAB(LeverType type, long stepsCount)
+        {
+            return PulseCalculation.GetNewAB(GetPartMovableByLeverType(type), stepsCount);
+        }
+
+        public long CalculateStepsByDirection(LeverType type, bool isCWDirection)
+        {
+            return PulseCalculation.GetPulsesCountByDirection(GetPartMovableByLeverType(type), isCWDirection);
+        }
+
         // Максимальное и минимальное значение, для ручного управления.
         public long CalculateStepsToLeverMax(LeverType type)
         {
@@ -63,6 +73,11 @@ namespace ManipulatorControl
         public long CalculateStepsToLeverMin(LeverType type)
         {
             return PulseCalculation.GetPulsesCountToMinValue(GetPartMovableByLeverType(type));
+        }
+
+        public long CalculateStepsToLeverZero(LeverType type)
+        {
+            return PulseCalculation.GetPulsesCountToZeroValue(GetPartMovableByLeverType(type));
         }
 
         // Перемещение в ноль.

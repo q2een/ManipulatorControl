@@ -10,6 +10,7 @@ namespace ManipulatorControl
         public DesignParametersTabControl()
         {
             InitializeComponent();
+            IsABIncreasesOnStepperCW = false;
         }
 
         [Browsable(false)]
@@ -117,11 +118,24 @@ namespace ManipulatorControl
             }
         }
 
+        [Browsable(false)]
+        public bool IsABIncreasesOnStepperCW
+        {
+            get
+            {
+                return cmbIncreases.SelectedIndex == 0;
+            }
+            set
+            {
+                cmbIncreases.SelectedIndex = value ? 0 : 1;
+            }
+        }
+
         public HorizontalLeverDesignParameters HorizontalLever
         {
             get
             {
-                return new UM160CalculationLib.HorizontalLeverDesignParameters(AB, ABmin, ABmax, Ro);
+                return new UM160CalculationLib.HorizontalLeverDesignParameters(AB, ABmin, ABmax, Ro, IsABIncreasesOnStepperCW);
             }
             set
             {
@@ -132,6 +146,7 @@ namespace ManipulatorControl
                 ABmin = Convert.ToInt32(value.ABmin);
                 ABmax = Convert.ToInt32(value.ABmax);   
                 Ro = value.Coefficient;
+                IsABIncreasesOnStepperCW = value.IsABIncreasesOnStepperCW;
             }
         }
 
