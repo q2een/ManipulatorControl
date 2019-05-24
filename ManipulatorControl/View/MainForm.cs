@@ -118,13 +118,14 @@ namespace ManipulatorControl
                 if (value == isEditWorkspaceMode)
                     return;
 
+                isEditWorkspaceMode = value;
+
                 gbWorkspaceInfo.Visible = value;  
                 ToogleLeverNameLablesAndRadiobuttons(!value);
 
                 tabControlType.SelectedTab = value ? tpManualControl : tpWorkspaces;
 
-                gCodesControlMI.Visible = !value;
-
+                gCodesControlMI.Visible = !value; 
                 rbHorizontalLever.Checked = true;
 
                 if (!value)
@@ -132,10 +133,6 @@ namespace ManipulatorControl
                     tlpManualControl.Invalidate();
                     tlpManualControl.Update();
                 }
-
-                isEditWorkspaceMode = value;
-
-                // SetWorkspaceModeChanged(this, EventArgs.Empty);
             }
         }
 
@@ -143,6 +140,9 @@ namespace ManipulatorControl
 
         public void SetRobotWorkspaceParams(RobotWorkspace workspace)
         {
+            if (workspace == null)
+                return;
+
             this.Invoke(new Action(() =>
             {
                 gbWorkspaceInfo.Text = "Рабочая зона: " + workspace.Name;
@@ -181,6 +181,7 @@ namespace ManipulatorControl
         }
 
         private readonly ManualControlItem[] controlItems;
+        private ManualControlItem activeControlItem;
 
 
         public event StepperMoveEventHandler ManualControlStart = delegate { };
@@ -190,13 +191,18 @@ namespace ManipulatorControl
         public event EventHandler RunGCodeInterpreter = delegate { };
         public event EventHandler OpenSettings = delegate { };
 
-        public event EventHandler<EditWorkspaceEventArgs> InvokeWorkspaceValueChange = delegate { };
-        public event EventHandler SetWorkspaceModeChanged = delegate { };
-        public event EventHandler<WorkspaceEventArgs> InvokeSetEditWorkspaceMode = delegate { };
-        public event EventHandler<WorkspaceEventArgs> InvokeCloseEditWorkspaceMode;
-        public event EventHandler<WorkspaceEventArgs> InvokeSaveWorkspaceValues = delegate { };
+        #region События для редактирования рабочих зон робота.
 
-        private ManualControlItem activeControlItem;
+        public event EventHandler<EditWorkspaceEventArgs> InvokeWorkspaceValueChange = delegate { };
+        public event EventHandler<WorkspaceEventArgs> InvokeSetEditWorkspaceMode = delegate { };
+        public event EventHandler<WorkspaceEventArgs> InvokeCloseEditWorkspaceMode = delegate { };
+        public event EventHandler<WorkspaceEventArgs> InvokeSaveWorkspaceValues = delegate { };
+        public event EventHandler<WorkspaceEventArgs> InvokeRemoveWorkspace = delegate { };
+        public event EventHandler<WorkspaceEventArgs> InvokeAddWorkspace = delegate { };
+        public event EventHandler<WorkspaceEventArgs> InvokeRenameWorkspace = delegate { };
+        public event EventHandler<WorkspaceEventArgs> InvokeSetActiveWorkspace = delegate { };
+
+        #endregion
 
         private void HandleStartManualMove(object sender, EventArgs e)
         {
@@ -275,8 +281,18 @@ namespace ManipulatorControl
 
         private void tabControlType_Selected(object sender, TabControlEventArgs e)
         {
-            if(tabControlType.SelectedTab == tpManualControl || tabControlType.SelectedTab == tpGCodes)
-                IsManualControlMode = tabControlType.SelectedTab == tpManualControl;
+            workspaceTSMI.Visible = tabControlType.SelectedTab == tpWorkspaces || IsEditWorkspaceMode;
+
+            if (tabControlType.SelectedTab != tpManualControl && tabControlType.SelectedTab != tpGCodes)
+                return;
+
+            if(IsEditWorkspaceMode && tabControlType.SelectedTab == tpGCodes)
+            {
+                tabControlType.SelectedTab = tpManualControl;
+                return;
+            }
+
+            IsManualControlMode = tabControlType.SelectedTab == tpManualControl; 
         }
 
         private void buttonsTypeControlMI_Click(object sender, EventArgs e)
@@ -284,59 +300,40 @@ namespace ManipulatorControl
             IsManualControlMode = (sender as ToolStripMenuItem) == manualControlMI;
         }
 
-        private void TableHeaderRadiobuttons_CheckedChanged(object sender, EventArgs e)
+        #region Редактирование рабочих зон робота.
+
+        public void SetWorkspaces(IEnumerable<RobotWorkspace> workspaces, int activeWorkspaceIndex = 0)
         {
-            var rb = sender as RadioButton;
-            
-            tlpManualControl.Invalidate();
-            tlpManualControl.Update();
+            lstWorkspaces.Items.Clear();
+            lstWorkspaces.Items.AddRange(workspaces.ToArray());
 
-            var index = rb == rbHorizontalLever ? 0 : (sender == rbLever1 ? 1 : 2);  
-            var width = tlpManualControl.Width * (tlpManualControl.ColumnStyles[0].Width / 100.0f);
-
-            tlpManualControl.CreateGraphics().FillRectangle(Brushes.DarkGray, width * index, rb.Location.Y + rb.Height, width, tlpManualControl.Height);
-
-            SetRobotWorkspaceParams(activeWorkspace);
+            lstWorkspaces.SelectedIndex = workspaces.Count() == 0 ? -1 : (workspaces.Count() < activeWorkspaceIndex ? 0 : activeWorkspaceIndex);
         }
 
-
-        private void lstWorkspaces_SelectedIndexChanged(object sender, EventArgs e)
+        public void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueType editValues)
         {
-            var workspace = lstWorkspaces.SelectedItem as RobotWorkspace;
+            activeWorkspace = workspace;
+            IsEditWorkspaceMode = enable;
 
-            if (workspace == null)
-                return;
+            lstWorkspaces.Enabled = !enable;
 
-            lblHorizontalMax.Text = workspace.HorizontalLeverWorkspace.ABmax.ToString();
-            lblHorizontalMin.Text = workspace.HorizontalLeverWorkspace.ABmin.ToString();
-            lblHorizontalZero.Text = workspace.HorizontalLeverWorkspace.ABzero.ToString();
-            lblLever1Max.Text = workspace.Lever1Workspace.ABmax.ToString();
-            lblLever1Min.Text = workspace.Lever1Workspace.ABmin.ToString();
-            lblLever1Zero.Text = workspace.Lever1Workspace.ABzero.ToString();
-            lblLever2Max.Text = workspace.Lever2Workspace.ABmax.ToString();
-            lblLever2Min.Text = workspace.Lever2Workspace.ABmin.ToString();
-            lblLever2Zero.Text = workspace.Lever2Workspace.ABzero.ToString();
-        }
+            var hasNotNoneFlag = !editValues.HasFlag(MovableValueType.None);
 
+            setMaxValueMI.Visible = hasNotNoneFlag && editValues.HasFlag(MovableValueType.Max);
+            setMinValueMI.Visible = hasNotNoneFlag && editValues.HasFlag(MovableValueType.Min);
+            setZeroValueMI.Visible = hasNotNoneFlag && editValues.HasFlag(MovableValueType.Zero);
+            editValuesSeparatorMI.Visible = hasNotNoneFlag;
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            directionPanel.IsZeroEnabled = true;
-        }
+            setAsActiveWorkspaceMI.Visible = !enable;
+            editWorkspaceValuesMI.Visible = !enable;
 
-        private void editWorkspaceValuesMI_Click(object sender, EventArgs e)
-        {
-            var index = lstWorkspaces.SelectedIndex;
+            editWorkspaceSeparatorMI.Visible = !enable;
+            removeWorkspaceMI.Visible = !enable;
+            addWorkspaceMI.Visible = !enable;
+            renameWorkspace.Visible = !enable;
 
-            if (index == -1)
-                return;
-
-            InvokeSetEditWorkspaceMode(this, new WorkspaceEventArgs() { Index = index });
-        }
-
-        private void saveWorkspaceValuesMI_Click(object sender, EventArgs e)
-        {
-            InvokeSaveWorkspaceValues(this, null);
+            saveWorkspaceValuesMI.Visible = enable;
+            closeEditWorkspaceModeMI.Visible = enable;
         }
 
         private void ToogleLeverNameLablesAndRadiobuttons(bool showLabels)
@@ -358,6 +355,56 @@ namespace ManipulatorControl
             tlpManualControl.Controls.Add(add3, 2, 0);
         }
 
+        private void TableHeaderRadiobuttons_CheckedChanged(object sender, EventArgs e)
+        {
+            var rb = sender as RadioButton;
+            
+            tlpManualControl.Invalidate();
+            tlpManualControl.Update();
+
+            var index = rb == rbHorizontalLever ? 0 : (sender == rbLever1 ? 1 : 2);  
+            var width = tlpManualControl.Width * (tlpManualControl.ColumnStyles[0].Width / 100.0f);
+
+            tlpManualControl.CreateGraphics().FillRectangle(Brushes.DarkGray, width * index, rb.Location.Y + rb.Height, width, tlpManualControl.Height);
+
+            SetRobotWorkspaceParams(activeWorkspace);
+        }
+         
+        private void lstWorkspaces_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var workspace = lstWorkspaces.SelectedItem as RobotWorkspace;
+
+            workspaceTSMI.Visible = (tabControlType.SelectedTab == tpWorkspaces || IsEditWorkspaceMode) && workspace != null;
+
+            if (workspace == null)
+                return;
+
+            lblHorizontalMax.Text = workspace.HorizontalLeverWorkspace.ABmax.ToString();
+            lblHorizontalMin.Text = workspace.HorizontalLeverWorkspace.ABmin.ToString();
+            lblHorizontalZero.Text = workspace.HorizontalLeverWorkspace.ABzero.ToString();
+            lblLever1Max.Text = workspace.Lever1Workspace.ABmax.ToString();
+            lblLever1Min.Text = workspace.Lever1Workspace.ABmin.ToString();
+            lblLever1Zero.Text = workspace.Lever1Workspace.ABzero.ToString();
+            lblLever2Max.Text = workspace.Lever2Workspace.ABmax.ToString();
+            lblLever2Min.Text = workspace.Lever2Workspace.ABmin.ToString();
+            lblLever2Zero.Text = workspace.Lever2Workspace.ABzero.ToString();
+        }
+
+        private void editWorkspaceValuesMI_Click(object sender, EventArgs e)
+        {
+            var index = lstWorkspaces.SelectedIndex;
+
+            if (index == -1)
+                return;
+
+            InvokeSetEditWorkspaceMode(this, new WorkspaceEventArgs() { Index = index });
+        }
+
+        private void saveWorkspaceValuesMI_Click(object sender, EventArgs e)
+        {
+            InvokeSaveWorkspaceValues(this, null);
+        }
+
         private void InvokeWorkspaceValueChangeMI_Click(object sender, EventArgs e)
         {
             var mi = sender as ToolStripMenuItem;
@@ -370,24 +417,46 @@ namespace ManipulatorControl
             InvokeWorkspaceValueChange(this, new EditWorkspaceEventArgs(GetEditWorkspaceModeActiveLever(), valueType));
         }
 
-
-
-        public void SetWorkspaces(RobotWorkspace[] workspaces)
+        private void closeEditWorkspaceMode_Click(object sender, EventArgs e)
         {
-            lstWorkspaces.Items.Clear();
-            lstWorkspaces.Items.AddRange(workspaces);
+            InvokeCloseEditWorkspaceMode(this, null);
         }
 
-        public void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueType editValues)
+        private void removeWorkspaceMI_Click(object sender, EventArgs e)
         {
-            activeWorkspace = workspace;
-            IsEditWorkspaceMode = enable;
-
-            var a = !editValues.HasFlag(MovableValueType.None) && editValues.HasFlag(MovableValueType.Max);
-
-            setMaxValueMI.Visible = !editValues.HasFlag(MovableValueType.None) && editValues.HasFlag(MovableValueType.Max);
-            setMinValueMI.Visible = !editValues.HasFlag(MovableValueType.None) && editValues.HasFlag(MovableValueType.Min);
-            setZeroValueMI.Visible = !editValues.HasFlag(MovableValueType.None) && editValues.HasFlag(MovableValueType.Zero);
+            InvokeRemoveWorkspace(this, new WorkspaceEventArgs(lstWorkspaces.SelectedIndex));
         }
+
+        private void addWorkspaceMI_Click(object sender, EventArgs e)
+        {
+            var input = new InputMessageBox();
+
+            if (input.ShowDialog() != DialogResult.OK)
+                return;
+
+            InvokeAddWorkspace(this, new WorkspaceEventArgs(input.Input));
+        }
+
+        private void renameWorkspace_Click(object sender, EventArgs e)
+        {
+            var workspace = lstWorkspaces.SelectedItem as RobotWorkspace;
+
+            if (workspace == null)
+                return;
+            
+            var input = new InputMessageBox() { Input = workspace.Name };
+
+            if (input.ShowDialog() != DialogResult.OK)
+                return;
+
+            InvokeRenameWorkspace(this, new WorkspaceEventArgs(input.Input, lstWorkspaces.SelectedIndex));
+        }
+
+        private void setAsActiveWorkspaceMI_Click(object sender, EventArgs e)
+        {
+            InvokeSetActiveWorkspace(this, new WorkspaceEventArgs(lstWorkspaces.SelectedIndex));
+        }
+
+        #endregion
     }
 }

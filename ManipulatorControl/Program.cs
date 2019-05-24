@@ -18,7 +18,7 @@ namespace ManipulatorControl
 
             var view = new MainForm();
 
-            var presenter = new ManipulatorPresenter(view);
+            var presenter = new ManipulatorPresenter(view, new MessageService.MessageBoxMessageService());
 
             Application.Run(view);
         }

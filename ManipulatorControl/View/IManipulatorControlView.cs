@@ -13,23 +13,26 @@ namespace ManipulatorControl
         bool IsManualControlMode { get; set; }
         bool IsEditWorkspaceMode { get;}
 
-        bool IsZeroPositionSet { get; set; }
-
         List<GCodeException> ParserErrors { get; set; }
         string[] GCodeLines { get; set; }
 
+        #region Редактирование / добавление / удаление рабочих зон.
+
         void SetRobotWorkspaceParams(RobotWorkspace workspace);
+        void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueType editValues); 
+        void SetWorkspaces(IEnumerable<RobotWorkspace> workspaces, int activeWorkspaceIndex = 0);
 
-        void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueType editValues);
+        event EventHandler<EditWorkspaceEventArgs> InvokeWorkspaceValueChange; 
 
-        void SetWorkspaces(RobotWorkspace[] workspaces);
-
-        event EventHandler SetWorkspaceModeChanged;
-        event EventHandler<EditWorkspaceEventArgs> InvokeWorkspaceValueChange;
-
-        event EventHandler<WorkspaceEventArgs> InvokeSetEditWorkspaceMode;
+        event EventHandler<WorkspaceEventArgs> InvokeSetActiveWorkspace;          
+        event EventHandler<WorkspaceEventArgs> InvokeSetEditWorkspaceMode;  
         event EventHandler<WorkspaceEventArgs> InvokeCloseEditWorkspaceMode;
-        event EventHandler<WorkspaceEventArgs> InvokeSaveWorkspaceValues;
+        event EventHandler<WorkspaceEventArgs> InvokeSaveWorkspaceValues;   
+        event EventHandler<WorkspaceEventArgs> InvokeRemoveWorkspace;
+        event EventHandler<WorkspaceEventArgs> InvokeAddWorkspace;
+        event EventHandler<WorkspaceEventArgs> InvokeRenameWorkspace;
+
+        #endregion
 
         event EventHandler RunGCodeInterpreter;
 

@@ -38,20 +38,19 @@
             this.interpreteSeparatorMI = new System.Windows.Forms.ToolStripSeparator();
             this.interpreteGCodesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.рабочаяЗонаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.установитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.добавитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workspaceTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.setAsActiveWorkspaceMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.editWorkspaceSeparatorMI = new System.Windows.Forms.ToolStripSeparator();
+            this.addWorkspaceMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeWorkspaceMI = new System.Windows.Forms.ToolStripMenuItem();
             this.editWorkspaceValuesMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.переименоватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.renameWorkspace = new System.Windows.Forms.ToolStripMenuItem();
             this.setMaxValueMI = new System.Windows.Forms.ToolStripMenuItem();
             this.setMinValueMI = new System.Windows.Forms.ToolStripMenuItem();
             this.setZeroValueMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.editValuesSeparatorMI = new System.Windows.Forms.ToolStripSeparator();
             this.saveWorkspaceValuesMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeEditWorkspaceMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeEditWorkspaceModeMI = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnStop = new System.Windows.Forms.Button();
@@ -87,7 +86,6 @@
             this.lblWorkspaceAB = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.tpGCodes = new System.Windows.Forms.TabPage();
-            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.tpWorkspaces = new System.Windows.Forms.TabPage();
             this.tlpWorkspaceInfo = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -109,6 +107,7 @@
             this.rbHorizontalLever = new System.Windows.Forms.RadioButton();
             this.rbLever1 = new System.Windows.Forms.RadioButton();
             this.rbLever2 = new System.Windows.Forms.RadioButton();
+            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -129,7 +128,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.controlTSMI,
             this.settingsMI,
-            this.рабочаяЗонаToolStripMenuItem});
+            this.workspaceTSMI});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(995, 24);
@@ -207,48 +206,51 @@
             this.settingsMI.Size = new System.Drawing.Size(83, 20);
             this.settingsMI.Text = "Параметры";
             // 
-            // рабочаяЗонаToolStripMenuItem
+            // workspaceTSMI
             // 
-            this.рабочаяЗонаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.установитьToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.добавитьToolStripMenuItem,
-            this.удалитьToolStripMenuItem,
+            this.workspaceTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setAsActiveWorkspaceMI,
             this.editWorkspaceValuesMI,
-            this.переименоватьToolStripMenuItem,
-            this.toolStripMenuItem2,
+            this.editWorkspaceSeparatorMI,
+            this.addWorkspaceMI,
+            this.removeWorkspaceMI,
+            this.renameWorkspace,
             this.setMaxValueMI,
             this.setMinValueMI,
             this.setZeroValueMI,
-            this.toolStripMenuItem3,
+            this.editValuesSeparatorMI,
             this.saveWorkspaceValuesMI,
-            this.closeEditWorkspaceMode});
-            this.рабочаяЗонаToolStripMenuItem.Name = "рабочаяЗонаToolStripMenuItem";
-            this.рабочаяЗонаToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
-            this.рабочаяЗонаToolStripMenuItem.Text = "Рабочая зона";
+            this.closeEditWorkspaceModeMI});
+            this.workspaceTSMI.Name = "workspaceTSMI";
+            this.workspaceTSMI.Size = new System.Drawing.Size(93, 20);
+            this.workspaceTSMI.Text = "Рабочая зона";
+            this.workspaceTSMI.Visible = false;
             // 
-            // установитьToolStripMenuItem
+            // setAsActiveWorkspaceMI
             // 
-            this.установитьToolStripMenuItem.Name = "установитьToolStripMenuItem";
-            this.установитьToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
-            this.установитьToolStripMenuItem.Text = "Установить";
+            this.setAsActiveWorkspaceMI.Name = "setAsActiveWorkspaceMI";
+            this.setAsActiveWorkspaceMI.Size = new System.Drawing.Size(266, 22);
+            this.setAsActiveWorkspaceMI.Text = "Установить";
+            this.setAsActiveWorkspaceMI.Click += new System.EventHandler(this.setAsActiveWorkspaceMI_Click);
             // 
-            // toolStripMenuItem1
+            // editWorkspaceSeparatorMI
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(263, 6);
+            this.editWorkspaceSeparatorMI.Name = "editWorkspaceSeparatorMI";
+            this.editWorkspaceSeparatorMI.Size = new System.Drawing.Size(263, 6);
             // 
-            // добавитьToolStripMenuItem
+            // addWorkspaceMI
             // 
-            this.добавитьToolStripMenuItem.Name = "добавитьToolStripMenuItem";
-            this.добавитьToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
-            this.добавитьToolStripMenuItem.Text = "Добавить";
+            this.addWorkspaceMI.Name = "addWorkspaceMI";
+            this.addWorkspaceMI.Size = new System.Drawing.Size(266, 22);
+            this.addWorkspaceMI.Text = "Добавить";
+            this.addWorkspaceMI.Click += new System.EventHandler(this.addWorkspaceMI_Click);
             // 
-            // удалитьToolStripMenuItem
+            // removeWorkspaceMI
             // 
-            this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
-            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
-            this.удалитьToolStripMenuItem.Text = "Удалить";
+            this.removeWorkspaceMI.Name = "removeWorkspaceMI";
+            this.removeWorkspaceMI.Size = new System.Drawing.Size(266, 22);
+            this.removeWorkspaceMI.Text = "Удалить";
+            this.removeWorkspaceMI.Click += new System.EventHandler(this.removeWorkspaceMI_Click);
             // 
             // editWorkspaceValuesMI
             // 
@@ -257,22 +259,19 @@
             this.editWorkspaceValuesMI.Text = "Изменить значения";
             this.editWorkspaceValuesMI.Click += new System.EventHandler(this.editWorkspaceValuesMI_Click);
             // 
-            // переименоватьToolStripMenuItem
+            // renameWorkspace
             // 
-            this.переименоватьToolStripMenuItem.Name = "переименоватьToolStripMenuItem";
-            this.переименоватьToolStripMenuItem.Size = new System.Drawing.Size(266, 22);
-            this.переименоватьToolStripMenuItem.Text = "Переименовать";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(263, 6);
+            this.renameWorkspace.Name = "renameWorkspace";
+            this.renameWorkspace.Size = new System.Drawing.Size(266, 22);
+            this.renameWorkspace.Text = "Переименовать";
+            this.renameWorkspace.Click += new System.EventHandler(this.renameWorkspace_Click);
             // 
             // setMaxValueMI
             // 
             this.setMaxValueMI.Name = "setMaxValueMI";
             this.setMaxValueMI.Size = new System.Drawing.Size(266, 22);
             this.setMaxValueMI.Text = "Установить максимальный предел";
+            this.setMaxValueMI.Visible = false;
             this.setMaxValueMI.Click += new System.EventHandler(this.InvokeWorkspaceValueChangeMI_Click);
             // 
             // setMinValueMI
@@ -280,6 +279,7 @@
             this.setMinValueMI.Name = "setMinValueMI";
             this.setMinValueMI.Size = new System.Drawing.Size(266, 22);
             this.setMinValueMI.Text = "Установить минимальный предел";
+            this.setMinValueMI.Visible = false;
             this.setMinValueMI.Click += new System.EventHandler(this.InvokeWorkspaceValueChangeMI_Click);
             // 
             // setZeroValueMI
@@ -287,25 +287,30 @@
             this.setZeroValueMI.Name = "setZeroValueMI";
             this.setZeroValueMI.Size = new System.Drawing.Size(266, 22);
             this.setZeroValueMI.Text = "Установить ноль";
+            this.setZeroValueMI.Visible = false;
             this.setZeroValueMI.Click += new System.EventHandler(this.InvokeWorkspaceValueChangeMI_Click);
             // 
-            // toolStripMenuItem3
+            // editValuesSeparatorMI
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(263, 6);
+            this.editValuesSeparatorMI.Name = "editValuesSeparatorMI";
+            this.editValuesSeparatorMI.Size = new System.Drawing.Size(263, 6);
+            this.editValuesSeparatorMI.Visible = false;
             // 
             // saveWorkspaceValuesMI
             // 
             this.saveWorkspaceValuesMI.Name = "saveWorkspaceValuesMI";
             this.saveWorkspaceValuesMI.Size = new System.Drawing.Size(266, 22);
             this.saveWorkspaceValuesMI.Text = "Сохранить изменения";
+            this.saveWorkspaceValuesMI.Visible = false;
             this.saveWorkspaceValuesMI.Click += new System.EventHandler(this.saveWorkspaceValuesMI_Click);
             // 
-            // closeEditWorkspaceMode
+            // closeEditWorkspaceModeMI
             // 
-            this.closeEditWorkspaceMode.Name = "closeEditWorkspaceMode";
-            this.closeEditWorkspaceMode.Size = new System.Drawing.Size(266, 22);
-            this.closeEditWorkspaceMode.Text = "Отменить изменения";
+            this.closeEditWorkspaceModeMI.Name = "closeEditWorkspaceModeMI";
+            this.closeEditWorkspaceModeMI.Size = new System.Drawing.Size(266, 22);
+            this.closeEditWorkspaceModeMI.Text = "Отменить изменения";
+            this.closeEditWorkspaceModeMI.Visible = false;
+            this.closeEditWorkspaceModeMI.Click += new System.EventHandler(this.closeEditWorkspaceMode_Click);
             // 
             // statusStrip1
             // 
@@ -737,23 +742,6 @@
             this.tpGCodes.Text = "Выполнение G-кодов";
             this.tpGCodes.UseVisualStyleBackColor = true;
             // 
-            // gCodesBox
-            // 
-            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gCodesBox.Enable = true;
-            this.gCodesBox.EnableLineNumbering = false;
-            this.gCodesBox.FontSize = ((byte)(14));
-            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
-            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
-            this.gCodesBox.Lines = new string[0];
-            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
-            this.gCodesBox.Name = "gCodesBox";
-            this.gCodesBox.ReadOnly = false;
-            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
-            this.gCodesBox.Size = new System.Drawing.Size(531, 302);
-            this.gCodesBox.TabIndex = 1;
-            this.gCodesBox.WordWrap = false;
-            // 
             // tpWorkspaces
             // 
             this.tpWorkspaces.Controls.Add(this.tlpWorkspaceInfo);
@@ -1020,9 +1008,30 @@
             this.rbLever2.UseVisualStyleBackColor = true;
             this.rbLever2.CheckedChanged += new System.EventHandler(this.TableHeaderRadiobuttons_CheckedChanged);
             // 
+            // gCodesBox
+            // 
+            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gCodesBox.Enable = true;
+            this.gCodesBox.EnableLineNumbering = false;
+            this.gCodesBox.FontSize = ((byte)(14));
+            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
+            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
+            this.gCodesBox.Lines = new string[0];
+            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
+            this.gCodesBox.Name = "gCodesBox";
+            this.gCodesBox.ReadOnly = false;
+            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
+            this.gCodesBox.Size = new System.Drawing.Size(531, 302);
+            this.gCodesBox.TabIndex = 1;
+            this.gCodesBox.WordWrap = false;
+            // 
             // directionPanel
             // 
             this.directionPanel.ColumnCount = 4;
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -1315,6 +1324,10 @@
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.Size = new System.Drawing.Size(357, 176);
             this.directionPanel.TabIndex = 0;
             this.directionPanel.TabStop = true;
@@ -1390,7 +1403,7 @@
         private System.Windows.Forms.TabPage tpManualControl;
         private System.Windows.Forms.TabPage tpGCodes;
         private System.Windows.Forms.ToolStripMenuItem settingsMI;
-        private System.Windows.Forms.ToolStripMenuItem рабочаяЗонаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem workspaceTSMI;
         private System.Windows.Forms.ToolStripMenuItem setMaxValueMI;
         private System.Windows.Forms.ToolStripMenuItem setMinValueMI;
         private System.Windows.Forms.ToolStripMenuItem setZeroValueMI;
@@ -1428,16 +1441,15 @@
         private System.Windows.Forms.Label lblLever1Zero;
         private System.Windows.Forms.Label lblLever2Zero;
         private System.Windows.Forms.ListBox lstWorkspaces;
-        private System.Windows.Forms.ToolStripMenuItem переименоватьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem renameWorkspace;
         private System.Windows.Forms.ToolStripMenuItem editWorkspaceValuesMI;
         private System.Windows.Forms.ToolStripMenuItem saveWorkspaceValuesMI;
-        private System.Windows.Forms.ToolStripMenuItem добавитьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem установитьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem closeEditWorkspaceMode;
+        private System.Windows.Forms.ToolStripMenuItem addWorkspaceMI;
+        private System.Windows.Forms.ToolStripMenuItem setAsActiveWorkspaceMI;
+        private System.Windows.Forms.ToolStripMenuItem removeWorkspaceMI;
+        private System.Windows.Forms.ToolStripSeparator editWorkspaceSeparatorMI;
+        private System.Windows.Forms.ToolStripSeparator editValuesSeparatorMI;
+        private System.Windows.Forms.ToolStripMenuItem closeEditWorkspaceModeMI;
     }
 }
 
