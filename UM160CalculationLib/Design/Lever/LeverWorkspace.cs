@@ -1,4 +1,6 @@
-﻿namespace UM160CalculationLib
+﻿using System.Collections.Generic;
+
+namespace UM160CalculationLib
 {
     public class LeverWorkspace: IWorkspace
     {
@@ -35,23 +37,21 @@
             ABzero = abzero;
         }
          
-        public static DesignParametersException GetDesignParametersException(double ab, double abmin, double abmax, double? abzero)
+        public static IEnumerable<DesignParametersException> GetDesignParametersExceptions(double ab, IWorkspace workspace)
         {
-            if (abmax < abmin)
-                return new DesignParametersException("Минимально допустимое значение не может быть больше максимально допустимого значения");
+            if (workspace.ABmax < workspace.ABmin)
+                yield return new DesignParametersException("Минимально допустимое значение не может быть больше максимально допустимого значения");
 
-            if (!(ab >= abmin && ab <= abmax))
-                return new DesignParametersException("Значение расстояния от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта не удовлетворяет установленной рабочей зоне");
+            if (!(ab >= workspace.ABmin && ab <= workspace.ABmax))
+                yield return new DesignParametersException("Значение расстояния от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта не удовлетворяет установленной рабочей зоне");
 
-            if (!(abzero >= abmin && abzero <= abmax))
-                return new DesignParametersException("Значение расстояния нулевой точки не удовлетворяет установленной рабочей зоне");
-
-            return null;
+            if (!(workspace.ABzero >= workspace.ABmin && workspace.ABzero <= workspace.ABmax))
+                yield return new DesignParametersException("Значение расстояния нулевой точки не удовлетворяет установленной рабочей зоне");
         }
 
-        public static DesignParametersException GetDesignParametersException(IPartMovable movable)
+        public static IEnumerable<DesignParametersException> GetDesignParametersExceptions(IPartMovable movableLeverPart)
         {
-            return GetDesignParametersException(movable.AB, movable.ABmin, movable.ABmax, movable.ABzero);
+            return GetDesignParametersExceptions(movableLeverPart.AB, movableLeverPart);
         }
 
         public object Clone()

@@ -8,7 +8,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using UM160CalculationLib;
 
 namespace ManipulatorControl
 {
@@ -136,26 +135,6 @@ namespace ManipulatorControl
             }
         }
 
-        private RobotWorkspace activeWorkspace;
-
-        public void SetRobotWorkspaceParams(RobotWorkspace workspace)
-        {
-            if (workspace == null)
-                return;
-
-            this.Invoke(new Action(() =>
-            {
-                gbWorkspaceInfo.Text = "Рабочая зона: " + workspace.Name;
-
-                var lever = workspace.GetLeverByType(GetEditWorkspaceModeActiveLever());
-
-                lblWorkspaceAB.Text = lever.AB.ToString();
-                lblWorkspaceABmax.Text = lever.ABmax.ToString();
-                lblWorkspaceABmin.Text = lever.ABmin.ToString();
-                lblWorkspaceABZero.Text = lever.ABzero.ToString();
-            }));
-        }
-
         private LeverType GetEditWorkspaceModeActiveLever()
         {
             if (rbHorizontalLever.Checked)
@@ -165,7 +144,6 @@ namespace ManipulatorControl
 
             return LeverType.Lever2;
         }
-
 
         public MainForm()
         {
@@ -201,6 +179,7 @@ namespace ManipulatorControl
         public event EventHandler<WorkspaceEventArgs> InvokeAddWorkspace = delegate { };
         public event EventHandler<WorkspaceEventArgs> InvokeRenameWorkspace = delegate { };
         public event EventHandler<WorkspaceEventArgs> InvokeSetActiveWorkspace = delegate { };
+        public event EventHandler<EditWorkspaceEventArgs> OnActiveEditingLeverChanged = delegate { };
 
         #endregion
 
@@ -302,6 +281,32 @@ namespace ManipulatorControl
 
         #region Редактирование рабочих зон робота.
 
+        public void SetRobotWorkspaceParams(RobotWorkspace workspace)
+        {
+            if (workspace == null)
+                return;
+
+            this.Invoke(new Action(() =>
+            {
+                var lever = workspace.GetLeverByType(GetEditWorkspaceModeActiveLever());
+
+                lblWorkspaceABmax.Text = lever.ABmax.ToString();
+                lblWorkspaceABmin.Text = lever.ABmin.ToString();
+                lblWorkspaceABZero.Text = lever.ABzero.ToString();
+            }));
+        }
+
+        public void SetCurrentEditWorkspaceModeLeverPosition(LeverType leverType, double currentValue)
+        {
+            if (GetEditWorkspaceModeActiveLever() != leverType)
+                return;
+
+            this.Invoke(new Action(() =>
+            {
+                lblWorkspaceAB.Text = currentValue.ToString();
+            }));
+        }
+
         public void SetWorkspaces(IEnumerable<RobotWorkspace> workspaces, int activeWorkspaceIndex = 0)
         {
             lstWorkspaces.Items.Clear();
@@ -312,7 +317,7 @@ namespace ManipulatorControl
 
         public void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueType editValues)
         {
-            activeWorkspace = workspace;
+            gbWorkspaceInfo.Text = "Рабочая зона: " + (enable ? workspace.Name : "");
             IsEditWorkspaceMode = enable;
 
             lstWorkspaces.Enabled = !enable;
@@ -367,7 +372,7 @@ namespace ManipulatorControl
 
             tlpManualControl.CreateGraphics().FillRectangle(Brushes.DarkGray, width * index, rb.Location.Y + rb.Height, width, tlpManualControl.Height);
 
-            SetRobotWorkspaceParams(activeWorkspace);
+            OnActiveEditingLeverChanged(this, new EditWorkspaceEventArgs(GetEditWorkspaceModeActiveLever(), MovableValueType.None));
         }
          
         private void lstWorkspaces_SelectedIndexChanged(object sender, EventArgs e)
@@ -379,15 +384,15 @@ namespace ManipulatorControl
             if (workspace == null)
                 return;
 
-            lblHorizontalMax.Text = workspace.HorizontalLeverWorkspace.ABmax.ToString();
-            lblHorizontalMin.Text = workspace.HorizontalLeverWorkspace.ABmin.ToString();
-            lblHorizontalZero.Text = workspace.HorizontalLeverWorkspace.ABzero.ToString();
-            lblLever1Max.Text = workspace.Lever1Workspace.ABmax.ToString();
-            lblLever1Min.Text = workspace.Lever1Workspace.ABmin.ToString();
-            lblLever1Zero.Text = workspace.Lever1Workspace.ABzero.ToString();
-            lblLever2Max.Text = workspace.Lever2Workspace.ABmax.ToString();
-            lblLever2Min.Text = workspace.Lever2Workspace.ABmin.ToString();
-            lblLever2Zero.Text = workspace.Lever2Workspace.ABzero.ToString();
+            lblHorizontalMax.Text = workspace.HorizontalLever.ABmax.ToString();
+            lblHorizontalMin.Text = workspace.HorizontalLever.ABmin.ToString();
+            lblHorizontalZero.Text = workspace.HorizontalLever.ABzero.ToString();
+            lblLever1Max.Text = workspace.Lever1.ABmax.ToString();
+            lblLever1Min.Text = workspace.Lever1.ABmin.ToString();
+            lblLever1Zero.Text = workspace.Lever1.ABzero.ToString();
+            lblLever2Max.Text = workspace.Lever2.ABmax.ToString();
+            lblLever2Min.Text = workspace.Lever2.ABmin.ToString();
+            lblLever2Zero.Text = workspace.Lever2.ABzero.ToString();
         }
 
         private void editWorkspaceValuesMI_Click(object sender, EventArgs e)
@@ -456,6 +461,7 @@ namespace ManipulatorControl
         {
             InvokeSetActiveWorkspace(this, new WorkspaceEventArgs(lstWorkspaces.SelectedIndex));
         }
+
 
         #endregion
     }

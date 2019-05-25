@@ -2,6 +2,9 @@
 
 namespace UM160CalculationLib
 {
+    /// <summary>
+    /// Предоставляет интерфейс рабочей зоны плеча робота-манипулятора.
+    /// </summary>
     public interface IWorkspace : ICloneable
     {
         ///// <summary>

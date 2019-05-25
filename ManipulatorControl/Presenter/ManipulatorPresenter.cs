@@ -19,7 +19,9 @@ namespace ManipulatorControl
 {
     // TODO: 
     // * рабочие зоны робота: проверка текущего положения при задании новой рабочей зоны, переезд к нулевому значению или к ближайшему в границах.
-    // * Cохранение текущего положения робота.
+    // * добавить уведомления об успешных действиях, ошибках и тд.
+    // * проработать логику загрузки рабочих зон робота-манипулятора.
+    // * Cохранение текущего положения робота, сохранение всех параметров перед закрытием.
     public class ManipulatorPresenter
     {
         private readonly IMessageService messageService;
@@ -69,8 +71,10 @@ namespace ManipulatorControl
             this.view.OpenSettings += View_OpenSettings;
 
             this.view.InvokeSetActiveWorkspace += View_InvokeSetActiveWorkspace;
-
             this.view.InvokeSetEditWorkspaceMode += View_InvokeSetEditWorkspaceMode;
+
+            this.view.OnActiveEditingLeverChanged += View_OnActiveEditingLeverChanged;
+
             this.view.InvokeWorkspaceValueChange += View_InvokeWorkspaceValueChange;
 
             this.view.InvokeSaveWorkspaceValues += View_InvokeSaveWorkspaceValues;
@@ -97,19 +101,20 @@ namespace ManipulatorControl
 
             //!!!
             activeWorkspace = new RobotWorkspace("Детали для станка");
-            activeWorkspace.HorizontalLeverWorkspace = parameters.HorizontalLever.Clone() as IPartMovable; 
-            activeWorkspace.Lever1Workspace = parameters.Lever1.Clone() as IPartMovable;
-            activeWorkspace.Lever2Workspace = parameters.Lever2.Clone() as IPartMovable; 
+            activeWorkspace.HorizontalLever = parameters.HorizontalLever.Clone() as LeverWorkspace; 
+            activeWorkspace.Lever1 = parameters.Lever1.Clone() as LeverWorkspace;
+            activeWorkspace.Lever2 = parameters.Lever2.Clone() as LeverWorkspace;
 
             var he = new RobotWorkspace("Конструктивные параметры");
-            he.HorizontalLeverWorkspace = parameters.HorizontalLever.Clone() as IPartMovable; 
-            he.Lever1Workspace = parameters.Lever1.Clone() as IPartMovable; 
-            he.Lever2Workspace = parameters.Lever2.Clone() as IPartMovable;
+            he.HorizontalLever = parameters.HorizontalLever.Clone() as LeverWorkspace;
+            he.Lever1 = parameters.Lever1.Clone() as LeverWorkspace;
+            he.Lever2 = parameters.Lever2.Clone() as LeverWorkspace;
 
             robotWorkspaces = new List<RobotWorkspace>{ he, activeWorkspace };
 
             view.SetWorkspaces(robotWorkspaces);
         }
+
 
         #region Загрузка параметров, значений.
 
@@ -170,9 +175,9 @@ namespace ManipulatorControl
                 return null;
 
             var workspace = new RobotWorkspace(name);
-            workspace.HorizontalLeverWorkspace = parameters.HorizontalLever.Clone() as IPartMovable;
-            workspace.Lever1Workspace = parameters.Lever1.Clone() as IPartMovable;
-            workspace.Lever2Workspace = parameters.Lever2.Clone() as IPartMovable;
+            workspace.HorizontalLever = parameters.HorizontalLever.Clone() as IPartMovable;
+            workspace.Lever1 = parameters.Lever1.Clone() as IPartMovable;
+            workspace.Lever2 = parameters.Lever2.Clone() as IPartMovable;
 
             return workspace;
         } 
@@ -180,15 +185,22 @@ namespace ManipulatorControl
         // Устанавливает заданную рабочую зону в качестве активной рабочей зоны.
         private void SetActiveWorkspace(RobotWorkspace workspace)
         {
-            parameters.Lever1.Workspace = workspace.Lever1Workspace;
-            parameters.Lever2.Workspace = workspace.Lever2Workspace;
-            parameters.HorizontalLever.Workspace = workspace.HorizontalLeverWorkspace;
+            parameters.Lever1.Workspace = workspace.Lever1;
+            parameters.Lever2.Workspace = workspace.Lever2;
+            parameters.HorizontalLever.Workspace = workspace.HorizontalLever;
 
             activeWorkspace = workspace;
         }
 
+        // Происходит при изменении активного плеча робота-манипулятора, значения которого редактируются пользователем.
+        private void View_OnActiveEditingLeverChanged(object sender, EditWorkspaceEventArgs e)
+        {
+            view.SetCurrentEditWorkspaceModeLeverPosition(e.LeverType, calculation.GetPartMovableByLeverType(e.LeverType).AB);
+            view.SetRobotWorkspaceParams(editingWorkspace);
+        }
+
         // Задать выбранную зону как активную рабочую зону.
-		private void View_InvokeSetActiveWorkspace(object sender, WorkspaceEventArgs e)
+        private void View_InvokeSetActiveWorkspace(object sender, WorkspaceEventArgs e)
 		{
 			if (view.IsEditWorkspaceMode)
 				return;
@@ -259,7 +271,7 @@ namespace ManipulatorControl
 			if (!view.IsEditWorkspaceMode || editingWorkspace == null)
 				return;
 
-			var errors = editingWorkspace.GetDesignParametersExceptions();
+			var errors = editingWorkspace.GetDesignParametersExceptions(this.parameters);
 
 			if(errors.Count() == 0)
 			{
@@ -294,10 +306,6 @@ namespace ManipulatorControl
 
 			editingWorkspaceIndex = e.Index;
 
-            editingWorkspace.GetLeverByType(LeverType.Horizontal).AB = parameters.HorizontalLever.AB;
-            editingWorkspace.GetLeverByType(LeverType.Lever1).AB = parameters.Lever1.AB;
-            editingWorkspace.GetLeverByType(LeverType.Lever2).AB = parameters.Lever2.AB;
-
             view.SetEditWorkspaceMode(true, editingWorkspace, editValues);
 		}
 
@@ -307,7 +315,7 @@ namespace ManipulatorControl
 			if (editingWorkspace == null || e.ValueType == MovableValueType.None)
 				return;
 
-			editingWorkspace.SetValue(e.LeverType, e.ValueType);
+			editingWorkspace.SetValue(e.LeverType, e.ValueType, calculation.GetPartMovableByLeverType(e.LeverType).AB);
 
 			view.SetRobotWorkspaceParams(editingWorkspace);
 		}
@@ -364,14 +372,10 @@ namespace ManipulatorControl
 
         private void SetNewABValue(LeverType type, long stepsCount)
         {
-            if (view.IsEditWorkspaceMode)
-            {
-                var ab = calculation.GetNewAB(type, stepsCount); 
-                editingWorkspace.GetLeverByType(type).AB = ab;
-                view.SetRobotWorkspaceParams(editingWorkspace);
-            }
-
             calculation.SetNewAB(type, stepsCount);
+
+            if (view.IsEditWorkspaceMode)
+                view.SetCurrentEditWorkspaceModeLeverPosition(type, calculation.GetPartMovableByLeverType(type).AB);
         }
 
         private void Worker_OnStop(object sender, EventArgs e)

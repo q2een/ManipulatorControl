@@ -109,10 +109,10 @@ namespace UM160CalculationLib
          
         public static long GetPulsesCountByDirection(IRobotLever lever, bool isCWDirection)
         {
-            var target = lever.IsABIncreasesOnStepperCW && isCWDirection ? lever.ABmax : lever.ABmin;
+            var target = lever.IsABIncreasesOnStepperCW && isCWDirection ? lever.Workspace.ABmax : lever.Workspace.ABmin;
 
             if (!lever.IsABIncreasesOnStepperCW && !isCWDirection)
-                target = lever.ABmax;
+                target = lever.Workspace.ABmax;
 
             return GetPulsesCountToAB(lever, target);
         }

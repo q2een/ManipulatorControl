@@ -19,11 +19,12 @@ namespace ManipulatorControl
         #region Редактирование / добавление / удаление рабочих зон.
 
         void SetRobotWorkspaceParams(RobotWorkspace workspace);
+        void SetCurrentEditWorkspaceModeLeverPosition(LeverType leverType, double currentValue);
         void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueType editValues); 
         void SetWorkspaces(IEnumerable<RobotWorkspace> workspaces, int activeWorkspaceIndex = 0);
 
-        event EventHandler<EditWorkspaceEventArgs> InvokeWorkspaceValueChange; 
-
+        event EventHandler<EditWorkspaceEventArgs> OnActiveEditingLeverChanged;
+        event EventHandler<EditWorkspaceEventArgs> InvokeWorkspaceValueChange;
         event EventHandler<WorkspaceEventArgs> InvokeSetActiveWorkspace;          
         event EventHandler<WorkspaceEventArgs> InvokeSetEditWorkspaceMode;  
         event EventHandler<WorkspaceEventArgs> InvokeCloseEditWorkspaceMode;
