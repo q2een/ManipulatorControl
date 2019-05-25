@@ -135,7 +135,7 @@ namespace ManipulatorControl
         {
             get
             {
-                return new UM160CalculationLib.HorizontalLeverDesignParameters(AB, ABmin, ABmax, Ro, IsABIncreasesOnStepperCW);
+                return new UM160CalculationLib.HorizontalLeverDesignParameters(IsABIncreasesOnStepperCW, Ro, AB, ABmin, ABmax);
             }
             set
             {

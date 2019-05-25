@@ -40,8 +40,8 @@ namespace ManipulatorControl.Workspace
         {
             var workspace = new RobotWorkspace(this.Name);
             workspace.HorizontalLeverWorkspace = (IPartMovable)this.HorizontalLeverWorkspace.Clone();
-            workspace.Lever1Workspace = (IPartMovable)this.Lever1Workspace;
-            workspace.Lever2Workspace = (IPartMovable)this.Lever2Workspace;
+            workspace.Lever1Workspace = (IPartMovable)this.Lever1Workspace.Clone();
+            workspace.Lever2Workspace = (IPartMovable)this.Lever2Workspace.Clone();
 
             return workspace;
         }

@@ -47,7 +47,8 @@
     <Compile Include="Design\Lever\HorizontalLeverDesignParameters.cs" />
     <Compile Include="Design\Lever\IPartMovable.cs" />
     <Compile Include="Design\Lever\IRobotLever.cs" />
-    <Compile Include="Design\Lever\RobotLeverDesignParameters.cs" />
+    <Compile Include="Design\Lever\IWorkspace.cs" />
+    <Compile Include="Design\Lever\RobotLever.cs" />
     <Compile Include="Design\Lever\LeverDesignParameters.cs" />
     <Compile Include="Design\Lever\LeverWorkspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

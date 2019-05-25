@@ -34,7 +34,7 @@ namespace ManipulatorControl
         {
             x = AnglesCalculation.GetCurrentX(this.dp);
             y = AnglesCalculation.GetCurrentY(this.dp);
-            z = this.dp.HorizontalLever.Workspace.AB;
+            z = this.dp.HorizontalLever.AB;
         }
 
         // валидация для парсера.
@@ -50,7 +50,6 @@ namespace ManipulatorControl
             var lever = GetPartMovableByLeverType(type);
             var newABvalue = PulseCalculation.GetNewAB(lever, stepsCount);
 
-            lever.Workspace.AB = newABvalue;
             lever.AB = newABvalue;
         }
 

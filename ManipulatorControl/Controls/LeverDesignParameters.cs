@@ -16,7 +16,7 @@ namespace ManipulatorControl
         {
             get
             {
-                return new UM160CalculationLib.LeverDesignParameters(AO, BO, AB, ABmin, ABmax, P, Ro, Alpha, Beta, IsABIncreasesOnStepperCW);
+                return new UM160CalculationLib.LeverDesignParameters(AO, BO, P, Ro, Alpha, Beta, IsABIncreasesOnStepperCW,AB, ABmin, ABmax);
             }
             set
             {
