@@ -1,12 +1,14 @@
-﻿namespace ManipulatorControl
+﻿using System;
+
+namespace ManipulatorControl
 {
-    public struct StepLever
+    public class StepLever : EventArgs
     {
         public LeverType Lever { get; private set; }
 
         public long StepsCount { get; set; }
 
-        public StepLever(LeverType lever, long stepsCount) : this()
+        public StepLever(LeverType lever, long stepsCount)
         {
             Lever = lever;
             StepsCount = stepsCount;

@@ -71,7 +71,7 @@ namespace LptStepperMotorControl.PortControl
 
         private void Output(int adress, int value)
         {
-         //   Debug.WriteLine($"{++counter} {adress} {value}");
+           Debug.WriteLine($"{++counter} {adress} {value}");
         }
 #else
 

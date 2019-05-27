@@ -48,7 +48,7 @@ namespace ManipulatorControl
 
         event EventHandler OnViewClosing;
 
-        event StepperMoveEventHandler ManualControlStart;
-        event StepperMoveEventHandler ManualControlStop;
+        event EventHandler<StepLever> ManualControlStart;
+        event EventHandler<StepLever> ManualControlStop;
     }
 }

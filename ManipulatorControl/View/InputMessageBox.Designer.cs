@@ -69,8 +69,10 @@
             // 
             // InputMessageBox
             // 
+            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(354, 139);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnClose);
@@ -79,8 +81,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "InputMessageBox";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Введите наименование рабочей области";
+            this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 

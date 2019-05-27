@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using LptStepperMotorControl.Stepper;
+using ManipulatorControl.Model;
 
 namespace ManipulatorControl.Controls
 {
@@ -107,7 +108,11 @@ namespace ManipulatorControl.Controls
         {
             get
             {
-                return null;
+                var stepper = new StepperMotor(null, StepDirPin, CWDirectionIsLogicalZero);
+                stepper.Acceleration = Acceleration;
+                stepper.MaxSpeed = Speed;
+
+                return stepper;
             }
             set
             {

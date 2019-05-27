@@ -1,4 +1,6 @@
 ﻿using LptStepperMotorControl.Stepper;
+using ManipulatorControl.Controls;
+using ManipulatorControl.Settings;
 using ManipulatorControl.View;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,8 @@ namespace ManipulatorControl
         private readonly List<string> cmbItems = new List<string> { "Не задан", "1", "2", "3", "4", "5", "6", "7", "8", "9", "14", "16", "17" };
         List<ComboBox> comboBoxes, stepDirCmbs;
 
+        private readonly StepperSettingsPanel[] steppersPanels;
+
         public event EventHandler SaveSettings = delegate { };
 
         public SettingsForm()
@@ -25,7 +29,7 @@ namespace ManipulatorControl
 
             comboBoxes = new List<ComboBox> { cmbXStep, cmbXDir, cmbXEnable, cmbYStep, cmbYDir, cmbYEnable, cmbZStep, cmbZDir, cmbZEnable, cmbCStep, cmbCDir, cmbCEnable };
             stepDirCmbs = comboBoxes.Except(new ComboBox[] { cmbXEnable, cmbYEnable, cmbZEnable, cmbCEnable }).ToList();
-
+            steppersPanels = new[] { stepperSettingsPanel1, stepperSettingsPanel2, stepperSettingsPanel3 };
             comboBoxes.ForEach(cmb => { cmb.Items.AddRange(cmbItems.ToArray()); cmb.SelectedIndex = 0; });
         }
 
@@ -33,7 +37,14 @@ namespace ManipulatorControl
         {
             get
             {
-                throw new NotImplementedException();
+                var stepDirNames = new List<StepDirName>();
+
+                stepDirNames.Add(GetStepDirName(StepDirPinType.X));
+                stepDirNames.Add(GetStepDirName(StepDirPinType.Y));
+                stepDirNames.Add(GetStepDirName(StepDirPinType.Z));
+                stepDirNames.Add(GetStepDirName(StepDirPinType.C));
+
+                return stepDirNames;
             }
             set
             {
@@ -62,15 +73,31 @@ namespace ManipulatorControl
             }
         }
 
-        public List<StepperMotor> SteperMotors
+        public List<LeverStepper> LeverSteppers
         {
             get
             {
-                throw new NotImplementedException();
+                var leverSteppers = new List<LeverStepper>();
+                
+                for (int i = 0; i < steppersPanels.Length; i++)
+                {
+                    var panel = steppersPanels[i];
+                    leverSteppers.Add(new LeverStepper(panel.LeverType, StepDirNames.Single(pin=> pin.StepDir == panel.StepDirPin).Type, panel.Stepper)); 
+                }
+
+                return leverSteppers;
             }
             set
             {
-                throw new NotImplementedException();
+                if (value.Count != 3)
+                    throw new Exception("Недопустимые параметры для настройки шаговых двигателей");
+
+                for (int i = 0; i < steppersPanels.Length; i++)
+                {
+                    steppersPanels[i].StepDirPin = GetStepDirName(value[i].PinType).StepDir;
+                    steppersPanels[i].Stepper = value[i].Stepper;
+                    steppersPanels[i].LeverType = value[i].LeverType;
+                }
             }
         }
 
@@ -99,6 +126,37 @@ namespace ManipulatorControl
             SetStepDirEnablePinToComboBox(pins.Enable, cmbEnable);
         }
 
+        private int GetSelectedPin(ComboBox cmb)
+        {
+            if (cmb.SelectedIndex <= 0)
+                return 0;
+
+            return int.Parse(cmbItems[cmb.SelectedIndex]);
+        }
+
+        private StepDirName GetStepDirName(StepDirPinType pinType)
+        {
+            StepDirPin pins = new StepDirPin();
+
+            switch (pinType)
+            {
+                case StepDirPinType.X:
+                    pins = new StepDirPin(GetSelectedPin(cmbXStep), GetSelectedPin(cmbXDir), GetSelectedPin(cmbXEnable));
+                    break;
+                case StepDirPinType.Y:
+                    pins = new StepDirPin(GetSelectedPin(cmbYStep), GetSelectedPin(cmbYDir), GetSelectedPin(cmbYEnable));
+                    break;
+                case StepDirPinType.Z:
+                    pins = new StepDirPin(GetSelectedPin(cmbZStep), GetSelectedPin(cmbZDir), GetSelectedPin(cmbZEnable));
+                    break;
+                case StepDirPinType.C:
+                    pins = new StepDirPin(GetSelectedPin(cmbCStep), GetSelectedPin(cmbCDir), GetSelectedPin(cmbCEnable));
+                    break;
+            }
+
+            return new StepDirName(pinType, pins);
+        }
+
         private void SetStepDirEnablePinToComboBox(int pin, ComboBox comboBox)
         {
             var lbl = comboBox.Tag as Label;
@@ -111,7 +169,7 @@ namespace ManipulatorControl
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SaveSettings(sender, e);
+            SaveSettings(this, EventArgs.Empty);
         }
 
         // Обработка события изменения индекса в выпадающем списке.

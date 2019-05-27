@@ -6,7 +6,7 @@ namespace ManipulatorControl
     {
         public LeverType Type { get; private set; }
 
-        public StepperMotor Stepper { get; private set; }
+        public StepperMotor Stepper { get; set; }
 
         public CoordinateDirections OnCWDirections { get; private set; }
 

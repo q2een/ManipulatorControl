@@ -72,7 +72,7 @@ namespace ManipulatorControl
 
         public event EventHandler OnInterpreterStart = delegate { };
         public event EventHandler OnInterpreterStop = delegate { };
-        public event StepperMoveEventHandler OnInvokeStartStepper = delegate { };
+        public event EventHandler<StepLever> OnInvokeStartStepper = delegate { };
 
         public GCodeInterpreter(Calculation calculation)
         {

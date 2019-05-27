@@ -8,18 +8,7 @@ namespace ManipulatorControl
 {
     public class Calculation
     {
-        /// <summary>
-        /// Конструктивные параметры робота.
-        /// </summary>
-        private readonly DesignParameters dp;
-
-        public DesignParameters DesignParameters
-        {
-            get
-            {
-                return this.dp;
-            }
-        }
+        public DesignParameters DesignParameters { get; set; }
 
         /// <summary>
         /// <c>Calculation</c> - Класс для получения числа импульсов, необходимых для достижения заданных координат
@@ -27,49 +16,49 @@ namespace ManipulatorControl
         /// <param name="designParams">Конструктивные параметры робота</param>
         public Calculation(DesignParameters designParams)
         {
-            this.dp = designParams;
+            this.DesignParameters = designParams;
         }
        
         public double GetCurrentX()
         {
-            return AnglesCalculation.GetCurrentX(this.dp);
+            return AnglesCalculation.GetCurrentX(DesignParameters);
         }
 
         public double GetCurrentY()
         {
-            return AnglesCalculation.GetCurrentY(this.dp);
+            return AnglesCalculation.GetCurrentY(DesignParameters);
         }
 
         public double GetCurrentZ()
         {
-            return this.dp.HorizontalLever.AB;
+            return DesignParameters.HorizontalLever.AB;
         }
 
         public void GetXYByABValues(double lever1Ab, double lever2Ab, out double x, out double y)
         {
-            double phi1 = this.dp.Lever1.GetAngleByABValue(lever1Ab);
-            double phi2 = this.dp.Lever2.GetAngleByABValue(lever2Ab);
+            double phi1 = DesignParameters.Lever1.GetAngleByABValue(lever1Ab);
+            double phi2 = DesignParameters.Lever2.GetAngleByABValue(lever2Ab);
 
-            if (!AnglesCalculation.IsAnglesAreValid(dp, new AnglesOfRotation(phi1, phi2)))
+            if (!AnglesCalculation.IsAnglesAreValid(DesignParameters, new AnglesOfRotation(phi1, phi2)))
                 throw new DesignParametersException(string.Format("Невозможно достичь заданные координаты"));
 
-            x = AnglesCalculation.GetX(dp, phi1, phi2);
-            y = AnglesCalculation.GetY(dp, phi1, phi2);
+            x = AnglesCalculation.GetX(DesignParameters, phi1, phi2);
+            y = AnglesCalculation.GetY(DesignParameters, phi1, phi2);
         }
 
         public void SetCurrentCoordinates(ref double x, ref double y, ref double z)
         {
-            x = AnglesCalculation.GetCurrentX(this.dp);
-            y = AnglesCalculation.GetCurrentY(this.dp);
-            z = this.dp.HorizontalLever.AB;
+            x = AnglesCalculation.GetCurrentX(DesignParameters);
+            y = AnglesCalculation.GetCurrentY(DesignParameters);
+            z = DesignParameters.HorizontalLever.AB;
         }
 
         // валидация для парсера.
         public void CheckValues(double x, double y, double z)
         {
             // В случае некорректных данных выбросит исключение.
-          /*  AnglesCalculation.GetAngles(this.dp, x, y);
-            PulseCalculation.GetPulsesCount(this.dp.HorizontalLever, z);  */
+            AnglesCalculation.GetAngles(DesignParameters, x, y);
+            PulseCalculation.GetPulsesCount(DesignParameters.HorizontalLever, z);  
         }
 
         public void SetNewAB(LeverType type, long stepsCount)
@@ -115,19 +104,19 @@ namespace ManipulatorControl
         // Перемещение по координатам.
         public IEnumerable<StepLever> CalculateStepLever(double x, double y, double z)
         {
-            var angles = AnglesCalculation.GetAngles(this.dp, x, y)[0];
+            var angles = AnglesCalculation.GetAngles(DesignParameters, x, y)[0];
 
-            yield return new StepLever(LeverType.Lever1, PulseCalculation.GetPulsesCount(this.dp.Lever1, angles.Phi1));
-            yield return new StepLever(LeverType.Lever2, PulseCalculation.GetPulsesCount(this.dp.Lever2, angles.Phi2));
-            yield return new StepLever(LeverType.Horizontal, PulseCalculation.GetPulsesCount(dp.HorizontalLever,z));
+            yield return new StepLever(LeverType.Lever1, PulseCalculation.GetPulsesCount(DesignParameters.Lever1, angles.Phi1));
+            yield return new StepLever(LeverType.Lever2, PulseCalculation.GetPulsesCount(DesignParameters.Lever2, angles.Phi2));
+            yield return new StepLever(LeverType.Horizontal, PulseCalculation.GetPulsesCount(DesignParameters.HorizontalLever,z));
         }
 
         public IRobotLever GetPartMovableByLeverType(LeverType type)
         {
             if (type == LeverType.Horizontal)
-                return this.dp.HorizontalLever;
+                return DesignParameters.HorizontalLever;
 
-            return  type == LeverType.Lever1 ? this.dp.Lever1 : this.dp.Lever2;
+            return  type == LeverType.Lever1 ? DesignParameters.Lever1 : DesignParameters.Lever2;
         }
     }
 }

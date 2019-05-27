@@ -380,7 +380,7 @@
             this.btnXPos.Name = "btnXPos";
             this.btnXPos.Size = new System.Drawing.Size(164, 65);
             this.btnXPos.TabIndex = 9;
-            this.btnXPos.Text = "+";
+            this.btnXPos.Text = "↑";
             this.btnXPos.UseVisualStyleBackColor = true;
             // 
             // btnXNeg
@@ -392,7 +392,7 @@
             this.btnXNeg.Name = "btnXNeg";
             this.btnXNeg.Size = new System.Drawing.Size(164, 65);
             this.btnXNeg.TabIndex = 10;
-            this.btnXNeg.Text = "-";
+            this.btnXNeg.Text = "↓";
             this.btnXNeg.UseVisualStyleBackColor = true;
             // 
             // btnYPos
@@ -404,7 +404,7 @@
             this.btnYPos.Name = "btnYPos";
             this.btnYPos.Size = new System.Drawing.Size(163, 65);
             this.btnYPos.TabIndex = 6;
-            this.btnYPos.Text = "+";
+            this.btnYPos.Text = "↑";
             this.btnYPos.UseVisualStyleBackColor = true;
             // 
             // btnZPos
@@ -416,7 +416,7 @@
             this.btnZPos.Name = "btnZPos";
             this.btnZPos.Size = new System.Drawing.Size(162, 65);
             this.btnZPos.TabIndex = 3;
-            this.btnZPos.Text = "+";
+            this.btnZPos.Text = "→";
             this.btnZPos.UseVisualStyleBackColor = true;
             // 
             // btnZNeg
@@ -428,7 +428,7 @@
             this.btnZNeg.Name = "btnZNeg";
             this.btnZNeg.Size = new System.Drawing.Size(162, 65);
             this.btnZNeg.TabIndex = 4;
-            this.btnZNeg.Text = "-";
+            this.btnZNeg.Text = "←";
             this.btnZNeg.UseVisualStyleBackColor = true;
             // 
             // btnYNeg
@@ -440,7 +440,7 @@
             this.btnYNeg.Name = "btnYNeg";
             this.btnYNeg.Size = new System.Drawing.Size(163, 65);
             this.btnYNeg.TabIndex = 7;
-            this.btnYNeg.Text = "-";
+            this.btnYNeg.Text = "↓";
             this.btnYNeg.UseVisualStyleBackColor = true;
             // 
             // tlpManualControl

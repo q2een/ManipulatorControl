@@ -38,7 +38,7 @@ namespace ManipulatorControl
                 var step = int.Parse(stepperMotor.Element("Step").Value);
                 var dir = int.Parse(stepperMotor.Element("Dir").Value);
                 var enable = int.Parse(stepperMotor.Element("Enable").Value);
-                stepDirPins.Add(new StepDirName() { Type = (StepDirPinType)Enum.Parse(typeof(StepDirPinType), name), StepDir = new StepDirPin(step, dir, enable) });
+                stepDirPins.Add(new StepDirName((StepDirPinType)Enum.Parse(typeof(StepDirPinType), name), new StepDirPin(step, dir, enable)));
             }
 
             return stepDirPins;

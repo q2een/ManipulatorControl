@@ -1,4 +1,5 @@
 ﻿using LptStepperMotorControl.Stepper;
+using ManipulatorControl.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace ManipulatorControl.View
     {
         List<StepDirName> StepDirNames { get; set; }
 
-        List<StepperMotor> SteperMotors { get; set; }
+        List<LeverStepper> LeverSteppers { get; set; }
 
         DesignParameters DesignParameters { get; set; }
 

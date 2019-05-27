@@ -73,6 +73,7 @@
     <Compile Include="Controls\StepperSettingsPanel.Designer.cs">
       <DependentUpon>StepperSettingsPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\Extensions.cs" />
     <Compile Include="MessageService\IMessageService.cs" />
     <Compile Include="MessageService\MessageBoxMessageService.cs" />
     <Compile Include="MessageService\UserResponse.cs" />
@@ -88,6 +89,8 @@
     <Compile Include="Model\ICoordinateDirection.cs" />
     <Compile Include="Model\Lever\LeverType.cs" />
     <Compile Include="Model\Lever\StepLever.cs" />
+    <Compile Include="Settings\LeverStepper.cs" />
+    <Compile Include="Settings\WorkspaceConverter.cs" />
     <Compile Include="View\InputMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,7 +115,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Presenter\ManipulatorPresenter.cs" />
-    <Compile Include="Model\StepperMoveEventHandler.cs" />
     <Compile Include="ManualContorl\ManualControlItem.cs" />
     <Compile Include="ManualContorl\ManualUserControls.cs" />
     <Compile Include="Program.cs" />

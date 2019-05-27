@@ -164,8 +164,8 @@ namespace ManipulatorControl
 
         public event EventHandler OnViewClosing = delegate { };
 
-        public event StepperMoveEventHandler ManualControlStart = delegate { };
-        public event StepperMoveEventHandler ManualControlStop = delegate { };
+        public event EventHandler<StepLever> ManualControlStart = delegate { };
+        public event EventHandler<StepLever> ManualControlStop = delegate { };
         public event EventHandler InvokeStepperAbort = delegate { };
         public event EventHandler InvokeStepperStop = delegate { };
         public event EventHandler RunGCodeInterpreter = delegate { };
@@ -359,6 +359,12 @@ namespace ManipulatorControl
             tlpManualControl.Controls.Add(add1, 0, 0);
             tlpManualControl.Controls.Add(add2, 1, 0);
             tlpManualControl.Controls.Add(add3, 2, 0);
+
+            if (!showLabels)
+            {
+                rbLever1.Checked = true;
+                rbHorizontalLever.Checked = true;
+            }
         }
 
         private void TableHeaderRadiobuttons_CheckedChanged(object sender, EventArgs e)
@@ -462,6 +468,8 @@ namespace ManipulatorControl
         {
             InvokeSetActiveWorkspace(this, new WorkspaceEventArgs(lstWorkspaces.SelectedIndex));
         }
+        
+        #endregion
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -478,6 +486,6 @@ namespace ManipulatorControl
             throw new NotImplementedException();
         }
 
-        #endregion
+        
     }
 }

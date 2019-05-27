@@ -4,7 +4,7 @@ using System;
 namespace LptStepperMotorControl.Stepper
 {
     /// <summary>
-    /// Предоставляет класс, содержащий информацию об управляющих PIN для протокола STEP/DIR/ENABLE.
+    /// Предоставляет структуру, содержащую информацию об управляющих PIN для протокола STEP/DIR/ENABLE.
     /// </summary>
     public struct StepDirPin
     {

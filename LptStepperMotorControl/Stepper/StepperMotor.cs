@@ -1,8 +1,10 @@
 ﻿using LptStepperMotorControl.PortControl;
+using Newtonsoft.Json;
 using System;
 
 namespace LptStepperMotorControl.Stepper
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class StepperMotor
     {  
         #region Свойства.
@@ -49,6 +51,7 @@ namespace LptStepperMotorControl.Stepper
         /// Ед. измерения: шагов в секунду.
         /// Значение должно быть больше нуля.
         /// </remarks>
+        [JsonProperty]
         public float MaxSpeed
         {
             get
@@ -81,6 +84,7 @@ namespace LptStepperMotorControl.Stepper
         /// Возвращает или задает ускорение ШД в шагах/секунду^2. 
         /// Значение должно быть больше нуля.
         /// </summary>
+        [JsonProperty]
         public float Acceleration
         {
             get
@@ -186,6 +190,7 @@ namespace LptStepperMotorControl.Stepper
         /// Направление движения зависит от устройства. Например, для шагового двигателя при заданной логической единице 
         /// движение может осуществляться как по часовой стрелке, так и против.
         /// </remarks>
+        [JsonProperty]
         public bool CWDirectionIsLogicalZero { get; set; }
 
         private bool enabled = false;
