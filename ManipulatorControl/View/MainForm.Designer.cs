@@ -40,10 +40,10 @@
             this.settingsMI = new System.Windows.Forms.ToolStripMenuItem();
             this.workspaceTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.setAsActiveWorkspaceMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.editWorkspaceValuesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.editWorkspaceSeparatorMI = new System.Windows.Forms.ToolStripSeparator();
             this.addWorkspaceMI = new System.Windows.Forms.ToolStripMenuItem();
             this.removeWorkspaceMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.editWorkspaceValuesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.renameWorkspace = new System.Windows.Forms.ToolStripMenuItem();
             this.setMaxValueMI = new System.Windows.Forms.ToolStripMenuItem();
             this.setMinValueMI = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +52,8 @@
             this.saveWorkspaceValuesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.closeEditWorkspaceModeMI = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusLblCurrentPosition = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnAbort = new System.Windows.Forms.Button();
@@ -110,6 +112,7 @@
             this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tlpManualControl.SuspendLayout();
             this.gbErrors.SuspendLayout();
@@ -131,7 +134,7 @@
             this.workspaceTSMI});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(995, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(929, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -233,6 +236,13 @@
             this.setAsActiveWorkspaceMI.Text = "Установить";
             this.setAsActiveWorkspaceMI.Click += new System.EventHandler(this.setAsActiveWorkspaceMI_Click);
             // 
+            // editWorkspaceValuesMI
+            // 
+            this.editWorkspaceValuesMI.Name = "editWorkspaceValuesMI";
+            this.editWorkspaceValuesMI.Size = new System.Drawing.Size(266, 22);
+            this.editWorkspaceValuesMI.Text = "Изменить значения";
+            this.editWorkspaceValuesMI.Click += new System.EventHandler(this.editWorkspaceValuesMI_Click);
+            // 
             // editWorkspaceSeparatorMI
             // 
             this.editWorkspaceSeparatorMI.Name = "editWorkspaceSeparatorMI";
@@ -251,13 +261,6 @@
             this.removeWorkspaceMI.Size = new System.Drawing.Size(266, 22);
             this.removeWorkspaceMI.Text = "Удалить";
             this.removeWorkspaceMI.Click += new System.EventHandler(this.removeWorkspaceMI_Click);
-            // 
-            // editWorkspaceValuesMI
-            // 
-            this.editWorkspaceValuesMI.Name = "editWorkspaceValuesMI";
-            this.editWorkspaceValuesMI.Size = new System.Drawing.Size(266, 22);
-            this.editWorkspaceValuesMI.Text = "Изменить значения";
-            this.editWorkspaceValuesMI.Click += new System.EventHandler(this.editWorkspaceValuesMI_Click);
             // 
             // renameWorkspace
             // 
@@ -314,21 +317,36 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.statusLblCurrentPosition});
             this.statusStrip1.Location = new System.Drawing.Point(0, 515);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 14, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(995, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(929, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(161, 17);
+            this.toolStripStatusLabel1.Text = "Текущее положение схвата:";
+            // 
+            // statusLblCurrentPosition
+            // 
+            this.statusLblCurrentPosition.Name = "statusLblCurrentPosition";
+            this.statusLblCurrentPosition.Size = new System.Drawing.Size(0, 17);
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.btnStop);
             this.panel1.Controls.Add(this.btnAbort);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.panel1.Location = new System.Drawing.Point(551, 265);
+            this.panel1.Location = new System.Drawing.Point(545, 212);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(396, 95);
+            this.panel1.Size = new System.Drawing.Size(384, 95);
             this.panel1.TabIndex = 2;
             // 
             // btnStop
@@ -1012,7 +1030,6 @@
             // 
             this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gCodesBox.Enable = true;
-            this.gCodesBox.EnableLineNumbering = false;
             this.gCodesBox.FontSize = ((byte)(14));
             this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
             this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
@@ -1176,8 +1193,17 @@
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.directionPanel.IsZeroEnabled = false;
-            this.directionPanel.Location = new System.Drawing.Point(551, 58);
+            this.directionPanel.Location = new System.Drawing.Point(545, 24);
             this.directionPanel.Name = "directionPanel";
             this.directionPanel.RowCount = 4;
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
@@ -1328,7 +1354,15 @@
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
-            this.directionPanel.Size = new System.Drawing.Size(357, 176);
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.Size = new System.Drawing.Size(384, 188);
             this.directionPanel.TabIndex = 0;
             this.directionPanel.TabStop = true;
             // 
@@ -1336,19 +1370,22 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(995, 537);
-            this.Controls.Add(this.tabControlType);
-            this.Controls.Add(this.directionPanel);
+            this.ClientSize = new System.Drawing.Size(929, 537);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.directionPanel);
+            this.Controls.Add(this.tabControlType);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Робот-манипулятор УМ-160";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.tlpManualControl.ResumeLayout(false);
             this.gbErrors.ResumeLayout(false);
@@ -1450,6 +1487,8 @@
         private System.Windows.Forms.ToolStripSeparator editWorkspaceSeparatorMI;
         private System.Windows.Forms.ToolStripSeparator editValuesSeparatorMI;
         private System.Windows.Forms.ToolStripMenuItem closeEditWorkspaceModeMI;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel statusLblCurrentPosition;
     }
 }
 

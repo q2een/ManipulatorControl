@@ -40,8 +40,6 @@ namespace ManipulatorControl
         private readonly RobotLever[] levers;
         private RobotLever movingLever;
 
-        //  private LeverPosition nullPos = new LeverPosition() { Lever = LeverType.Horizontal, Position = 50 };
-
         private Dictionary<string, StepDirPin> pins;
 
         private int editingWorkspaceIndex = -1;
@@ -63,6 +61,8 @@ namespace ManipulatorControl
             this.settings.StepDirNames = SettingsReader.GetStepDirNames();
             this.settings.SaveSettings += Settings_SaveSettings;
 
+            this.view.OnViewClosing += View_OnViewClosing;
+
             this.view.ManualControlStart += MoveLeverStart;
             this.view.ManualControlStop += View_ManualControlStop;
             this.view.InvokeStepperAbort += View_InvokeStepperAbort;
@@ -70,16 +70,13 @@ namespace ManipulatorControl
             this.view.RunGCodeInterpreter += View_RunGCodeInterpreter;
             this.view.OpenSettings += View_OpenSettings;
 
+            // Подписка на события для редактирования рабочих зон.
             this.view.InvokeSetActiveWorkspace += View_InvokeSetActiveWorkspace;
-            this.view.InvokeSetEditWorkspaceMode += View_InvokeSetEditWorkspaceMode;
-
-            this.view.OnActiveEditingLeverChanged += View_OnActiveEditingLeverChanged;
-
-            this.view.InvokeWorkspaceValueChange += View_InvokeWorkspaceValueChange;
-
+            this.view.InvokeSetEditWorkspaceMode += View_InvokeSetEditWorkspaceMode;  
+            this.view.OnActiveEditingLeverChanged += View_OnActiveEditingLeverChanged;   
+            this.view.InvokeWorkspaceValueChange += View_InvokeWorkspaceValueChange;      
             this.view.InvokeSaveWorkspaceValues += View_InvokeSaveWorkspaceValues;
-            this.view.InvokeCloseEditWorkspaceMode += View_InvokeCloseEditWorkspaceMode;
-
+            this.view.InvokeCloseEditWorkspaceMode += View_InvokeCloseEditWorkspaceMode;   
             this.view.InvokeRemoveWorkspace += View_InvokeRemoveWorkspace;
             this.view.InvokeAddWorkspace += View_InvokeAddWorkspace;
             this.view.InvokeRenameWorkspace += View_InvokeRenameWorkspace;
@@ -98,10 +95,68 @@ namespace ManipulatorControl
 
             this.levers = GetRobotLever().ToArray();
 
+            LoadWorkspaces();
 
+            double x = 0, y = 0 , z = 0;
+            calculation.SetCurrentCoordinates(ref x, ref y, ref z);
+            this.view.SetCurrentPosition(x, y, z);
+        }
+
+
+        // Cохранение параметров перед закрытием.
+        private void View_OnViewClosing(object sender, EventArgs e)
+        {
+            if (movingLever == null)
+                return;
+
+            worker.Stop();
+        }
+
+
+        #region Загрузка параметров, значений.
+
+        private DesignParameters LoadDesignParameters()
+        {
+            //return JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
+            var parameters = JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
+
+            RemoveWorkspacesFromDesignParameters(parameters);
+            SetSavedCurrentPosition(parameters);
+
+            return parameters;
+        }
+
+        private void SetSavedCurrentPosition(DesignParameters parameters)
+        {
+            parameters.HorizontalLever.AB = Properties.Settings.Default.HorizontalLeverAB;
+            parameters.Lever1.AB = Properties.Settings.Default.Lever1AB;
+            parameters.Lever2.AB = Properties.Settings.Default.Lever2AB;
+        }
+
+        private void RemoveWorkspacesFromDesignParameters(DesignParameters parameters)
+        {
+            parameters.Lever1.Workspace = null;
+            parameters.Lever2.Workspace = null;
+            parameters.HorizontalLever.Workspace = null;
+        }
+
+        private void SaveLeverCurrentPosition(LeverType type, double currentPosition)
+        {
+            if (type == LeverType.Horizontal)
+                Properties.Settings.Default.HorizontalLeverAB = currentPosition;
+            if (type == LeverType.Lever1)
+                Properties.Settings.Default.Lever1AB = currentPosition;
+            if (type == LeverType.Lever2)
+                Properties.Settings.Default.Lever2AB = currentPosition;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void LoadWorkspaces()
+        {
             //!!!
             activeWorkspace = new RobotWorkspace("Детали для станка");
-            activeWorkspace.HorizontalLever = parameters.HorizontalLever.Clone() as LeverWorkspace; 
+            activeWorkspace.HorizontalLever = parameters.HorizontalLever.Clone() as LeverWorkspace;
             activeWorkspace.Lever1 = parameters.Lever1.Clone() as LeverWorkspace;
             activeWorkspace.Lever2 = parameters.Lever2.Clone() as LeverWorkspace;
 
@@ -110,26 +165,22 @@ namespace ManipulatorControl
             he.Lever1 = parameters.Lever1.Clone() as LeverWorkspace;
             he.Lever2 = parameters.Lever2.Clone() as LeverWorkspace;
 
-            robotWorkspaces = new List<RobotWorkspace>{ he, activeWorkspace };
+            robotWorkspaces = new List<RobotWorkspace> { he, activeWorkspace };
 
+            //view.SetZeroPositionState(GetSettedZeroCoordinates(activeWorkspace));
             view.SetWorkspaces(robotWorkspaces);
         }
 
-
-        #region Загрузка параметров, значений.
-
-        // TODO: Загрузка параметров из настроек. Сейчас заглушка.
-        private DesignParameters LoadDesignParameters()
+        private CoordinateDirections GetSettedZeroCoordinates(RobotWorkspace workspace)
         {
-            //return JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
-            var par = JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
-            //par.Lever1.Workspace = new LeverWorkspace(520, 500, 540,500);
-            return par;
-        }
+            CoordinateDirections directions = 0;
 
-        private List<RobotWorkspace> LoadWorkspaces()
-        {
-            return new List<RobotWorkspace>();
+            if (workspace.HorizontalLever.ABzero != null)
+                directions |= CoordinateDirections.ZZero;
+            if (workspace.Lever1.ABzero != null && workspace.Lever2.ABzero != null)
+                directions |= CoordinateDirections.XZero | CoordinateDirections.YZero;
+
+            return directions == 0 ? CoordinateDirections.None : directions;
         }
 
         private IEnumerable<RobotLever> GetRobotLever()
@@ -161,11 +212,8 @@ namespace ManipulatorControl
         // Устанавливает в качестве рабочей зоны конструктивные параметры робота.
         private void SetDefaultWorkspace()
         {
-            parameters.Lever1.Workspace = null;
-            parameters.Lever2.Workspace = null;
-            parameters.HorizontalLever.Workspace = null;
-
-            activeWorkspace = null;
+            RemoveWorkspacesFromDesignParameters(this.parameters);
+            this.activeWorkspace = null;
         }
 
         // Возвращает копию рабочей зоны соответствующую конструктивным параметрам робота.
@@ -363,26 +411,41 @@ namespace ManipulatorControl
             if (view.IsManualControlMode)
                 return;
 
-            var result = parser.Parse(view.GCodeLines);
-            view.ParserErrors = parser.Errors;
+            try
+            {
+                var result = parser.Parse(view.GCodeLines);
+                view.ParserErrors = parser.Errors;
 
-            if (result)
-                interpreter.StartInterprete(parser.CommandQueue);
+                if (result)
+                    interpreter.StartInterprete(parser.CommandQueue);
+            }
+            catch(Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
         }
 
-        private void SetNewABValue(LeverType type, long stepsCount)
+        private void OnPositionChanged(LeverType type, long stepsCount)
         {
             calculation.SetNewAB(type, stepsCount);
 
+            var newValue = calculation.GetPartMovableByLeverType(type).AB;
+
             if (view.IsEditWorkspaceMode)
-                view.SetCurrentEditWorkspaceModeLeverPosition(type, calculation.GetPartMovableByLeverType(type).AB);
+                view.SetCurrentEditWorkspaceModeLeverPosition(type, newValue);
+
+            SaveLeverCurrentPosition(type, newValue);
+
+            double x = 0, y = 0, z = 0;
+            calculation.SetCurrentCoordinates(ref x, ref y, ref z);
+            this.view.SetCurrentPosition(x, y, z);
         }
 
         private void Worker_OnStop(object sender, EventArgs e)
         {
             view.Directions ^= movingLever.ActiveDirection;
 
-            SetNewABValue(movingLever.Type, movingLever.Stepper.CurrentStepsCount);
+            OnPositionChanged(movingLever.Type, movingLever.Stepper.CurrentStepsCount);
            
             var leverDesignParams = calculation.GetPartMovableByLeverType(movingLever.Type);
 

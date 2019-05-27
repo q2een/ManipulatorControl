@@ -44,9 +44,7 @@
             this.label36 = new System.Windows.Forms.Label();
             this.tbL1 = new System.Windows.Forms.TextBox();
             this.pageLever1 = new System.Windows.Forms.TabPage();
-            this.designLever1 = new ManipulatorControl.LeverDesignParameters();
             this.pageLever2 = new System.Windows.Forms.TabPage();
-            this.designLever2 = new ManipulatorControl.LeverDesignParameters();
             this.pageHorizontal = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tbRo = new System.Windows.Forms.TextBox();
@@ -66,6 +64,8 @@
             this.label43 = new System.Windows.Forms.Label();
             this.cmbIncreases = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.designLever1 = new ManipulatorControl.LeverDesignParameters();
+            this.designLever2 = new ManipulatorControl.LeverDesignParameters();
             this.tabs.SuspendLayout();
             this.pageDesign.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -284,25 +284,6 @@
             this.pageLever1.Text = "Плечо 1";
             this.pageLever1.UseVisualStyleBackColor = true;
             // 
-            // designLever1
-            // 
-            this.designLever1.AB = 0;
-            this.designLever1.ABmax = 0;
-            this.designLever1.ABmin = 0;
-            this.designLever1.Alpha = 0D;
-            this.designLever1.AO = 0;
-            this.designLever1.Beta = 0D;
-            this.designLever1.BO = 0;
-            this.designLever1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.designLever1.IsABIncreasesOnStepperCW = false;
-            this.designLever1.Location = new System.Drawing.Point(0, 0);
-            this.designLever1.Margin = new System.Windows.Forms.Padding(4);
-            this.designLever1.Name = "designLever1";
-            this.designLever1.P = 0;
-            this.designLever1.Ro = 0D;
-            this.designLever1.Size = new System.Drawing.Size(735, 460);
-            this.designLever1.TabIndex = 0;
-            // 
             // pageLever2
             // 
             this.pageLever2.Controls.Add(this.designLever2);
@@ -312,25 +293,6 @@
             this.pageLever2.TabIndex = 2;
             this.pageLever2.Text = "Плечо 2";
             this.pageLever2.UseVisualStyleBackColor = true;
-            // 
-            // designLever2
-            // 
-            this.designLever2.AB = 0;
-            this.designLever2.ABmax = 0;
-            this.designLever2.ABmin = 0;
-            this.designLever2.Alpha = 0D;
-            this.designLever2.AO = 0;
-            this.designLever2.Beta = 0D;
-            this.designLever2.BO = 0;
-            this.designLever2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.designLever2.IsABIncreasesOnStepperCW = false;
-            this.designLever2.Location = new System.Drawing.Point(0, 0);
-            this.designLever2.Margin = new System.Windows.Forms.Padding(4);
-            this.designLever2.Name = "designLever2";
-            this.designLever2.P = 0;
-            this.designLever2.Ro = 0D;
-            this.designLever2.Size = new System.Drawing.Size(735, 460);
-            this.designLever2.TabIndex = 0;
             // 
             // pageHorizontal
             // 
@@ -507,7 +469,8 @@
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(488, 44);
             this.label30.TabIndex = 18;
-            this.label30.Text = "Характеристика шагового электродвигателя";
+            this.label30.Text = "Количество шагов шагового двигателя необходимых для изменения значения текущего п" +
+    "оложения на 1мм";
             this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label40
@@ -518,7 +481,7 @@
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(81, 44);
             this.label40.TabIndex = 19;
-            this.label40.Text = "ρ";
+            this.label40.Text = "С";
             this.label40.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label41
@@ -529,7 +492,7 @@
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(81, 44);
             this.label41.TabIndex = 16;
-            this.label41.Text = "Ab max ";
+            this.label41.Text = "ABmax ";
             this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label42
@@ -540,7 +503,7 @@
             this.label42.Name = "label42";
             this.label42.Size = new System.Drawing.Size(81, 44);
             this.label42.TabIndex = 13;
-            this.label42.Text = "Ab min ";
+            this.label42.Text = "ABmin ";
             this.label42.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label43
@@ -577,6 +540,46 @@
             this.label1.Text = "При вращении ротора шагового двигателя по часовой стрелке расстояние от оси подве" +
     "са ходового винта до точки крепления плеча к гайке ходового винта...";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // designLever1
+            // 
+            this.designLever1.AB = 0;
+            this.designLever1.ABmax = 0;
+            this.designLever1.ABmin = 0;
+            this.designLever1.ABZero = null;
+            this.designLever1.Alpha = 0D;
+            this.designLever1.AO = 0;
+            this.designLever1.Beta = 0D;
+            this.designLever1.BO = 0;
+            this.designLever1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.designLever1.IsABIncreasesOnStepperCW = false;
+            this.designLever1.Location = new System.Drawing.Point(0, 0);
+            this.designLever1.Margin = new System.Windows.Forms.Padding(4);
+            this.designLever1.Name = "designLever1";
+            this.designLever1.P = 0;
+            this.designLever1.Ro = 0D;
+            this.designLever1.Size = new System.Drawing.Size(735, 460);
+            this.designLever1.TabIndex = 0;
+            // 
+            // designLever2
+            // 
+            this.designLever2.AB = 0;
+            this.designLever2.ABmax = 0;
+            this.designLever2.ABmin = 0;
+            this.designLever2.ABZero = null;
+            this.designLever2.Alpha = 0D;
+            this.designLever2.AO = 0;
+            this.designLever2.Beta = 0D;
+            this.designLever2.BO = 0;
+            this.designLever2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.designLever2.IsABIncreasesOnStepperCW = false;
+            this.designLever2.Location = new System.Drawing.Point(0, 0);
+            this.designLever2.Margin = new System.Windows.Forms.Padding(4);
+            this.designLever2.Name = "designLever2";
+            this.designLever2.P = 0;
+            this.designLever2.Ro = 0D;
+            this.designLever2.Size = new System.Drawing.Size(735, 460);
+            this.designLever2.TabIndex = 0;
             // 
             // DesignParametersTabControl
             // 

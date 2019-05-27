@@ -21,7 +21,6 @@ namespace ManipulatorControl.Workspace
             Name = name;
         }
 
-
         public IEnumerable<KeyValuePair<LeverType, DesignParametersException>> GetDesignParametersExceptions(DesignParameters parameters)
         {
             var exceptions = new List<KeyValuePair<LeverType, DesignParametersException>>();
@@ -37,16 +36,6 @@ namespace ManipulatorControl.Workspace
         {
             foreach (var exception in exceptions)
                 yield return new KeyValuePair<LeverType, DesignParametersException>(type, exception);                
-        }
-
-        public object Clone()
-        {
-            var workspace = new RobotWorkspace(this.Name);
-            workspace.HorizontalLever = this.HorizontalLever.Clone() as IWorkspace;
-            workspace.Lever1 = this.Lever1.Clone() as IWorkspace;
-            workspace.Lever2 = this.Lever2.Clone() as IWorkspace;
-
-            return workspace;
         }
 
         public IWorkspace GetLeverByType(LeverType type)
@@ -90,6 +79,16 @@ namespace ManipulatorControl.Workspace
 
                 default: throw new NotImplementedException();   
             }
+        }
+
+        public object Clone()
+        {
+            var workspace = new RobotWorkspace(this.Name);
+            workspace.HorizontalLever = this.HorizontalLever.Clone() as IWorkspace;
+            workspace.Lever1 = this.Lever1.Clone() as IWorkspace;
+            workspace.Lever2 = this.Lever2.Clone() as IWorkspace;
+
+            return workspace;
         }
 
         public override string ToString()

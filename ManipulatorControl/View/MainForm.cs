@@ -158,9 +158,11 @@ namespace ManipulatorControl
             IsHotKeyMode = true;
         }
 
+
         private readonly ManualControlItem[] controlItems;
         private ManualControlItem activeControlItem;
 
+        public event EventHandler OnViewClosing = delegate { };
 
         public event StepperMoveEventHandler ManualControlStart = delegate { };
         public event StepperMoveEventHandler ManualControlStop = delegate { };
@@ -199,7 +201,6 @@ namespace ManipulatorControl
                 }
                 return;
             }
-
             ManualControlStart(this, controlItem.StepLever);
 
             activeControlItem = controlItem;
@@ -462,6 +463,20 @@ namespace ManipulatorControl
             InvokeSetActiveWorkspace(this, new WorkspaceEventArgs(lstWorkspaces.SelectedIndex));
         }
 
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            OnViewClosing(this, EventArgs.Empty);
+        }
+
+        public void SetCurrentPosition(double x, double y, double z)
+        {
+            statusLblCurrentPosition.Text = string.Format("X: {0:f2}  Y: {1:f2}  Z: {2:f2}", x,y,z);
+        }
+
+        public void SetZeroPositionState(CoordinateDirections direction)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

@@ -183,7 +183,7 @@ namespace ManipulatorControl
             plane = PlaneType.XYZ;
             coordinateSystem = CoordinateSystem.Absolute;
 
-            //calculation.GetCurrentCoordinates(ref x, ref y, ref z);
+            calculation.SetCurrentCoordinates(ref x, ref y, ref z);
         }
 
         /// <summary>

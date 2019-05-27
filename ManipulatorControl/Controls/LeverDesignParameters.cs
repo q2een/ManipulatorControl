@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using UM160CalculationLib;
 
 namespace ManipulatorControl
 {
@@ -16,7 +10,7 @@ namespace ManipulatorControl
         {
             get
             {
-                return new UM160CalculationLib.LeverDesignParameters(AO, BO, P, Ro, Alpha, Beta, IsABIncreasesOnStepperCW,AB, ABmin, ABmax);
+                return new UM160CalculationLib.LeverDesignParameters(AO, BO, P, Ro, Alpha, Beta, IsABIncreasesOnStepperCW,AB, ABmin, ABmax, ABZero);
             }
             set
             {
@@ -28,6 +22,7 @@ namespace ManipulatorControl
                 AB = Convert.ToInt32(value.AB);
                 ABmin = Convert.ToInt32(value.ABmin);
                 ABmax = Convert.ToInt32(value.ABmax);
+                ABZero = value.ABzero;
                 P = Convert.ToInt32(value.P);
                 Ro = value.Ro;
                 Alpha = value.Alpha;
@@ -185,6 +180,9 @@ namespace ManipulatorControl
                 tbABmin.Text = value.ToString();
             }
         }
+
+        [Browsable(false)]
+        public double? ABZero { get; set; }
 
         [Browsable(false)]
         public bool IsABIncreasesOnStepperCW

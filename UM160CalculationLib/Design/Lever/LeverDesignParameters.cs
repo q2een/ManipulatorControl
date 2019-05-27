@@ -119,7 +119,12 @@ namespace UM160CalculationLib
         /// <returns>Угол поворота плеча относительно основания манипулятора (угол φ)</returns>
         public double GetAngleByABValue(double ab)
         {
-            return ((2 * Math.PI) - (AlphaRad + BetaRad) - Math.Acos(((AO * AO) + (BO * BO) - (ab * ab)) / (2 * AO * BO))) * (1 / deg);
+            var designAngles = (AlphaRad + BetaRad);
+            var acos = Math.Acos(((AO * AO) + (BO * BO) - (ab * ab)) / (2 * AO * BO));
+
+            var angle = IsABIncreasesOnStepperCW ? designAngles + acos : (2 * Math.PI) - designAngles - acos;
+
+            return angle * (1.0 / deg);
         }
 
         #endregion

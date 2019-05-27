@@ -30,6 +30,33 @@ namespace ManipulatorControl
             this.dp = designParams;
         }
        
+        public double GetCurrentX()
+        {
+            return AnglesCalculation.GetCurrentX(this.dp);
+        }
+
+        public double GetCurrentY()
+        {
+            return AnglesCalculation.GetCurrentY(this.dp);
+        }
+
+        public double GetCurrentZ()
+        {
+            return this.dp.HorizontalLever.AB;
+        }
+
+        public void GetXYByABValues(double lever1Ab, double lever2Ab, out double x, out double y)
+        {
+            double phi1 = this.dp.Lever1.GetAngleByABValue(lever1Ab);
+            double phi2 = this.dp.Lever2.GetAngleByABValue(lever2Ab);
+
+            if (!AnglesCalculation.IsAnglesAreValid(dp, new AnglesOfRotation(phi1, phi2)))
+                throw new DesignParametersException(string.Format("Невозможно достичь заданные координаты"));
+
+            x = AnglesCalculation.GetX(dp, phi1, phi2);
+            y = AnglesCalculation.GetY(dp, phi1, phi2);
+        }
+
         public void SetCurrentCoordinates(ref double x, ref double y, ref double z)
         {
             x = AnglesCalculation.GetCurrentX(this.dp);
@@ -88,21 +115,11 @@ namespace ManipulatorControl
         // Перемещение по координатам.
         public IEnumerable<StepLever> CalculateStepLever(double x, double y, double z)
         {
-            yield return new StepLever(LeverType.Lever1, Convert.ToInt64(y));
-            yield return new StepLever(LeverType.Lever2, Convert.ToInt64(x));
-            yield return new StepLever(LeverType.Horizontal, Convert.ToInt64(z));
-            /*
             var angles = AnglesCalculation.GetAngles(this.dp, x, y)[0];
 
-            long pulsesPhi1 = PulseCalculation.GetPulsesCount(this.dp.Lever1, angles.Phi1);
-
-            // GetPulsesCount(180 - angles.Phi2, ref ABh2, dp.Lever2);
-            long pulsesPhi2 = PulseCalculation.GetPulsesCount(this.dp.Lever2, angles.Phi2);
-
-
-            yield return new StepLever(LeverType.Lever1, -PulseCalculation.GetPulsesCount(this.dp.Lever1, angles.Phi1));
-            yield return new StepLever(LeverType.Lever2, -PulseCalculation.GetPulsesCount(this.dp.Lever2, angles.Phi2));
-            yield return new StepLever(LeverType.Horizontal, PulseCalculation.GetPulsesCount(dp.HorizontalLever,z));*/
+            yield return new StepLever(LeverType.Lever1, PulseCalculation.GetPulsesCount(this.dp.Lever1, angles.Phi1));
+            yield return new StepLever(LeverType.Lever2, PulseCalculation.GetPulsesCount(this.dp.Lever2, angles.Phi2));
+            yield return new StepLever(LeverType.Horizontal, PulseCalculation.GetPulsesCount(dp.HorizontalLever,z));
         }
 
         public IRobotLever GetPartMovableByLeverType(LeverType type)

@@ -108,17 +108,17 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 11;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.741334F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.741334F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.741334F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.741334F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.741334F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.741334F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.741334F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.741334F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.741334F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.741334F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.58665F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(773, 551);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -126,9 +126,9 @@
             // 
             this.label22.AutoSize = true;
             this.label22.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label22.Location = new System.Drawing.Point(5, 492);
+            this.label22.Location = new System.Drawing.Point(5, 482);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(514, 57);
+            this.label22.Size = new System.Drawing.Size(514, 67);
             this.label22.TabIndex = 30;
             this.label22.Text = "При вращении ротора шагового двигателя по часовой стрелке расстояние от оси подве" +
     "са ходового винта до точки крепления плеча к гайке ходового винта...";
@@ -137,7 +137,7 @@
             // tbAlpha
             // 
             this.tbAlpha.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbAlpha.Location = new System.Drawing.Point(620, 397);
+            this.tbAlpha.Location = new System.Drawing.Point(620, 389);
             this.tbAlpha.MaxLength = 8;
             this.tbAlpha.Name = "tbAlpha";
             this.tbAlpha.Size = new System.Drawing.Size(148, 24);
@@ -147,7 +147,7 @@
             // tbRo
             // 
             this.tbRo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbRo.Location = new System.Drawing.Point(620, 348);
+            this.tbRo.Location = new System.Drawing.Point(620, 341);
             this.tbRo.MaxLength = 8;
             this.tbRo.Name = "tbRo";
             this.tbRo.Size = new System.Drawing.Size(148, 24);
@@ -157,7 +157,7 @@
             // tbP
             // 
             this.tbP.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbP.Location = new System.Drawing.Point(620, 299);
+            this.tbP.Location = new System.Drawing.Point(620, 293);
             this.tbP.MaxLength = 5;
             this.tbP.Name = "tbP";
             this.tbP.Size = new System.Drawing.Size(148, 24);
@@ -168,7 +168,7 @@
             // tbABmax
             // 
             this.tbABmax.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbABmax.Location = new System.Drawing.Point(620, 250);
+            this.tbABmax.Location = new System.Drawing.Point(620, 245);
             this.tbABmax.MaxLength = 5;
             this.tbABmax.Name = "tbABmax";
             this.tbABmax.Size = new System.Drawing.Size(148, 24);
@@ -179,7 +179,7 @@
             // tbABmin
             // 
             this.tbABmin.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbABmin.Location = new System.Drawing.Point(620, 201);
+            this.tbABmin.Location = new System.Drawing.Point(620, 197);
             this.tbABmin.MaxLength = 5;
             this.tbABmin.Name = "tbABmin";
             this.tbABmin.Size = new System.Drawing.Size(148, 24);
@@ -190,7 +190,7 @@
             // tbAB
             // 
             this.tbAB.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbAB.Location = new System.Drawing.Point(620, 152);
+            this.tbAB.Location = new System.Drawing.Point(620, 149);
             this.tbAB.MaxLength = 5;
             this.tbAB.Name = "tbAB";
             this.tbAB.Size = new System.Drawing.Size(148, 24);
@@ -201,7 +201,7 @@
             // tbBO
             // 
             this.tbBO.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbBO.Location = new System.Drawing.Point(620, 103);
+            this.tbBO.Location = new System.Drawing.Point(620, 101);
             this.tbBO.MaxLength = 5;
             this.tbBO.Name = "tbBO";
             this.tbBO.Size = new System.Drawing.Size(148, 24);
@@ -217,7 +217,7 @@
             this.label3.Location = new System.Drawing.Point(617, 2);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(154, 47);
+            this.label3.Size = new System.Drawing.Size(154, 46);
             this.label3.TabIndex = 2;
             this.label3.Text = "Значение";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -230,7 +230,7 @@
             this.label2.Location = new System.Drawing.Point(524, 2);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(91, 47);
+            this.label2.Size = new System.Drawing.Size(91, 46);
             this.label2.TabIndex = 1;
             this.label2.Text = "Обознач.";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -243,7 +243,7 @@
             this.label1.Location = new System.Drawing.Point(2, 2);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(520, 47);
+            this.label1.Size = new System.Drawing.Size(520, 46);
             this.label1.TabIndex = 0;
             this.label1.Text = "Параметр";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -252,9 +252,9 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Location = new System.Drawing.Point(5, 51);
+            this.label4.Location = new System.Drawing.Point(5, 50);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(514, 47);
+            this.label4.Size = new System.Drawing.Size(514, 46);
             this.label4.TabIndex = 3;
             this.label4.Text = "Расстояние между точкой подвеса плеча и ходового винта, поворачивающего плечо, мм" +
     "";
@@ -264,9 +264,9 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(5, 100);
+            this.label5.Location = new System.Drawing.Point(5, 98);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(514, 47);
+            this.label5.Size = new System.Drawing.Size(514, 46);
             this.label5.TabIndex = 6;
             this.label5.Text = "Расстояние между точкой подвеса плеча и точкой его крепления к гайке ходового вин" +
     "та, мм";
@@ -276,9 +276,9 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label6.Location = new System.Drawing.Point(5, 149);
+            this.label6.Location = new System.Drawing.Point(5, 146);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(514, 47);
+            this.label6.Size = new System.Drawing.Size(514, 46);
             this.label6.TabIndex = 9;
             this.label6.Text = "Текущее расстояние от оси подвеса ходового винта до точки крепления плеча к гайке" +
     " ходового винта, мм";
@@ -288,9 +288,9 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label7.Location = new System.Drawing.Point(5, 198);
+            this.label7.Location = new System.Drawing.Point(5, 194);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(514, 47);
+            this.label7.Size = new System.Drawing.Size(514, 46);
             this.label7.TabIndex = 12;
             this.label7.Text = "Минимальное расстояние от оси подвеса ходового винта до точки крепления плеча к г" +
     "айке ходового винта, мм";
@@ -300,9 +300,9 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label8.Location = new System.Drawing.Point(5, 247);
+            this.label8.Location = new System.Drawing.Point(5, 242);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(514, 47);
+            this.label8.Size = new System.Drawing.Size(514, 46);
             this.label8.TabIndex = 15;
             this.label8.Text = "Максимальное расстояние от оси подвеса ходового винта до точки крепления плеча к " +
     "гайке ходового винта, мм";
@@ -312,9 +312,9 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label9.Location = new System.Drawing.Point(5, 296);
+            this.label9.Location = new System.Drawing.Point(5, 290);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(514, 47);
+            this.label9.Size = new System.Drawing.Size(514, 46);
             this.label9.TabIndex = 18;
             this.label9.Text = "Шаг ходового винта, мм";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -323,9 +323,9 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label10.Location = new System.Drawing.Point(5, 345);
+            this.label10.Location = new System.Drawing.Point(5, 338);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(514, 47);
+            this.label10.Size = new System.Drawing.Size(514, 46);
             this.label10.TabIndex = 21;
             this.label10.Text = "Характеристика шагового электродвигателя, градусы";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -334,9 +334,9 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label11.Location = new System.Drawing.Point(5, 394);
+            this.label11.Location = new System.Drawing.Point(5, 386);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(514, 47);
+            this.label11.Size = new System.Drawing.Size(514, 46);
             this.label11.TabIndex = 24;
             this.label11.Text = "Конструктивные параметры плеча робота, градусы";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -345,9 +345,9 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label12.Location = new System.Drawing.Point(5, 443);
+            this.label12.Location = new System.Drawing.Point(5, 434);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(514, 47);
+            this.label12.Size = new System.Drawing.Size(514, 46);
             this.label12.TabIndex = 27;
             this.label12.Text = "Конструктивные параметры плеча роботаб, грудусы";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -356,9 +356,9 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label13.Location = new System.Drawing.Point(527, 443);
+            this.label13.Location = new System.Drawing.Point(527, 434);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(85, 47);
+            this.label13.Size = new System.Drawing.Size(85, 46);
             this.label13.TabIndex = 28;
             this.label13.Text = "β";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -367,9 +367,9 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label14.Location = new System.Drawing.Point(527, 394);
+            this.label14.Location = new System.Drawing.Point(527, 386);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(85, 47);
+            this.label14.Size = new System.Drawing.Size(85, 46);
             this.label14.TabIndex = 25;
             this.label14.Text = "α";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -378,9 +378,9 @@
             // 
             this.label15.AutoSize = true;
             this.label15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label15.Location = new System.Drawing.Point(527, 345);
+            this.label15.Location = new System.Drawing.Point(527, 338);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(85, 47);
+            this.label15.Size = new System.Drawing.Size(85, 46);
             this.label15.TabIndex = 22;
             this.label15.Text = "ρ";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -389,9 +389,9 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label16.Location = new System.Drawing.Point(527, 296);
+            this.label16.Location = new System.Drawing.Point(527, 290);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(85, 47);
+            this.label16.Size = new System.Drawing.Size(85, 46);
             this.label16.TabIndex = 19;
             this.label16.Text = "p";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -400,31 +400,31 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label17.Location = new System.Drawing.Point(527, 247);
+            this.label17.Location = new System.Drawing.Point(527, 242);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(85, 47);
+            this.label17.Size = new System.Drawing.Size(85, 46);
             this.label17.TabIndex = 16;
-            this.label17.Text = "Ab max ";
+            this.label17.Text = "ABmax ";
             this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label18
             // 
             this.label18.AutoSize = true;
             this.label18.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label18.Location = new System.Drawing.Point(527, 198);
+            this.label18.Location = new System.Drawing.Point(527, 194);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(85, 47);
+            this.label18.Size = new System.Drawing.Size(85, 46);
             this.label18.TabIndex = 13;
-            this.label18.Text = "Ab min ";
+            this.label18.Text = "ABmin ";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label19
             // 
             this.label19.AutoSize = true;
             this.label19.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label19.Location = new System.Drawing.Point(527, 149);
+            this.label19.Location = new System.Drawing.Point(527, 146);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(85, 47);
+            this.label19.Size = new System.Drawing.Size(85, 46);
             this.label19.TabIndex = 10;
             this.label19.Text = "AB";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -433,9 +433,9 @@
             // 
             this.label20.AutoSize = true;
             this.label20.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label20.Location = new System.Drawing.Point(527, 100);
+            this.label20.Location = new System.Drawing.Point(527, 98);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(85, 47);
+            this.label20.Size = new System.Drawing.Size(85, 46);
             this.label20.TabIndex = 7;
             this.label20.Text = "BO";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -444,9 +444,9 @@
             // 
             this.label21.AutoSize = true;
             this.label21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label21.Location = new System.Drawing.Point(527, 51);
+            this.label21.Location = new System.Drawing.Point(527, 50);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(85, 47);
+            this.label21.Size = new System.Drawing.Size(85, 46);
             this.label21.TabIndex = 4;
             this.label21.Text = "AO";
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -454,7 +454,7 @@
             // tbAO
             // 
             this.tbAO.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbAO.Location = new System.Drawing.Point(620, 54);
+            this.tbAO.Location = new System.Drawing.Point(620, 53);
             this.tbAO.MaxLength = 5;
             this.tbAO.Name = "tbAO";
             this.tbAO.Size = new System.Drawing.Size(148, 24);
@@ -465,7 +465,7 @@
             // tbBeta
             // 
             this.tbBeta.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbBeta.Location = new System.Drawing.Point(620, 446);
+            this.tbBeta.Location = new System.Drawing.Point(620, 437);
             this.tbBeta.MaxLength = 8;
             this.tbBeta.Name = "tbBeta";
             this.tbBeta.Size = new System.Drawing.Size(148, 24);
@@ -480,7 +480,7 @@
             this.cmbIncreases.Items.AddRange(new object[] {
             "Увеличивается",
             "Уменьшается"});
-            this.cmbIncreases.Location = new System.Drawing.Point(620, 495);
+            this.cmbIncreases.Location = new System.Drawing.Point(620, 485);
             this.cmbIncreases.Name = "cmbIncreases";
             this.cmbIncreases.Size = new System.Drawing.Size(148, 26);
             this.cmbIncreases.TabIndex = 31;

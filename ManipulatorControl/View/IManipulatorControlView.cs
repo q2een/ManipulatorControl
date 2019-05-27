@@ -16,6 +16,10 @@ namespace ManipulatorControl
         List<GCodeException> ParserErrors { get; set; }
         string[] GCodeLines { get; set; }
 
+        void SetCurrentPosition(double x, double y, double z);
+
+        void SetZeroPositionState(CoordinateDirections direction);
+
         #region Редактирование / добавление / удаление рабочих зон.
 
         void SetRobotWorkspaceParams(RobotWorkspace workspace);
@@ -41,6 +45,8 @@ namespace ManipulatorControl
 
         event EventHandler InvokeStepperAbort;
         event EventHandler InvokeStepperStop;
+
+        event EventHandler OnViewClosing;
 
         event StepperMoveEventHandler ManualControlStart;
         event StepperMoveEventHandler ManualControlStop;

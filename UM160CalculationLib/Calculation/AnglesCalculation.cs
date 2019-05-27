@@ -22,23 +22,47 @@ namespace UM160CalculationLib
 
             var validPairs = new List<AnglesOfRotation>();
             foreach (var pair in instance.GetAnglesPairs(x, y))
-                if (instance.IsRootsAreValid(pair, x, y) && instance.IsAnglesAreValid(pair))
+                if (instance.IsRootsAreValid(pair, x, y) && IsAnglesAreValid(designParams, pair))
                     validPairs.Add(pair);
 
             if (validPairs.Count() == 0)
-                throw new DesignParametersException(string.Format("Невозможно достичь заданные координаты X={0} Y{1}",x,y));
+                throw new DesignParametersException(string.Format("Невозможно достичь заданные координаты X={0:f3} Y{1:f3}",x,y));
 
             return validPairs;
         }
 
+        public static double GetX(DesignParameters dp, double phi1, double phi2)
+        {
+            return (dp.L2 * Math.Cos(phi2 * deg)) + (dp.L1 * Math.Cos(phi1 * deg));
+        }
+
+        public static double GetY(DesignParameters dp, double phi1, double phi2)
+        {
+            return dp.Lc + (dp.L2 * Math.Sin(phi2 * deg)) + (dp.L1 * Math.Sin(phi1 * deg));
+        }
+
         public static double GetCurrentX(DesignParameters dp)
         {
-            return (dp.L2 * Math.Cos(dp.Lever2.Phi)) + (dp.L1 * Math.Cos(dp.Lever1.Phi));
+            return GetX(dp, dp.Lever1.Phi, dp.Lever2.Phi);
         }
 
         public static double GetCurrentY(DesignParameters dp)
         {
-            return dp.Lc + (dp.L2 * Math.Sin(dp.Lever2.Phi)) + (dp.L1 * Math.Sin(dp.Lever1.Phi));
+            return GetY(dp, dp.Lever1.Phi, dp.Lever2.Phi);
+        }
+
+        /// <summary>
+        /// Проверяет пару углов на соответствие конструктивным параметрам робота.
+        /// </summary>
+        /// <param name="angles">Структура. Пара углов φ1 и φ2</param>
+        /// <returns>Истина, если пара углов соответствует конструктивным параметрам робота</returns>
+        public static bool IsAnglesAreValid(DesignParameters dp, AnglesOfRotation angles)
+        {
+            var phi1 = Math.Round(angles.Phi1, 2);
+            var phi2 = Math.Round(angles.Phi2, 2);
+
+            return (phi1 >= dp.Lever1.PhiMin && phi1 <= dp.Lever1.PhiMax) &&
+                (phi2 >= dp.Lever2.PhiMin && phi2 <= dp.Lever2.PhiMax);
         }
 
         // Множитель для перевода градусов в радианы.     
@@ -143,20 +167,6 @@ namespace UM160CalculationLib
 
             // Проверка полученных значений с исходными (с точностью до тысячных).
             return Math.Round(x, 2) == Math.Round(x0, 2) && Math.Round(y, 2) == Math.Round(y0, 2);
-        }
-
-        /// <summary>
-        /// Проверяет пару углов на соответствие конструктивным параметрам робота.
-        /// </summary>
-        /// <param name="angles">Структура. Пара углов φ1 и φ2</param>
-        /// <returns>Истина, если пара углов соответствует конструктивным параметрам робота</returns>
-        private bool IsAnglesAreValid(AnglesOfRotation angles)
-        {
-            var phi1 = Math.Round(angles.Phi1, 2);
-            var phi2 = Math.Round(angles.Phi2, 2);
-
-            return (phi1 >= dp.Lever1.PhiMin && phi1 <= dp.Lever1.PhiMax) && 
-                (phi2 >= dp.Lever2.PhiMin && phi2 <= dp.Lever2.PhiMax);
         }
     }
 }

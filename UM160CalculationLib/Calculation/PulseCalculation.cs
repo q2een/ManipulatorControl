@@ -147,7 +147,7 @@ namespace UM160CalculationLib
         /// <returns>Число импульсов</returns>
         private static long CalculatePulsesCount(LeverDesignParameters ldp, double phi)
         {
-            phi *= deg;
+            phi *= ldp.IsABIncreasesOnStepperCW ? -deg : deg;
             double pulsesCount = ldp.IsABIncreasesOnStepperCW ? -1 : 1;
             pulsesCount *= (85.0 * (ldp.AB - Math.Sqrt(Math.Pow(ldp.AO, 2) + Math.Pow(ldp.BO, 2) - (2 * ldp.AO * ldp.BO * Math.Cos(ldp.AlphaRad + ldp.BetaRad + phi))))) / (51.0 * ldp.P * ldp.RoRad);
 

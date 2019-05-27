@@ -119,6 +119,9 @@ namespace ManipulatorControl
         }
 
         [Browsable(false)]
+        public double? ABZero { get; set; }
+
+        [Browsable(false)]
         public bool IsABIncreasesOnStepperCW
         {
             get
@@ -135,7 +138,7 @@ namespace ManipulatorControl
         {
             get
             {
-                return new UM160CalculationLib.HorizontalLeverDesignParameters(IsABIncreasesOnStepperCW, Ro, AB, ABmin, ABmax);
+                return new UM160CalculationLib.HorizontalLeverDesignParameters(IsABIncreasesOnStepperCW, Ro, AB, ABmin, ABmax, ABZero);
             }
             set
             {
@@ -144,7 +147,8 @@ namespace ManipulatorControl
 
                 AB = Convert.ToInt32(value.AB);
                 ABmin = Convert.ToInt32(value.ABmin);
-                ABmax = Convert.ToInt32(value.ABmax);   
+                ABmax = Convert.ToInt32(value.ABmax);
+                ABZero = value.ABzero;
                 Ro = value.Coefficient;
                 IsABIncreasesOnStepperCW = value.IsABIncreasesOnStepperCW;
             }
