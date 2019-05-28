@@ -28,15 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tbText = new System.Windows.Forms.TextBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // tbText
             // 
             this.tbText.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbText.Dock = System.Windows.Forms.DockStyle.Top;
+            this.errorProvider.SetIconAlignment(this.tbText, System.Windows.Forms.ErrorIconAlignment.BottomLeft);
+            this.errorProvider.SetIconPadding(this.tbText, -20);
             this.tbText.Location = new System.Drawing.Point(0, 0);
             this.tbText.Margin = new System.Windows.Forms.Padding(4);
             this.tbText.MaxLength = 250;
@@ -44,6 +49,7 @@
             this.tbText.Name = "tbText";
             this.tbText.Size = new System.Drawing.Size(354, 89);
             this.tbText.TabIndex = 0;
+            this.tbText.Validating += new System.ComponentModel.CancelEventHandler(this.tbText_Validating);
             // 
             // btnClose
             // 
@@ -58,7 +64,6 @@
             // 
             // btnOk
             // 
-            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOk.Location = new System.Drawing.Point(78, 102);
             this.btnOk.Margin = new System.Windows.Forms.Padding(4);
             this.btnOk.Name = "btnOk";
@@ -66,10 +71,14 @@
             this.btnOk.TabIndex = 1;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
             // 
             // InputMessageBox
             // 
-            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
@@ -86,6 +95,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Введите наименование рабочей области";
             this.TopMost = true;
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -96,5 +106,6 @@
         private System.Windows.Forms.TextBox tbText;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnOk;
+        private System.Windows.Forms.ErrorProvider errorProvider;
     }
 }

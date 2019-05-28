@@ -34,16 +34,16 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-
             this.xPositiveIndicator = new ManipulatorControl.Indicator();
             this.yPositiveIndicator = new ManipulatorControl.Indicator();
             this.zPositiveIndicator = new ManipulatorControl.Indicator();
             this.xNegativeIndicator = new ManipulatorControl.Indicator();
             this.yNegativeIndicator = new ManipulatorControl.Indicator();
             this.zNegativeIndicator = new ManipulatorControl.Indicator();
-            this.xZeroIndicator = new ManipulatorControl.Indicator() { Enabled = false };
-            this.yZeroIndicator = new ManipulatorControl.Indicator() { Enabled = false };
-            this.zZeroIndicator = new ManipulatorControl.Indicator() { Enabled = false };
+            this.xZeroIndicator = new ManipulatorControl.Indicator();
+            this.yZeroIndicator = new ManipulatorControl.Indicator();
+            this.zZeroIndicator = new ManipulatorControl.Indicator();
+            this.SuspendLayout();
             // 
             // label1
             // 
@@ -90,7 +90,7 @@
             this.label4.Location = new System.Drawing.Point(0, 40);
             this.label4.Margin = new System.Windows.Forms.Padding(0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(40, 53);
+            this.label4.Size = new System.Drawing.Size(40, 100);
             this.label4.TabIndex = 0;
             this.label4.Text = "+";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -99,10 +99,10 @@
             // 
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(0, 93);
+            this.label5.Location = new System.Drawing.Point(0, 140);
             this.label5.Margin = new System.Windows.Forms.Padding(0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(40, 53);
+            this.label5.Size = new System.Drawing.Size(40, 100);
             this.label5.TabIndex = 0;
             this.label5.Text = "—";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -111,113 +111,124 @@
             // 
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(0, 146);
+            this.label6.Location = new System.Drawing.Point(0, 240);
             this.label6.Margin = new System.Windows.Forms.Padding(0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(40, 53);
+            this.label6.Size = new System.Drawing.Size(40, 101);
             this.label6.TabIndex = 0;
             this.label6.Text = "0";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // xPosDirIndicator
+            // xPositiveIndicator
             // 
             this.xPositiveIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.xPositiveIndicator.DisabledColor = System.Drawing.Color.DarkGray;
             this.xPositiveIndicator.Dock = System.Windows.Forms.DockStyle.Fill;
             this.xPositiveIndicator.IndicatorColor = System.Drawing.Color.Tomato;
             this.xPositiveIndicator.Location = new System.Drawing.Point(40, 40);
             this.xPositiveIndicator.Margin = new System.Windows.Forms.Padding(0);
-            this.xPositiveIndicator.Name = "xPosDirIndicator";
-            this.xPositiveIndicator.Size = new System.Drawing.Size(129, 53);
+            this.xPositiveIndicator.Name = "xPositiveIndicator";
+            this.xPositiveIndicator.Size = new System.Drawing.Size(129, 100);
             this.xPositiveIndicator.TabIndex = 1;
             // 
-            // yPosDirIndicator
+            // yPositiveIndicator
             // 
             this.yPositiveIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.yPositiveIndicator.DisabledColor = System.Drawing.Color.DarkGray;
             this.yPositiveIndicator.Dock = System.Windows.Forms.DockStyle.Fill;
             this.yPositiveIndicator.IndicatorColor = System.Drawing.Color.Tomato;
             this.yPositiveIndicator.Location = new System.Drawing.Point(169, 40);
             this.yPositiveIndicator.Margin = new System.Windows.Forms.Padding(0);
-            this.yPositiveIndicator.Name = "yPosDirIndicator";
-            this.yPositiveIndicator.Size = new System.Drawing.Size(129, 53);
+            this.yPositiveIndicator.Name = "yPositiveIndicator";
+            this.yPositiveIndicator.Size = new System.Drawing.Size(129, 100);
             this.yPositiveIndicator.TabIndex = 2;
             // 
-            // zPosDirIndicator
+            // zPositiveIndicator
             // 
             this.zPositiveIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.zPositiveIndicator.DisabledColor = System.Drawing.Color.DarkGray;
             this.zPositiveIndicator.Dock = System.Windows.Forms.DockStyle.Fill;
             this.zPositiveIndicator.IndicatorColor = System.Drawing.Color.Tomato;
             this.zPositiveIndicator.Location = new System.Drawing.Point(298, 40);
             this.zPositiveIndicator.Margin = new System.Windows.Forms.Padding(0);
-            this.zPositiveIndicator.Name = "zPosDirIndicator";
-            this.zPositiveIndicator.Size = new System.Drawing.Size(130, 53);
+            this.zPositiveIndicator.Name = "zPositiveIndicator";
+            this.zPositiveIndicator.Size = new System.Drawing.Size(130, 100);
             this.zPositiveIndicator.TabIndex = 3;
             // 
-            // xNegDirIndicator
+            // xNegativeIndicator
             // 
             this.xNegativeIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.xNegativeIndicator.DisabledColor = System.Drawing.Color.DarkGray;
             this.xNegativeIndicator.Dock = System.Windows.Forms.DockStyle.Fill;
             this.xNegativeIndicator.IndicatorColor = System.Drawing.Color.Tomato;
-            this.xNegativeIndicator.Location = new System.Drawing.Point(40, 93);
+            this.xNegativeIndicator.Location = new System.Drawing.Point(40, 140);
             this.xNegativeIndicator.Margin = new System.Windows.Forms.Padding(0);
-            this.xNegativeIndicator.Name = "xNegDirIndicator";
-            this.xNegativeIndicator.Size = new System.Drawing.Size(129, 53);
+            this.xNegativeIndicator.Name = "xNegativeIndicator";
+            this.xNegativeIndicator.Size = new System.Drawing.Size(129, 100);
             this.xNegativeIndicator.TabIndex = 4;
             // 
-            // yNegDirIndicator
+            // yNegativeIndicator
             // 
             this.yNegativeIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.yNegativeIndicator.DisabledColor = System.Drawing.Color.DarkGray;
             this.yNegativeIndicator.Dock = System.Windows.Forms.DockStyle.Fill;
             this.yNegativeIndicator.IndicatorColor = System.Drawing.Color.Tomato;
-            this.yNegativeIndicator.Location = new System.Drawing.Point(169, 93);
+            this.yNegativeIndicator.Location = new System.Drawing.Point(169, 140);
             this.yNegativeIndicator.Margin = new System.Windows.Forms.Padding(0);
-            this.yNegativeIndicator.Name = "yNegDirIndicator";
-            this.yNegativeIndicator.Size = new System.Drawing.Size(129, 53);
+            this.yNegativeIndicator.Name = "yNegativeIndicator";
+            this.yNegativeIndicator.Size = new System.Drawing.Size(129, 100);
             this.yNegativeIndicator.TabIndex = 5;
             // 
-            // zNegDirIndicator
+            // zNegativeIndicator
             // 
             this.zNegativeIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.zNegativeIndicator.DisabledColor = System.Drawing.Color.DarkGray;
             this.zNegativeIndicator.Dock = System.Windows.Forms.DockStyle.Fill;
             this.zNegativeIndicator.IndicatorColor = System.Drawing.Color.Tomato;
-            this.zNegativeIndicator.Location = new System.Drawing.Point(298, 93);
+            this.zNegativeIndicator.Location = new System.Drawing.Point(298, 140);
             this.zNegativeIndicator.Margin = new System.Windows.Forms.Padding(0);
-            this.zNegativeIndicator.Name = "zNegDirIndicator";
-            this.zNegativeIndicator.Size = new System.Drawing.Size(130, 53);
+            this.zNegativeIndicator.Name = "zNegativeIndicator";
+            this.zNegativeIndicator.Size = new System.Drawing.Size(130, 100);
             this.zNegativeIndicator.TabIndex = 6;
             // 
             // xZeroIndicator
             // 
             this.xZeroIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.xZeroIndicator.DisabledColor = System.Drawing.Color.DarkGray;
             this.xZeroIndicator.Dock = System.Windows.Forms.DockStyle.Fill;
             this.xZeroIndicator.IndicatorColor = System.Drawing.Color.DarkGray;
-            this.xZeroIndicator.Location = new System.Drawing.Point(40, 146);
+            this.xZeroIndicator.Location = new System.Drawing.Point(40, 240);
             this.xZeroIndicator.Margin = new System.Windows.Forms.Padding(0);
             this.xZeroIndicator.Name = "xZeroIndicator";
-            this.xZeroIndicator.Size = new System.Drawing.Size(129, 53);
+            this.xZeroIndicator.Size = new System.Drawing.Size(129, 101);
             this.xZeroIndicator.TabIndex = 7;
             // 
             // yZeroIndicator
             // 
             this.yZeroIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.yZeroIndicator.DisabledColor = System.Drawing.Color.DarkGray;
             this.yZeroIndicator.Dock = System.Windows.Forms.DockStyle.Fill;
             this.yZeroIndicator.IndicatorColor = System.Drawing.Color.DarkGray;
-            this.yZeroIndicator.Location = new System.Drawing.Point(169, 146);
+            this.yZeroIndicator.Location = new System.Drawing.Point(169, 240);
             this.yZeroIndicator.Margin = new System.Windows.Forms.Padding(0);
             this.yZeroIndicator.Name = "yZeroIndicator";
-            this.yZeroIndicator.Size = new System.Drawing.Size(129, 53);
+            this.yZeroIndicator.Size = new System.Drawing.Size(129, 101);
             this.yZeroIndicator.TabIndex = 8;
             // 
             // zZeroIndicator
             // 
             this.zZeroIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.zZeroIndicator.DisabledColor = System.Drawing.Color.DarkGray;
             this.zZeroIndicator.Dock = System.Windows.Forms.DockStyle.Fill;
             this.zZeroIndicator.IndicatorColor = System.Drawing.Color.DarkGray;
-            this.zZeroIndicator.Location = new System.Drawing.Point(298, 146);
+            this.zZeroIndicator.Location = new System.Drawing.Point(298, 240);
             this.zZeroIndicator.Margin = new System.Windows.Forms.Padding(0);
             this.zZeroIndicator.Name = "zZeroIndicator";
-            this.zZeroIndicator.Size = new System.Drawing.Size(130, 53);
+            this.zZeroIndicator.Size = new System.Drawing.Size(130, 101);
             this.zZeroIndicator.TabIndex = 9;
-
+            // 
+            // DirectionIndicationPanel
+            // 
             this.ColumnCount = 4;
             this.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -245,10 +256,11 @@
             this.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.Size = new System.Drawing.Size(428, 341);
-            this.TabIndex = 0;
-            this.TabStop = true;
+            this.TabStop = true;                                                                          
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.DirectionIndicationPanel_Paint);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
-            components = new System.ComponentModel.Container();
         }
 
         #endregion

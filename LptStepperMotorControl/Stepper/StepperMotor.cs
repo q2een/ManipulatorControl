@@ -206,13 +206,11 @@ namespace LptStepperMotorControl.Stepper
             }
             set
             {
-                System.Diagnostics.Debug.WriteLine($"ENABLED {value}");
                 Port.SetPin(Pins.Enable, value);
 
-                var state = value && (CWDirectionIsLogicalZero ? Direction != Direction.CW : Direction == Direction.CW);
+                var pinState = value && (CWDirectionIsLogicalZero ? Direction != Direction.CW : Direction == Direction.CW);
 
-                System.Diagnostics.Debug.WriteLine($"DIRECTION {state}");
-                Port.SetPin(Pins.Dir, state);
+                Port.SetPin(Pins.Dir, pinState);
 
                 enabled = value;
 

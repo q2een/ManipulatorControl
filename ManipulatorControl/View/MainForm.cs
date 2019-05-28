@@ -56,18 +56,6 @@ namespace ManipulatorControl
             }
         }
 
-        public CoordinateDirections Directions
-        {
-            get
-            {
-                return directionPanel.Directions;
-            }
-            set
-            {
-                directionPanel.Directions = value;
-            }
-        }
-
         public List<GCodeException> ParserErrors
         {
             get
@@ -94,7 +82,7 @@ namespace ManipulatorControl
             }
         }
 
-        public bool IsZeroPositionSet
+     /*   public bool IsZeroPositionSet
         {
             get
             {
@@ -104,7 +92,7 @@ namespace ManipulatorControl
             {
                 directionPanel.IsZeroEnabled = value;
             }
-        }
+        }  */
 
         public bool IsEditWorkspaceMode
         {
@@ -476,16 +464,23 @@ namespace ManipulatorControl
             OnViewClosing(this, EventArgs.Empty);
         }
 
-        public void SetCurrentPosition(double x, double y, double z)
+        public void SetCurrentPosition(bool isRunning, double x, double y, double z)
         {
-            statusLblCurrentPosition.Text = string.Format("X: {0:f2}  Y: {1:f2}  Z: {2:f2}", x,y,z);
+            var action = new Action(() =>
+            {
+                statusLblCurrentPosition.Text = string.Format("X: {0:f2}  Y: {1:f2}  Z: {2:f2}", x, y, z);
+                directionPanel.SetLocation(isRunning, x, y, z);
+            });
+
+            if (InvokeRequired)
+                Invoke(action);
+            else
+                action();
         }
 
-        public void SetZeroPositionState(CoordinateDirections direction)
+        public void SetZeroPositionState(bool isXYZero, bool isZZero)
         {
-            throw new NotImplementedException();
+            directionPanel.SetZeroPositionState(isXYZero, isZZero);
         }
-
-        
     }
 }

@@ -70,6 +70,7 @@ namespace ManipulatorControl
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            e.Graphics.Clear(BackColor);
             DrawCircle(e.Graphics, new SolidBrush(Enabled ? IndicatorColor : DisabledColor), e.ClipRectangle);
         }
 
@@ -81,6 +82,20 @@ namespace ManipulatorControl
 
             g.FillEllipse(brush, centerX - radius, centerY - radius,
               radius + radius, radius + radius); 
+        }
+
+        public void Redraw()
+        {
+            Invalidate();
+            Update();
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            this.Name = "Indicator";
+            this.ResumeLayout(false);
+
         }
     }
 }

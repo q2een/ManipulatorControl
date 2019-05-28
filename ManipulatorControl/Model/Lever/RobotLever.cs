@@ -8,24 +8,10 @@ namespace ManipulatorControl
 
         public StepperMotor Stepper { get; set; }
 
-        public CoordinateDirections OnCWDirections { get; private set; }
-
-        public CoordinateDirections OnCCWDirections { get; private set; }
-
-        public CoordinateDirections ActiveDirection
-        {
-            get
-            {
-                return Stepper.Direction == Direction.CW ? OnCWDirections : OnCCWDirections;
-            }
-        }
-
-        public RobotLever(LeverType type, StepperMotor stepper, CoordinateDirections onCW, CoordinateDirections onCCW)
+        public RobotLever(LeverType type, StepperMotor stepper)
         {
             Type = type;
             Stepper = stepper;
-            OnCWDirections = onCW;
-            OnCCWDirections = onCCW;
         }
     }
 }

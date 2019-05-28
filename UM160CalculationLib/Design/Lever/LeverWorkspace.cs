@@ -45,7 +45,7 @@ namespace UM160CalculationLib
             if (!(ab >= workspace.ABmin && ab <= workspace.ABmax))
                 yield return new DesignParametersException("Значение расстояния от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта не удовлетворяет установленной рабочей зоне");
 
-            if (!(workspace.ABzero >= workspace.ABmin && workspace.ABzero <= workspace.ABmax))
+            if (workspace.ABzero != null && !(workspace.ABzero >= workspace.ABmin && workspace.ABzero <= workspace.ABmax))
                 yield return new DesignParametersException("Значение расстояния нулевой точки не удовлетворяет установленной рабочей зоне");
         }
 

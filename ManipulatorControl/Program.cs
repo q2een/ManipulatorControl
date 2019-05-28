@@ -11,7 +11,7 @@ namespace ManipulatorControl
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -19,6 +19,11 @@ namespace ManipulatorControl
             var view = new MainForm();
 
             var presenter = new ManipulatorPresenter(view, new MessageService.MessageBoxMessageService());
+
+            // Для тестирования.
+            if (args.Length == 1)
+                presenter.SetWorkerInterval(int.Parse(args[0]));
+
 
             Application.Run(view);
         }

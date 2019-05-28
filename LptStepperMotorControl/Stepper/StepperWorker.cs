@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace LptStepperMotorControl.Stepper
 {
@@ -15,8 +11,7 @@ namespace LptStepperMotorControl.Stepper
 
         public StepperStopReason StopReason { get; private set; }
 
-        public event EventHandler OnStart = delegate { };
-        public event EventHandler OnStop = delegate { };
+        public int Interval { get; set; }
 
         public bool Enabled
         {
@@ -35,6 +30,20 @@ namespace LptStepperMotorControl.Stepper
             {
                 return (this.threadTimer != null && this.threadTimer.IsAlive);
             }
+        }
+
+        public event EventHandler Elapsed = delegate { };
+        public event EventHandler OnStart = delegate { };
+        public event EventHandler OnStop = delegate { };
+
+        public StepperWorker()
+        {
+                
+        }
+
+        public StepperWorker(int interval)
+        {
+            Interval = interval;
         }
 
         public void Start()
@@ -80,7 +89,7 @@ namespace LptStepperMotorControl.Stepper
             }
         }
 
-        void Loop(ref bool stopTimer)
+        private void Loop(ref bool stopTimer)
         {                  
             Stepper.Enabled = true;
 
@@ -89,6 +98,10 @@ namespace LptStepperMotorControl.Stepper
             while (!stopTimer)
             {
                 Stepper.Run();
+
+                if (Interval > 0 && Stepper.CurrentStepsCount % Interval == 0)
+                    Elapsed(this, EventArgs.Empty);
+
                 stopTimer = !Stepper.IsRunning;
             }
 

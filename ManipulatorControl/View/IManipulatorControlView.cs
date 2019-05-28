@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ManipulatorControl
 {
-    public interface IManipulatorControlView : ICoordinateDirection
+    public interface IManipulatorControlView
     {
         bool IsHotKeyMode { get; set; }
         bool IsManualControlMode { get; set; }
@@ -16,9 +16,9 @@ namespace ManipulatorControl
         List<GCodeException> ParserErrors { get; set; }
         string[] GCodeLines { get; set; }
 
-        void SetCurrentPosition(double x, double y, double z);
+        void SetCurrentPosition(bool isRunning, double x, double y, double z);
 
-        void SetZeroPositionState(CoordinateDirections direction);
+        void SetZeroPositionState(bool isXYZero, bool isZZero);
 
         #region Редактирование / добавление / удаление рабочих зон.
 

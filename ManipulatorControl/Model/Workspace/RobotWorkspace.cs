@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UM160CalculationLib;
 
 namespace ManipulatorControl.Workspace
@@ -25,9 +23,9 @@ namespace ManipulatorControl.Workspace
         {
             var exceptions = new List<KeyValuePair<LeverType, DesignParametersException>>();
 
-            exceptions.AddRange(GetExeptions(LeverType.Horizontal, LeverWorkspace.GetDesignParametersExceptions(parameters.HorizontalLever)));
-            exceptions.AddRange(GetExeptions(LeverType.Lever1, LeverWorkspace.GetDesignParametersExceptions(parameters.Lever1)));
-            exceptions.AddRange(GetExeptions(LeverType.Lever2, LeverWorkspace.GetDesignParametersExceptions(parameters.Lever2)));
+            exceptions.AddRange(GetExeptions(LeverType.Horizontal, LeverWorkspace.GetDesignParametersExceptions(parameters.HorizontalLever.AB, HorizontalLever)));
+            exceptions.AddRange(GetExeptions(LeverType.Lever1, LeverWorkspace.GetDesignParametersExceptions(parameters.Lever1.AB, Lever1)));
+            exceptions.AddRange(GetExeptions(LeverType.Lever2, LeverWorkspace.GetDesignParametersExceptions(parameters.Lever2.AB, Lever2)));
 
             return exceptions;
         }
@@ -69,12 +67,6 @@ namespace ManipulatorControl.Workspace
 
                 case MovableValueType.Zero:
                     lever.ABzero = ab;
-                    break;
-
-                case MovableValueType.None:
-
-                    // Сохранение: 
-
                     break;
 
                 default: throw new NotImplementedException();   

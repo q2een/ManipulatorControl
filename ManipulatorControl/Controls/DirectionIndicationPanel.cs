@@ -9,109 +9,23 @@ using System.Windows.Forms;
 
 namespace ManipulatorControl
 {
-    public partial class DirectionIndicationPanel : TableLayoutPanel, ICoordinateDirection
+    public partial class DirectionIndicationPanel : TableLayoutPanel
     {
+
+        public double X { get; set; }
+
+        public double Y { get; set; }
+
+        public double Z { get; set; }
+
         public DirectionIndicationPanel()
         {
             InitializeComponent();
 
-            xZeroIndicator.IndicatorColor = Color.Tomato;
-            yZeroIndicator.IndicatorColor = Color.Tomato;
-            zZeroIndicator.IndicatorColor = Color.Tomato;
+            xZeroIndicator.Enabled = true;
+            yZeroIndicator.Enabled = true;
+            zZeroIndicator.Enabled = true;
 
-        }
-
-        private CoordinateDirections directions;
-
-        public CoordinateDirections Directions
-        {
-            get
-            {
-                return directions;
-            }
-            set
-            {
-                if (value.HasFlag(CoordinateDirections.None) || value == 0)
-                {
-                    OffAllIndicators();
-                    directions = CoordinateDirections.None;
-                    return;
-                }
-                if (value.HasFlag(CoordinateDirections.XNone))
-                {
-                    SetIndicatorState(false, xPositiveIndicator, xNegativeIndicator, xZeroIndicator);
-                }
-                if (value.HasFlag(CoordinateDirections.YNone))
-                {
-                    SetIndicatorState(false, yPositiveIndicator, yNegativeIndicator, yZeroIndicator);
-                }
-                if (value.HasFlag(CoordinateDirections.ZNone))
-                {
-                    SetIndicatorState(false, zPositiveIndicator, zNegativeIndicator, zZeroIndicator);
-                }
-                if (value.HasFlag(CoordinateDirections.XNegative))
-                {
-                    if (!value.HasFlag(CoordinateDirections.XNone))
-                        SetIndicatorState(xNegativeIndicator);
-                    else value ^= CoordinateDirections.XNegative;
-                }
-                if (value.HasFlag(CoordinateDirections.YNegative))
-                {
-                    if (!value.HasFlag(CoordinateDirections.YNone))
-                        SetIndicatorState(yNegativeIndicator);
-                    else value ^= CoordinateDirections.YNegative;
-                }
-                if (value.HasFlag(CoordinateDirections.ZNegative))
-                {
-                    if (!value.HasFlag(CoordinateDirections.ZNone))
-                        SetIndicatorState(zNegativeIndicator);
-                    else value ^= CoordinateDirections.ZNegative;
-                }
-                if (value.HasFlag(CoordinateDirections.XPositive))
-                {
-                    if (!value.HasFlag(CoordinateDirections.XNone))
-                        SetIndicatorState(xPositiveIndicator);
-                    else value ^= CoordinateDirections.XPositive;
-                }
-                if (value.HasFlag(CoordinateDirections.YPositive))
-                {
-                    if (!value.HasFlag(CoordinateDirections.YNone))
-                        SetIndicatorState(yPositiveIndicator);
-                    else value ^= CoordinateDirections.YPositive;
-                }
-                if (value.HasFlag(CoordinateDirections.ZPositive))
-                {
-                    if (!value.HasFlag(CoordinateDirections.ZNone))
-                        SetIndicatorState(zPositiveIndicator);
-                    else value ^= CoordinateDirections.ZPositive;
-                }
-                if (value.HasFlag(CoordinateDirections.XZero))
-                {
-                    if (!value.HasFlag(CoordinateDirections.XNone))
-                        SetIndicatorState(xZeroIndicator);
-                    else value ^= CoordinateDirections.XZero;
-                }
-                if (value.HasFlag(CoordinateDirections.YZero))
-                {
-                    if (!value.HasFlag(CoordinateDirections.YNone))
-                        SetIndicatorState(yZeroIndicator);
-                    else value ^= CoordinateDirections.YZero;
-                }
-                if (value.HasFlag(CoordinateDirections.ZZero))
-                {
-                    if (!value.HasFlag(CoordinateDirections.ZNone))
-                        SetIndicatorState(zZeroIndicator);
-                    else value ^= CoordinateDirections.ZZero;
-                }
-                if (value.HasFlag(CoordinateDirections.OnXZero))
-                    xZeroIndicator.IndicatorColor = Color.Blue;
-                if (value.HasFlag(CoordinateDirections.OnYZero))
-                    yZeroIndicator.IndicatorColor = Color.Blue;
-               if (value.HasFlag(CoordinateDirections.OnZZero))
-                    zZeroIndicator.IndicatorColor = Color.Blue;
-
-                directions = value;
-            }
         }
 
         public bool IsZeroEnabled
@@ -128,18 +42,26 @@ namespace ManipulatorControl
             }
         }
 
-        public void InicateOnZero(CoordinateDirections dir)
+        //public void InicateOnZero(CoordinateDirections dir)
+        //{
+        //    if (dir.HasFlag(CoordinateDirections.XZero))
+        //        xZeroIndicator.IndicatorColor = Color.Blue;
+        //    else if (dir.HasFlag(CoordinateDirections.YZero))
+        //        yZeroIndicator.IndicatorColor = Color.Blue;
+        //    else if (dir.HasFlag(CoordinateDirections.ZZero))
+        //        zZeroIndicator.IndicatorColor = Color.Blue;
+        //    else
+        //        ;// Directions = dir;
+        //}
+
+        public void SetZeroPositionState(bool isXYZero, bool isZZero)
         {
-            if (dir.HasFlag(CoordinateDirections.XZero))
-                xZeroIndicator.IndicatorColor = Color.Blue;
-            else if (dir.HasFlag(CoordinateDirections.YZero))
-                yZeroIndicator.IndicatorColor = Color.Blue;
-            else if (dir.HasFlag(CoordinateDirections.ZZero))
-                zZeroIndicator.IndicatorColor = Color.Blue;
-            else
-                Directions = dir;
+            xZeroIndicator.IndicatorColor = isXYZero ? Color.Blue : Color.DarkGray;
+            yZeroIndicator.IndicatorColor = isXYZero ? Color.Blue : Color.DarkGray;
+
+            zZeroIndicator.IndicatorColor = isZZero ? Color.Blue : Color.DarkGray;
         }
-                
+
         private void SetIndicatorState(Indicator indicator, bool isRunning = true)
         {
             indicator.IndicatorColor = isRunning ? Color.GreenYellow : Color.Tomato;
@@ -151,12 +73,64 @@ namespace ManipulatorControl
                 indicator.IndicatorColor = isRunning ? Color.GreenYellow : Color.Tomato;
         }
 
-        private void OffAllIndicators()
+        public void SetLocation(bool isRunning, double x, double y, double z)
+        {
+            if (isRunning)
+            {
+                SetIndicatorState(X, x, xPositiveIndicator, xNegativeIndicator);
+                SetIndicatorState(Y, y, yPositiveIndicator, yNegativeIndicator);
+                SetIndicatorState(Z, z, zPositiveIndicator, zNegativeIndicator);
+            }
+            else
+                OffAllExcept(xZeroIndicator, yZeroIndicator, zZeroIndicator);
+
+            X = x;
+            Y = y;
+            Z = z;
+        }
+
+        private void SetIndicatorState(double position, double newPosition, Indicator positive, Indicator negative)
+        {
+            if (position == newPosition)
+                return;
+
+            var isPositiveDirection = IsPositiveDirection(position, newPosition);
+
+            System.Diagnostics.Debug.WriteLine(isPositiveDirection);
+
+            SetIndicatorState(positive, isPositiveDirection);
+            SetIndicatorState(negative, !isPositiveDirection);
+        }
+
+        private bool IsPositiveDirection(double position, double newPosition)
+        {
+            return position < newPosition;
+        }
+
+        private void OffAllExcept(params Indicator[] indicators)
         {
             foreach (var control in Controls)
             {
-                if (control is Indicator)
-                    SetIndicatorState(control as Indicator, false);
+                var indicator = control as Indicator;
+
+                if (indicator != null && !indicators.Contains(indicator))
+                    SetIndicatorState(indicator, false);
+            }
+        }
+
+        private void OffAllIndicators()
+        {
+            OffAllExcept();
+        }
+
+        private void DirectionIndicationPanel_Paint(object sender, PaintEventArgs e)
+        {
+            foreach (var control in Controls)
+            {
+                var indicator = control as Indicator;
+
+                if (indicator != null)
+                    indicator.Redraw();
             }
         }
     }

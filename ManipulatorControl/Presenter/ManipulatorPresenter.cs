@@ -15,6 +15,7 @@ using System.IO;
 using ManipulatorControl.Workspace;
 using ManipulatorControl.MessageService;
 using ManipulatorControl.Settings;
+using ManipulatorControl.Model;
 
 namespace ManipulatorControl
 {
@@ -31,7 +32,7 @@ namespace ManipulatorControl
         private DesignParameters parameters;
         private readonly Calculation calculation;
 
-        private readonly StepperWorker worker = new StepperWorker();
+        private readonly StepperWorker worker = new StepperWorker(100);
         private LPTPort port = new LPTPort();
 
         private readonly GCodeInterpreter interpreter;
@@ -41,12 +42,11 @@ namespace ManipulatorControl
         private readonly RobotLever[] levers;
         private RobotLever movingLever;
 
-        private Dictionary<string, StepDirPin> pins;
-
         private int editingWorkspaceIndex = -1;
         private List<RobotWorkspace> robotWorkspaces = new List<RobotWorkspace>();
         private RobotWorkspace activeWorkspace, editingWorkspace;
 
+        private double x, y, z;
 
         public ManipulatorPresenter(IManipulatorControlView view, IMessageService messageService)
         {
@@ -84,6 +84,7 @@ namespace ManipulatorControl
             this.worker.OnStart += Worker_OnStart;
             this.worker.OnStop += Worker_OnStop;
             this.worker.OnStop += interpreter.OnStepperStop;
+            this.worker.Elapsed += Worker_Elapsed;
 
             this.interpreter.OnInterpreterStart += Interpreter_OnInterpreterStart;
             this.interpreter.OnInterpreterStop += Interpreter_OnInterpreterStop;
@@ -92,28 +93,20 @@ namespace ManipulatorControl
 
             LoadApplicationSettings();
             this.levers = GetRobotLever().ToArray();
-
         }
 
-
-        // Cохранение параметров перед закрытием.
-        private void View_OnViewClosing(object sender, EventArgs e)
+        public void SetWorkerInterval(int interval)
         {
-            SaveWorkspaces();
+            worker.Interval = interval;
 
-            if (movingLever == null)
-                return;
-
-            worker.Stop();
+            messageService.ShowExclamation(interval.ToString());
         }
 
         private void SetNewCoordinateLocation()
         {
-            double x = 0, y = 0, z = 0;
             calculation.SetCurrentCoordinates(ref x, ref y, ref z);
-            this.view.SetCurrentPosition(x, y, z);
+            this.view.SetCurrentPosition(false, x, y, z);
         }
-
 
         #region Загрузка параметров, значений.
 
@@ -123,9 +116,6 @@ namespace ManipulatorControl
                 throw new NullReferenceException();
 
             LoadStepDirNames();
-
-
-            this.pins = SettingsReader.GetStepDirPins();  
 
             robotWorkspaces.Add(GetDesignParametersWorkspace("Конструктивные параметры"));
             LoadWorkspaces();
@@ -291,18 +281,6 @@ namespace ManipulatorControl
             }
         }
 
-        private CoordinateDirections GetSettedZeroCoordinates(RobotWorkspace workspace)
-        {
-            CoordinateDirections directions = 0;
-
-            if (workspace.HorizontalLever.ABzero != null)
-                directions |= CoordinateDirections.ZZero;
-            if (workspace.Lever1.ABzero != null && workspace.Lever2.ABzero != null)
-                directions |= CoordinateDirections.XZero | CoordinateDirections.YZero;
-
-            return directions == 0 ? CoordinateDirections.None : directions;
-        }
-
         private IEnumerable<RobotLever> GetRobotLever()
         {
             LoadLeverSteppers();
@@ -313,19 +291,48 @@ namespace ManipulatorControl
                 stepper.Stepper.Pins = this.settings.StepDirNames.Single(s => s.Type == stepper.PinType).StepDir;
             }
 
-            yield return new RobotLever(LeverType.Horizontal, leverSteppers.Single(lever => lever.LeverType == LeverType.Horizontal).Stepper, CoordinateDirections.ZPositive, CoordinateDirections.ZNegative);
+            yield return new RobotLever(LeverType.Horizontal, leverSteppers.Single(lever => lever.LeverType == LeverType.Horizontal).Stepper);
 
-            yield return new RobotLever(LeverType.Lever1, leverSteppers.Single(lever => lever.LeverType == LeverType.Lever1).Stepper,
-                 CoordinateDirections.XNegative | CoordinateDirections.YNegative, CoordinateDirections.XPositive | CoordinateDirections.YPositive);
+            yield return new RobotLever(LeverType.Lever1, leverSteppers.Single(lever => lever.LeverType == LeverType.Lever1).Stepper);
 
-            yield return new RobotLever(LeverType.Lever2, leverSteppers.Single(lever => lever.LeverType == LeverType.Lever2).Stepper,
-                CoordinateDirections.XNegative | CoordinateDirections.YPositive, CoordinateDirections.XPositive | CoordinateDirections.YNegative);    
+            yield return new RobotLever(LeverType.Lever2, leverSteppers.Single(lever => lever.LeverType == LeverType.Lever2).Stepper);    
         }
 
         #endregion
 
+        private void Settings_SaveSettings(object sender, EventArgs e)
+        {
+            UpdateDesignParameters(this.settings.DesignParameters);
+
+            var settings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            File.WriteAllText("design.settings", JsonConvert.SerializeObject(this.settings.DesignParameters, settings));
+
+            SaveStepDirNames();
+            SaveLeverSteppers();
+        }
+
+        private void View_OpenSettings(object sender, EventArgs e)
+        {
+            if (movingLever != null || view.IsEditWorkspaceMode)
+                return;
+
+            this.settings.DesignParameters = parameters;
+            this.settings.Show();
+        }
+        
+        // Cохранение параметров перед закрытием.
+        private void View_OnViewClosing(object sender, EventArgs e)
+        {
+            SaveWorkspaces();
+
+            if (movingLever == null)
+                return;
+
+            worker.Stop();
+        }
+
         #region Рабочие зоны манипулятора.
-       
+
         // Устанавливает в качестве рабочей зоны конструктивные параметры робота.
         private void SetDefaultWorkspace()
         {
@@ -360,7 +367,7 @@ namespace ManipulatorControl
 
             return workspace;
         }
-          
+
         // Устанавливает заданную рабочую зону в качестве активной рабочей зоны.
         private void SetActiveWorkspace(RobotWorkspace workspace)
         {
@@ -380,145 +387,158 @@ namespace ManipulatorControl
 
         // Задать выбранную зону как активную рабочую зону.
         private void View_InvokeSetActiveWorkspace(object sender, WorkspaceEventArgs e)
-		{
-			if (view.IsEditWorkspaceMode)
-				return;
+        {
+            if (view.IsEditWorkspaceMode)
+                return;
 
-			SetActiveWorkspace(robotWorkspaces.ElementAtOrDefault(e.Index));
-		}
-			 
+            SetActiveWorkspace(robotWorkspaces.ElementAtOrDefault(e.Index));
+        }
+
         // Переименовать рабочую зону.
-		private void View_InvokeRenameWorkspace(object sender, WorkspaceEventArgs e)
-		{
-			if (view.IsEditWorkspaceMode)
-				return;
+        private void View_InvokeRenameWorkspace(object sender, WorkspaceEventArgs e)
+        {
+            if (view.IsEditWorkspaceMode)
+                return;
 
-			if (e.Index == 0)
-				throw new Exception("Нельзя переименовать данную рабочу область");
+            if (e.Index == 0)
+                throw new Exception("Нельзя переименовать данную рабочу область");
 
-			var workspace = robotWorkspaces.ElementAtOrDefault(e.Index);
+            var workspace = robotWorkspaces.ElementAtOrDefault(e.Index);
 
-			if (workspace == null)
-				throw new Exception("Указанная рабочая область не существует");
+            if (workspace == null)
+                throw new Exception("Указанная рабочая область не существует");
 
-			workspace.Name = e.Name;
+            workspace.Name = e.Name;
 
-			view.SetWorkspaces(robotWorkspaces, e.Index);
-		}
-		   
+            view.SetWorkspaces(robotWorkspaces, e.Index);
+        }
+
         // Добавить рабочую зону.
-		private void View_InvokeAddWorkspace(object sender, WorkspaceEventArgs e)
-		{
-			if (view.IsEditWorkspaceMode)
-				return;
+        private void View_InvokeAddWorkspace(object sender, WorkspaceEventArgs e)
+        {
+            if (view.IsEditWorkspaceMode)
+                return;
 
-			var workspace = GetDesignParametersWorkspaceClone(e.Name);
-			robotWorkspaces.Add(workspace);
-			view.SetWorkspaces(robotWorkspaces, robotWorkspaces.Count - 1);
-		}
+            var workspace = GetDesignParametersWorkspaceClone(e.Name);
+            robotWorkspaces.Add(workspace);
+            view.SetWorkspaces(robotWorkspaces, robotWorkspaces.Count - 1);
+        }
 
         // Удалить рабочую зону.
-		private void View_InvokeRemoveWorkspace(object sender, WorkspaceEventArgs e)
-		{
-			if (view.IsEditWorkspaceMode)
-				return;
+        private void View_InvokeRemoveWorkspace(object sender, WorkspaceEventArgs e)
+        {
+            if (view.IsEditWorkspaceMode)
+                return;
 
-			if (e.Index < 0)
-				throw new IndexOutOfRangeException();
+            if (e.Index < 0)
+                throw new IndexOutOfRangeException();
 
-			if (e.Index == 0)
-				throw new Exception("Нельзя удалить данную рабочу область");
+            if (e.Index == 0)
+            {
+                messageService.ShowMessage("Нельзя удалить данную рабочу область");
+                return;
+            }
 
-			robotWorkspaces.RemoveAt(e.Index);
-
-			view.SetWorkspaces(robotWorkspaces, e.Index - 1);         
-		}
+            robotWorkspaces.RemoveAt(e.Index);
+            view.SetWorkspaces(robotWorkspaces, e.Index - 1);
+        }
 
         // Отменить изменения.
-		private void View_InvokeCloseEditWorkspaceMode(object sender, WorkspaceEventArgs e)
-		{
-			view.SetEditWorkspaceMode(false, null, MovableValueType.None);
-			view.SetWorkspaces(robotWorkspaces, editingWorkspaceIndex);
-			editingWorkspace = null;
-			editingWorkspaceIndex = -1;
-			return;
-		}
+        private void View_InvokeCloseEditWorkspaceMode(object sender, WorkspaceEventArgs e)
+        {
+            view.SetEditWorkspaceMode(false, null, MovableValueType.None);
+            view.SetWorkspaces(robotWorkspaces, editingWorkspaceIndex);
+            editingWorkspace = null;
+            editingWorkspaceIndex = -1;
+            return;
+        }
 
         // Сохранить изменения.
-		private void View_InvokeSaveWorkspaceValues(object sender, WorkspaceEventArgs e)
-		{
-			if (!view.IsEditWorkspaceMode || editingWorkspace == null)
-				return;
+        private void View_InvokeSaveWorkspaceValues(object sender, WorkspaceEventArgs e)
+        {
+            if (!view.IsEditWorkspaceMode || editingWorkspace == null)
+                return;
 
-			var errors = editingWorkspace.GetDesignParametersExceptions(this.parameters);
+            var errors = editingWorkspace.GetDesignParametersExceptions(this.parameters);
 
-			if(errors.Count() == 0)
-			{
-				view.SetEditWorkspaceMode(false, null, MovableValueType.None);
-				this.robotWorkspaces[editingWorkspaceIndex] = editingWorkspace;
-				view.SetWorkspaces(robotWorkspaces, editingWorkspaceIndex);       
-				editingWorkspace = null;
-				editingWorkspaceIndex = -1;
-				return;
-			}
+            if (errors.Count() == 0)
+            {
+                view.SetEditWorkspaceMode(false, null, MovableValueType.None);
+                this.robotWorkspaces[editingWorkspaceIndex] = editingWorkspace;
+                view.SetWorkspaces(robotWorkspaces, editingWorkspaceIndex);
+                editingWorkspace = null;
+                editingWorkspaceIndex = -1;
+                return;
+            }
 
             string errorMessage = "Рабочая зона не сохранена. Ошибки:";
 
             foreach (var error in errors)
             {
-                errorMessage += String.Format("\n{0} : {1}", error.Key, error.Value);
+                errorMessage += String.Format("\n\n{0} : {1}", (error.Key).ToRuString(), error.Value.Message);
             }
 
             messageService.ShowError(errorMessage);
-		}
+        }
 
         // Установить режим редактирования рабочей зоны.
-		private void View_InvokeSetEditWorkspaceMode(object sender, WorkspaceEventArgs e)
-		{
-			SetDefaultWorkspace();   
-			editingWorkspace = robotWorkspaces[e.Index].Clone() as RobotWorkspace;
+        private void View_InvokeSetEditWorkspaceMode(object sender, WorkspaceEventArgs e)
+        {
+            SetDefaultWorkspace();
+            editingWorkspace = robotWorkspaces[e.Index].Clone() as RobotWorkspace;
 
-			var editValues = MovableValueType.Zero;
+            var editValues = MovableValueType.Zero;
 
-			if (e.Index != 0)
-				editValues |= MovableValueType.Max | MovableValueType.Min;
+            if (e.Index != 0)
+                editValues |= MovableValueType.Max | MovableValueType.Min;
 
-			editingWorkspaceIndex = e.Index;
+            editingWorkspaceIndex = e.Index;
 
             view.SetEditWorkspaceMode(true, editingWorkspace, editValues);
-		}
+        }
 
         //  Изменение ограничений и задание нулевой точки для плеч робота.
         private void View_InvokeWorkspaceValueChange(object sender, EditWorkspaceEventArgs e)
-		{
-			if (editingWorkspace == null || e.ValueType == MovableValueType.None)
-				return;
+        {
+            if (editingWorkspace == null || e.ValueType == MovableValueType.None)
+                return;
 
-			editingWorkspace.SetValue(e.LeverType, e.ValueType, calculation.GetPartMovableByLeverType(e.LeverType).AB);
+            editingWorkspace.SetValue(e.LeverType, e.ValueType, calculation.GetPartMovableByLeverType(e.LeverType).AB);
 
-			view.SetRobotWorkspaceParams(editingWorkspace);
-		}
+            view.SetRobotWorkspaceParams(editingWorkspace);
+        }
+
+        #endregion
+        
+        #region Остановка и прерывание работы.
+
+        private void View_InvokeStepperStop(object sender, EventArgs e)
+        {
+            worker.Stop();
+        }
+
+        private void View_InvokeStepperAbort(object sender, EventArgs e)
+        {
+            worker.Abort();
+        }
 
         #endregion
 
-        private void Settings_SaveSettings(object sender, EventArgs e)
+        #region Перемещение плечей робота-манипулятора. Ручное управление. Управление G кодами.  
+         
+        private void ChangeLeverPosition(LeverType type, long stepsCount)
         {
-            UpdateDesignParameters(this.settings.DesignParameters);
+            calculation.SetNewAB(type, stepsCount);
 
-            var settings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-            File.WriteAllText("design.settings", JsonConvert.SerializeObject(this.settings.DesignParameters, settings));
+            var newValue = calculation.GetPartMovableByLeverType(type).AB;
 
-            SaveStepDirNames();
-            SaveLeverSteppers();
-        }
+            if (view.IsEditWorkspaceMode)
+                view.SetCurrentEditWorkspaceModeLeverPosition(type, newValue);
 
-        private void View_OpenSettings(object sender, EventArgs e)
-        {
-            if (movingLever != null || view.IsEditWorkspaceMode)
-                return;
+            SaveLeverCurrentPosition(type, newValue);
 
-            this.settings.DesignParameters = parameters;
-            this.settings.Show();
+            view.SetZeroPositionState(parameters.Lever1.AB == parameters.Lever1.Workspace.ABzero && parameters.Lever2.AB == parameters.Lever2.Workspace.ABzero, parameters.HorizontalLever.AB == parameters.HorizontalLever.Workspace.ABzero);
+            SetNewCoordinateLocation();
         }
 
         private void Interpreter_OnInterpreterStop(object sender, EventArgs e)
@@ -544,52 +564,40 @@ namespace ManipulatorControl
                 if (result)
                     interpreter.StartInterprete(parser.CommandQueue);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 messageService.ShowError(ex.Message);
             }
         }
 
-        private void OnPositionChanged(LeverType type, long stepsCount)
+        private void Worker_Elapsed(object sender, EventArgs e)
         {
-            calculation.SetNewAB(type, stepsCount);
+            if (movingLever == null)
+                return;
 
-            var newValue = calculation.GetPartMovableByLeverType(type).AB;
-
-            if (view.IsEditWorkspaceMode)
-                view.SetCurrentEditWorkspaceModeLeverPosition(type, newValue);
-
-            SaveLeverCurrentPosition(type, newValue);
-
-            SetNewCoordinateLocation();
+            if (movingLever.Type == LeverType.Horizontal)
+                z = calculation.GetZ(movingLever.Stepper.CurrentStepsCount);
+            else
+                calculation.GetXY(movingLever.Type, movingLever.Stepper.CurrentStepsCount, out x, out y);
+            this.view.SetCurrentPosition(true, x, y, z);
         }
 
         private void Worker_OnStop(object sender, EventArgs e)
         {
-            OnPositionChanged(movingLever.Type, movingLever.Stepper.CurrentStepsCount);
+            ChangeLeverPosition(movingLever.Type, movingLever.Stepper.CurrentStepsCount);
 
-            view.Directions ^= movingLever.ActiveDirection;
-                       
-            var leverDesignParams = calculation.GetPartMovableByLeverType(movingLever.Type); 
+            //view.Directions ^= movingLever.ActiveDirection;
+
+            var leverDesignParams = calculation.GetPartMovableByLeverType(movingLever.Type);
 
             movingLever = null;
         }
 
         private void Worker_OnStart(object sender, EventArgs e)
-        {  
-            view.Directions = movingLever.ActiveDirection;
-        }
-
-        private void View_InvokeStepperStop(object sender, EventArgs e)
         {
-            worker.Stop();
+            //view.Directions = movingLever.ActiveDirection;
         }
-
-        private void View_InvokeStepperAbort(object sender, EventArgs e)
-        {
-            worker.Abort();
-        }
-
+        
         private void View_ManualControlStop(object sender, StepLever stepLever)
         {
             if (!worker.Enabled)
@@ -621,5 +629,7 @@ namespace ManipulatorControl
 
             new Task(worker.Start).Start(); 
         }
+
+        #endregion
     }
 }

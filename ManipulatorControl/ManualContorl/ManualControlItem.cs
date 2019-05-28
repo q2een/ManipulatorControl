@@ -99,6 +99,7 @@ namespace ManipulatorControl
 
             timer.Stop();
 
+            Active.Button.Invalidate(); 
             Active = null;
         }
 
@@ -131,6 +132,12 @@ namespace ManipulatorControl
             return GetEntityByButton(GetButtonByHotKey(key));
         }
 
+        private void MarkAsActive()
+        {
+            var btn = Active.Button;
+            btn.CreateGraphics().DrawRectangle(new Pen(Color.Blue, 3), 3, 3, btn.Width - 6, btn.Height - 6);
+        }
+
         private void Button_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left || Active != null)
@@ -155,6 +162,7 @@ namespace ManipulatorControl
 
             timer.Stop();
 
+            Active.Button.Invalidate(); 
             Active = null;
         }
 
@@ -169,9 +177,12 @@ namespace ManipulatorControl
         private void Timer_Tick(object sender, EventArgs e)
         {
             OnInvokeStart(this, EventArgs.Empty);
+
+            MarkAsActive();
+
             timer.Stop();
         }
-       
+
         private void Button_Paint(object sender, PaintEventArgs e)
         {
             if (!isHotKeysMode)
@@ -184,8 +195,8 @@ namespace ManipulatorControl
             using (var drawFont = new Font("Arial", 10))
             {
                 var stringSize = e.Graphics.MeasureString(key.ToString(), drawFont);
-                e.Graphics.FillRectangle(Brushes.LemonChiffon, 0, 0, stringSize.Width, stringSize.Height);
-                e.Graphics.DrawString(key.ToString(), drawFont, Brushes.Black, 0, 2);
+                e.Graphics.FillRectangle(Brushes.LemonChiffon, 6, 6, stringSize.Width, stringSize.Height);
+                e.Graphics.DrawString(key.ToString(), drawFont, Brushes.Black, 6, 8);
             }
         }
 

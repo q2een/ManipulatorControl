@@ -46,6 +46,25 @@ namespace ManipulatorControl
             y = AnglesCalculation.GetY(DesignParameters, phi1, phi2);
         }
 
+        public void GetXY(LeverType type, long stepsCount, out double x, out double y)
+        {
+            if (type == LeverType.Horizontal)
+                throw new ArgumentException();
+
+            var newABvalue = PulseCalculation.GetNewAB(GetPartMovableByLeverType(type), stepsCount);
+
+            var lever1Ab = type == LeverType.Lever1 ? newABvalue : DesignParameters.Lever1.AB;
+            var lever2Ab = type == LeverType.Lever2 ? newABvalue : DesignParameters.Lever2.AB;
+
+
+            GetXYByABValues(lever1Ab, lever2Ab, out x, out y);
+        }
+
+        public double GetZ(long stepsCount)
+        {
+            return PulseCalculation.GetNewAB(DesignParameters.HorizontalLever, stepsCount);
+        }
+
         public void SetCurrentCoordinates(ref double x, ref double y, ref double z)
         {
             x = AnglesCalculation.GetCurrentX(DesignParameters);

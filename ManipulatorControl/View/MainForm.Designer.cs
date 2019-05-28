@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.controlTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.manualControlMI = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,6 +110,7 @@
             this.rbHorizontalLever = new System.Windows.Forms.RadioButton();
             this.rbLever1 = new System.Windows.Forms.RadioButton();
             this.rbLever2 = new System.Windows.Forms.RadioButton();
+            this.rightSidePanel = new System.Windows.Forms.Panel();
             this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
             this.menuStrip1.SuspendLayout();
@@ -124,6 +126,7 @@
             this.tpGCodes.SuspendLayout();
             this.tpWorkspaces.SuspendLayout();
             this.tlpWorkspaceInfo.SuspendLayout();
+            this.rightSidePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -216,8 +219,8 @@
             this.editWorkspaceValuesMI,
             this.editWorkspaceSeparatorMI,
             this.addWorkspaceMI,
-            this.removeWorkspaceMI,
             this.renameWorkspace,
+            this.removeWorkspaceMI,
             this.setMaxValueMI,
             this.setMinValueMI,
             this.setZeroValueMI,
@@ -344,9 +347,9 @@
             this.panel1.Controls.Add(this.btnAbort);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.panel1.Location = new System.Drawing.Point(545, 212);
+            this.panel1.Location = new System.Drawing.Point(10, 198);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(384, 95);
+            this.panel1.Size = new System.Drawing.Size(362, 95);
             this.panel1.TabIndex = 2;
             // 
             // btnStop
@@ -375,10 +378,10 @@
             // 
             this.btnXPos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnXPos.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnXPos.Location = new System.Drawing.Point(360, 37);
+            this.btnXPos.Location = new System.Drawing.Point(361, 37);
             this.btnXPos.Margin = new System.Windows.Forms.Padding(7);
             this.btnXPos.Name = "btnXPos";
-            this.btnXPos.Size = new System.Drawing.Size(164, 65);
+            this.btnXPos.Size = new System.Drawing.Size(165, 65);
             this.btnXPos.TabIndex = 9;
             this.btnXPos.Text = "↑";
             this.btnXPos.UseVisualStyleBackColor = true;
@@ -387,10 +390,10 @@
             // 
             this.btnXNeg.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnXNeg.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnXNeg.Location = new System.Drawing.Point(360, 116);
+            this.btnXNeg.Location = new System.Drawing.Point(361, 116);
             this.btnXNeg.Margin = new System.Windows.Forms.Padding(7);
             this.btnXNeg.Name = "btnXNeg";
-            this.btnXNeg.Size = new System.Drawing.Size(164, 65);
+            this.btnXNeg.Size = new System.Drawing.Size(165, 65);
             this.btnXNeg.TabIndex = 10;
             this.btnXNeg.Text = "↓";
             this.btnXNeg.UseVisualStyleBackColor = true;
@@ -399,7 +402,7 @@
             // 
             this.btnYPos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnYPos.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnYPos.Location = new System.Drawing.Point(183, 37);
+            this.btnYPos.Location = new System.Drawing.Point(184, 37);
             this.btnYPos.Margin = new System.Windows.Forms.Padding(7);
             this.btnYPos.Name = "btnYPos";
             this.btnYPos.Size = new System.Drawing.Size(163, 65);
@@ -414,7 +417,7 @@
             this.btnZPos.Location = new System.Drawing.Point(7, 37);
             this.btnZPos.Margin = new System.Windows.Forms.Padding(7);
             this.btnZPos.Name = "btnZPos";
-            this.btnZPos.Size = new System.Drawing.Size(162, 65);
+            this.btnZPos.Size = new System.Drawing.Size(163, 65);
             this.btnZPos.TabIndex = 3;
             this.btnZPos.Text = "→";
             this.btnZPos.UseVisualStyleBackColor = true;
@@ -426,7 +429,7 @@
             this.btnZNeg.Location = new System.Drawing.Point(7, 116);
             this.btnZNeg.Margin = new System.Windows.Forms.Padding(7);
             this.btnZNeg.Name = "btnZNeg";
-            this.btnZNeg.Size = new System.Drawing.Size(162, 65);
+            this.btnZNeg.Size = new System.Drawing.Size(163, 65);
             this.btnZNeg.TabIndex = 4;
             this.btnZNeg.Text = "←";
             this.btnZNeg.UseVisualStyleBackColor = true;
@@ -435,7 +438,7 @@
             // 
             this.btnYNeg.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnYNeg.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnYNeg.Location = new System.Drawing.Point(183, 116);
+            this.btnYNeg.Location = new System.Drawing.Point(184, 116);
             this.btnYNeg.Margin = new System.Windows.Forms.Padding(7);
             this.btnYNeg.Name = "btnYNeg";
             this.btnYNeg.Size = new System.Drawing.Size(163, 65);
@@ -470,7 +473,7 @@
             this.tlpManualControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tlpManualControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tlpManualControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tlpManualControl.Size = new System.Drawing.Size(531, 267);
+            this.tlpManualControl.Size = new System.Drawing.Size(533, 267);
             this.tlpManualControl.TabIndex = 0;
             // 
             // lblHorizontalLever
@@ -478,7 +481,7 @@
             this.lblHorizontalLever.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblHorizontalLever.Location = new System.Drawing.Point(3, 0);
             this.lblHorizontalLever.Name = "lblHorizontalLever";
-            this.lblHorizontalLever.Size = new System.Drawing.Size(170, 30);
+            this.lblHorizontalLever.Size = new System.Drawing.Size(171, 30);
             this.lblHorizontalLever.TabIndex = 0;
             this.lblHorizontalLever.Text = "Z";
             this.lblHorizontalLever.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -486,7 +489,7 @@
             // lblLever1
             // 
             this.lblLever1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLever1.Location = new System.Drawing.Point(179, 0);
+            this.lblLever1.Location = new System.Drawing.Point(180, 0);
             this.lblLever1.Name = "lblLever1";
             this.lblLever1.Size = new System.Drawing.Size(171, 30);
             this.lblLever1.TabIndex = 1;
@@ -496,9 +499,9 @@
             // lblLever2
             // 
             this.lblLever2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLever2.Location = new System.Drawing.Point(356, 0);
+            this.lblLever2.Location = new System.Drawing.Point(357, 0);
             this.lblLever2.Name = "lblLever2";
-            this.lblLever2.Size = new System.Drawing.Size(172, 30);
+            this.lblLever2.Size = new System.Drawing.Size(173, 30);
             this.lblLever2.TabIndex = 2;
             this.lblLever2.Text = "Плечо 2";
             this.lblLever2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -510,7 +513,7 @@
             this.btnZNull.Location = new System.Drawing.Point(7, 195);
             this.btnZNull.Margin = new System.Windows.Forms.Padding(7);
             this.btnZNull.Name = "btnZNull";
-            this.btnZNull.Size = new System.Drawing.Size(162, 65);
+            this.btnZNull.Size = new System.Drawing.Size(163, 65);
             this.btnZNull.TabIndex = 5;
             this.btnZNull.Text = "0";
             this.btnZNull.UseVisualStyleBackColor = true;
@@ -519,7 +522,7 @@
             // 
             this.btnYNull.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnYNull.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnYNull.Location = new System.Drawing.Point(183, 195);
+            this.btnYNull.Location = new System.Drawing.Point(184, 195);
             this.btnYNull.Margin = new System.Windows.Forms.Padding(7);
             this.btnYNull.Name = "btnYNull";
             this.btnYNull.Size = new System.Drawing.Size(163, 65);
@@ -531,10 +534,10 @@
             // 
             this.btnXNull.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnXNull.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnXNull.Location = new System.Drawing.Point(360, 195);
+            this.btnXNull.Location = new System.Drawing.Point(361, 195);
             this.btnXNull.Margin = new System.Windows.Forms.Padding(7);
             this.btnXNull.Name = "btnXNull";
-            this.btnXNull.Size = new System.Drawing.Size(164, 65);
+            this.btnXNull.Size = new System.Drawing.Size(165, 65);
             this.btnXNull.TabIndex = 11;
             this.btnXNull.Text = "0";
             this.btnXNull.UseVisualStyleBackColor = true;
@@ -547,7 +550,7 @@
             this.gbErrors.Location = new System.Drawing.Point(3, 305);
             this.gbErrors.Name = "gbErrors";
             this.gbErrors.Padding = new System.Windows.Forms.Padding(1);
-            this.gbErrors.Size = new System.Drawing.Size(531, 145);
+            this.gbErrors.Size = new System.Drawing.Size(533, 145);
             this.gbErrors.TabIndex = 0;
             this.gbErrors.TabStop = false;
             this.gbErrors.Text = "Ошибки";
@@ -561,7 +564,7 @@
             this.lstErrors.ItemHeight = 18;
             this.lstErrors.Location = new System.Drawing.Point(1, 18);
             this.lstErrors.Name = "lstErrors";
-            this.lstErrors.Size = new System.Drawing.Size(529, 126);
+            this.lstErrors.Size = new System.Drawing.Size(531, 126);
             this.lstErrors.TabIndex = 0;
             this.lstErrors.DoubleClick += new System.EventHandler(this.lstErrors_DoubleClick);
             // 
@@ -570,13 +573,14 @@
             this.tabControlType.Controls.Add(this.tpManualControl);
             this.tabControlType.Controls.Add(this.tpGCodes);
             this.tabControlType.Controls.Add(this.tpWorkspaces);
-            this.tabControlType.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tabControlType.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlType.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tabControlType.ItemSize = new System.Drawing.Size(80, 30);
             this.tabControlType.Location = new System.Drawing.Point(0, 24);
+            this.tabControlType.MinimumSize = new System.Drawing.Size(530, 490);
             this.tabControlType.Name = "tabControlType";
             this.tabControlType.SelectedIndex = 0;
-            this.tabControlType.Size = new System.Drawing.Size(545, 491);
+            this.tabControlType.Size = new System.Drawing.Size(547, 491);
             this.tabControlType.TabIndex = 6;
             this.tabControlType.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControlType_Selected);
             // 
@@ -587,7 +591,7 @@
             this.tpManualControl.Location = new System.Drawing.Point(4, 34);
             this.tpManualControl.Name = "tpManualControl";
             this.tpManualControl.Padding = new System.Windows.Forms.Padding(3);
-            this.tpManualControl.Size = new System.Drawing.Size(537, 453);
+            this.tpManualControl.Size = new System.Drawing.Size(539, 453);
             this.tpManualControl.TabIndex = 0;
             this.tpManualControl.Text = "Ручное управление";
             this.tpManualControl.UseVisualStyleBackColor = true;
@@ -601,7 +605,7 @@
             this.gbWorkspaceInfo.Location = new System.Drawing.Point(3, 276);
             this.gbWorkspaceInfo.Name = "gbWorkspaceInfo";
             this.gbWorkspaceInfo.Padding = new System.Windows.Forms.Padding(10);
-            this.gbWorkspaceInfo.Size = new System.Drawing.Size(531, 174);
+            this.gbWorkspaceInfo.Size = new System.Drawing.Size(533, 174);
             this.gbWorkspaceInfo.TabIndex = 1;
             this.gbWorkspaceInfo.TabStop = false;
             this.gbWorkspaceInfo.Text = "Рабочая зона";
@@ -629,7 +633,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(373, 137);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(375, 137);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // label12
@@ -638,7 +642,7 @@
             this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label12.Location = new System.Drawing.Point(4, 103);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(216, 33);
+            this.label12.Size = new System.Drawing.Size(217, 33);
             this.label12.TabIndex = 7;
             this.label12.Text = "Нулевое значение";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -649,7 +653,7 @@
             this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label11.Location = new System.Drawing.Point(4, 69);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(216, 33);
+            this.label11.Size = new System.Drawing.Size(217, 33);
             this.label11.TabIndex = 6;
             this.label11.Text = "Минимальное значение";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -660,7 +664,7 @@
             this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label10.Location = new System.Drawing.Point(4, 35);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(216, 33);
+            this.label10.Size = new System.Drawing.Size(217, 33);
             this.label10.TabIndex = 5;
             this.label10.Text = "Максимальное значение";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -669,9 +673,9 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label7.Location = new System.Drawing.Point(227, 1);
+            this.label7.Location = new System.Drawing.Point(228, 1);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(142, 33);
+            this.label7.Size = new System.Drawing.Size(143, 33);
             this.label7.TabIndex = 2;
             this.label7.Text = "Значение";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -682,7 +686,7 @@
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Location = new System.Drawing.Point(4, 1);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(216, 33);
+            this.label6.Size = new System.Drawing.Size(217, 33);
             this.label6.TabIndex = 1;
             this.label6.Text = "Параметр";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -691,9 +695,9 @@
             // 
             this.lblWorkspaceABmax.AutoSize = true;
             this.lblWorkspaceABmax.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblWorkspaceABmax.Location = new System.Drawing.Point(227, 35);
+            this.lblWorkspaceABmax.Location = new System.Drawing.Point(228, 35);
             this.lblWorkspaceABmax.Name = "lblWorkspaceABmax";
-            this.lblWorkspaceABmax.Size = new System.Drawing.Size(142, 33);
+            this.lblWorkspaceABmax.Size = new System.Drawing.Size(143, 33);
             this.lblWorkspaceABmax.TabIndex = 3;
             this.lblWorkspaceABmax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -701,9 +705,9 @@
             // 
             this.lblWorkspaceABmin.AutoSize = true;
             this.lblWorkspaceABmin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblWorkspaceABmin.Location = new System.Drawing.Point(227, 69);
+            this.lblWorkspaceABmin.Location = new System.Drawing.Point(228, 69);
             this.lblWorkspaceABmin.Name = "lblWorkspaceABmin";
-            this.lblWorkspaceABmin.Size = new System.Drawing.Size(142, 33);
+            this.lblWorkspaceABmin.Size = new System.Drawing.Size(143, 33);
             this.lblWorkspaceABmin.TabIndex = 0;
             this.lblWorkspaceABmin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -711,9 +715,9 @@
             // 
             this.lblWorkspaceABZero.AutoSize = true;
             this.lblWorkspaceABZero.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblWorkspaceABZero.Location = new System.Drawing.Point(227, 103);
+            this.lblWorkspaceABZero.Location = new System.Drawing.Point(228, 103);
             this.lblWorkspaceABZero.Name = "lblWorkspaceABZero";
-            this.lblWorkspaceABZero.Size = new System.Drawing.Size(142, 33);
+            this.lblWorkspaceABZero.Size = new System.Drawing.Size(143, 33);
             this.lblWorkspaceABZero.TabIndex = 4;
             this.lblWorkspaceABZero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -755,7 +759,7 @@
             this.tpGCodes.Location = new System.Drawing.Point(4, 34);
             this.tpGCodes.Name = "tpGCodes";
             this.tpGCodes.Padding = new System.Windows.Forms.Padding(3);
-            this.tpGCodes.Size = new System.Drawing.Size(537, 453);
+            this.tpGCodes.Size = new System.Drawing.Size(539, 453);
             this.tpGCodes.TabIndex = 1;
             this.tpGCodes.Text = "Выполнение G-кодов";
             this.tpGCodes.UseVisualStyleBackColor = true;
@@ -766,7 +770,7 @@
             this.tpWorkspaces.Controls.Add(this.lstWorkspaces);
             this.tpWorkspaces.Location = new System.Drawing.Point(4, 34);
             this.tpWorkspaces.Name = "tpWorkspaces";
-            this.tpWorkspaces.Size = new System.Drawing.Size(537, 453);
+            this.tpWorkspaces.Size = new System.Drawing.Size(539, 453);
             this.tpWorkspaces.TabIndex = 2;
             this.tpWorkspaces.Text = "Рабочие зоны";
             this.tpWorkspaces.UseVisualStyleBackColor = true;
@@ -803,7 +807,7 @@
             this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpWorkspaceInfo.Size = new System.Drawing.Size(537, 273);
+            this.tlpWorkspaceInfo.Size = new System.Drawing.Size(539, 273);
             this.tlpWorkspaceInfo.TabIndex = 1;
             // 
             // label1
@@ -867,7 +871,7 @@
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label8.Location = new System.Drawing.Point(406, 1);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(127, 67);
+            this.label8.Size = new System.Drawing.Size(129, 67);
             this.label8.TabIndex = 0;
             this.label8.Text = "Плечо 2";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -901,7 +905,7 @@
             this.lblLever2Max.Location = new System.Drawing.Point(403, 69);
             this.lblLever2Max.Margin = new System.Windows.Forms.Padding(0);
             this.lblLever2Max.Name = "lblLever2Max";
-            this.lblLever2Max.Size = new System.Drawing.Size(133, 67);
+            this.lblLever2Max.Size = new System.Drawing.Size(135, 67);
             this.lblLever2Max.TabIndex = 1;
             this.lblLever2Max.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -934,7 +938,7 @@
             this.lblLever2Min.Location = new System.Drawing.Point(403, 137);
             this.lblLever2Min.Margin = new System.Windows.Forms.Padding(0);
             this.lblLever2Min.Name = "lblLever2Min";
-            this.lblLever2Min.Size = new System.Drawing.Size(133, 67);
+            this.lblLever2Min.Size = new System.Drawing.Size(135, 67);
             this.lblLever2Min.TabIndex = 1;
             this.lblLever2Min.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -967,7 +971,7 @@
             this.lblLever2Zero.Location = new System.Drawing.Point(403, 205);
             this.lblLever2Zero.Margin = new System.Windows.Forms.Padding(0);
             this.lblLever2Zero.Name = "lblLever2Zero";
-            this.lblLever2Zero.Size = new System.Drawing.Size(133, 67);
+            this.lblLever2Zero.Size = new System.Drawing.Size(135, 67);
             this.lblLever2Zero.TabIndex = 1;
             this.lblLever2Zero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -980,7 +984,7 @@
             this.lstWorkspaces.ItemHeight = 20;
             this.lstWorkspaces.Location = new System.Drawing.Point(0, 0);
             this.lstWorkspaces.Name = "lstWorkspaces";
-            this.lstWorkspaces.Size = new System.Drawing.Size(537, 180);
+            this.lstWorkspaces.Size = new System.Drawing.Size(539, 180);
             this.lstWorkspaces.TabIndex = 0;
             this.lstWorkspaces.SelectedIndexChanged += new System.EventHandler(this.lstWorkspaces_SelectedIndexChanged);
             // 
@@ -1026,6 +1030,18 @@
             this.rbLever2.UseVisualStyleBackColor = true;
             this.rbLever2.CheckedChanged += new System.EventHandler(this.TableHeaderRadiobuttons_CheckedChanged);
             // 
+            // rightSidePanel
+            // 
+            this.rightSidePanel.Controls.Add(this.panel1);
+            this.rightSidePanel.Controls.Add(this.directionPanel);
+            this.rightSidePanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.rightSidePanel.Location = new System.Drawing.Point(547, 24);
+            this.rightSidePanel.MinimumSize = new System.Drawing.Size(380, 490);
+            this.rightSidePanel.Name = "rightSidePanel";
+            this.rightSidePanel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.rightSidePanel.Size = new System.Drawing.Size(382, 491);
+            this.rightSidePanel.TabIndex = 7;
+            // 
             // gCodesBox
             // 
             this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1038,7 +1054,7 @@
             this.gCodesBox.Name = "gCodesBox";
             this.gCodesBox.ReadOnly = false;
             this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
-            this.gCodesBox.Size = new System.Drawing.Size(531, 302);
+            this.gCodesBox.Size = new System.Drawing.Size(533, 302);
             this.gCodesBox.TabIndex = 1;
             this.gCodesBox.WordWrap = false;
             // 
@@ -1201,9 +1217,12 @@
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.directionPanel.IsZeroEnabled = false;
-            this.directionPanel.Location = new System.Drawing.Point(545, 24);
+            this.directionPanel.Location = new System.Drawing.Point(10, 0);
             this.directionPanel.Name = "directionPanel";
             this.directionPanel.RowCount = 4;
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
@@ -1362,20 +1381,27 @@
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
-            this.directionPanel.Size = new System.Drawing.Size(384, 188);
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.Size = new System.Drawing.Size(362, 198);
             this.directionPanel.TabIndex = 0;
             this.directionPanel.TabStop = true;
+            this.directionPanel.X = 0D;
+            this.directionPanel.Y = 0D;
+            this.directionPanel.Z = 0D;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(929, 537);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.directionPanel);
             this.Controls.Add(this.tabControlType);
+            this.Controls.Add(this.rightSidePanel);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
@@ -1399,6 +1425,7 @@
             this.tpWorkspaces.ResumeLayout(false);
             this.tlpWorkspaceInfo.ResumeLayout(false);
             this.tlpWorkspaceInfo.PerformLayout();
+            this.rightSidePanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1489,6 +1516,7 @@
         private System.Windows.Forms.ToolStripMenuItem closeEditWorkspaceModeMI;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel statusLblCurrentPosition;
+        private System.Windows.Forms.Panel rightSidePanel;
     }
 }
 

@@ -7,7 +7,7 @@ namespace ManipulatorControl.Model
 {
     public static class Extensions
     {
-        public static string ToString(LeverType type)
+        public static string ToRuString(this LeverType type)
         {
             if (type == LeverType.Horizontal)
                 return "Горизонтальное";

@@ -58,11 +58,16 @@ namespace UM160CalculationLib
         /// <returns>Истина, если пара углов соответствует конструктивным параметрам робота</returns>
         public static bool IsAnglesAreValid(DesignParameters dp, AnglesOfRotation angles)
         {
-            var phi1 = Math.Round(angles.Phi1, 2);
-            var phi2 = Math.Round(angles.Phi2, 2);
+            var phi1 = RoundAngle(angles.Phi1);
+            var phi2 = RoundAngle(angles.Phi2);
 
-            return (phi1 >= dp.Lever1.PhiMin && phi1 <= dp.Lever1.PhiMax) &&
-                (phi2 >= dp.Lever2.PhiMin && phi2 <= dp.Lever2.PhiMax);
+            return (phi1 >= RoundAngle(dp.Lever1.PhiMin) && phi1 <= RoundAngle(dp.Lever1.PhiMax)) &&
+                (phi2 >= RoundAngle(dp.Lever2.PhiMin) && phi2 <= RoundAngle(dp.Lever2.PhiMax));
+        }
+
+        private static double RoundAngle(double angle)
+        {
+            return Math.Round(angle, 2);
         }
 
         // Множитель для перевода градусов в радианы.     
