@@ -44,8 +44,8 @@
             this.editWorkspaceValuesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.editWorkspaceSeparatorMI = new System.Windows.Forms.ToolStripSeparator();
             this.addWorkspaceMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeWorkspaceMI = new System.Windows.Forms.ToolStripMenuItem();
             this.renameWorkspace = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeWorkspaceMI = new System.Windows.Forms.ToolStripMenuItem();
             this.setMaxValueMI = new System.Windows.Forms.ToolStripMenuItem();
             this.setMinValueMI = new System.Windows.Forms.ToolStripMenuItem();
             this.setZeroValueMI = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,6 +89,7 @@
             this.lblWorkspaceAB = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.tpGCodes = new System.Windows.Forms.TabPage();
+            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.tpWorkspaces = new System.Windows.Forms.TabPage();
             this.tlpWorkspaceInfo = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -111,7 +112,6 @@
             this.rbLever1 = new System.Windows.Forms.RadioButton();
             this.rbLever2 = new System.Windows.Forms.RadioButton();
             this.rightSidePanel = new System.Windows.Forms.Panel();
-            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -258,19 +258,19 @@
             this.addWorkspaceMI.Text = "Добавить";
             this.addWorkspaceMI.Click += new System.EventHandler(this.addWorkspaceMI_Click);
             // 
-            // removeWorkspaceMI
-            // 
-            this.removeWorkspaceMI.Name = "removeWorkspaceMI";
-            this.removeWorkspaceMI.Size = new System.Drawing.Size(266, 22);
-            this.removeWorkspaceMI.Text = "Удалить";
-            this.removeWorkspaceMI.Click += new System.EventHandler(this.removeWorkspaceMI_Click);
-            // 
             // renameWorkspace
             // 
             this.renameWorkspace.Name = "renameWorkspace";
             this.renameWorkspace.Size = new System.Drawing.Size(266, 22);
             this.renameWorkspace.Text = "Переименовать";
             this.renameWorkspace.Click += new System.EventHandler(this.renameWorkspace_Click);
+            // 
+            // removeWorkspaceMI
+            // 
+            this.removeWorkspaceMI.Name = "removeWorkspaceMI";
+            this.removeWorkspaceMI.Size = new System.Drawing.Size(266, 22);
+            this.removeWorkspaceMI.Text = "Удалить";
+            this.removeWorkspaceMI.Click += new System.EventHandler(this.removeWorkspaceMI_Click);
             // 
             // setMaxValueMI
             // 
@@ -378,6 +378,7 @@
             // 
             this.btnXPos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnXPos.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnXPos.Image = global::ManipulatorControl.Properties.Resources.arrow_up;
             this.btnXPos.Location = new System.Drawing.Point(361, 37);
             this.btnXPos.Margin = new System.Windows.Forms.Padding(7);
             this.btnXPos.Name = "btnXPos";
@@ -390,6 +391,7 @@
             // 
             this.btnXNeg.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnXNeg.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnXNeg.Image = ((System.Drawing.Image)(resources.GetObject("btnXNeg.Image")));
             this.btnXNeg.Location = new System.Drawing.Point(361, 116);
             this.btnXNeg.Margin = new System.Windows.Forms.Padding(7);
             this.btnXNeg.Name = "btnXNeg";
@@ -402,6 +404,7 @@
             // 
             this.btnYPos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnYPos.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnYPos.Image = global::ManipulatorControl.Properties.Resources.arrow_up;
             this.btnYPos.Location = new System.Drawing.Point(184, 37);
             this.btnYPos.Margin = new System.Windows.Forms.Padding(7);
             this.btnYPos.Name = "btnYPos";
@@ -414,6 +417,7 @@
             // 
             this.btnZPos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnZPos.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnZPos.Image = global::ManipulatorControl.Properties.Resources.arrow_right;
             this.btnZPos.Location = new System.Drawing.Point(7, 37);
             this.btnZPos.Margin = new System.Windows.Forms.Padding(7);
             this.btnZPos.Name = "btnZPos";
@@ -426,6 +430,7 @@
             // 
             this.btnZNeg.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnZNeg.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnZNeg.Image = global::ManipulatorControl.Properties.Resources.arrow_left;
             this.btnZNeg.Location = new System.Drawing.Point(7, 116);
             this.btnZNeg.Margin = new System.Windows.Forms.Padding(7);
             this.btnZNeg.Name = "btnZNeg";
@@ -438,6 +443,7 @@
             // 
             this.btnYNeg.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnYNeg.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnYNeg.Image = ((System.Drawing.Image)(resources.GetObject("btnYNeg.Image")));
             this.btnYNeg.Location = new System.Drawing.Point(184, 116);
             this.btnYNeg.Margin = new System.Windows.Forms.Padding(7);
             this.btnYNeg.Name = "btnYNeg";
@@ -764,6 +770,23 @@
             this.tpGCodes.Text = "Выполнение G-кодов";
             this.tpGCodes.UseVisualStyleBackColor = true;
             // 
+            // gCodesBox
+            // 
+            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gCodesBox.Enable = true;
+            this.gCodesBox.EnableLineNumbering = false;
+            this.gCodesBox.FontSize = ((byte)(14));
+            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
+            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
+            this.gCodesBox.Lines = new string[0];
+            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
+            this.gCodesBox.Name = "gCodesBox";
+            this.gCodesBox.ReadOnly = false;
+            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
+            this.gCodesBox.Size = new System.Drawing.Size(533, 302);
+            this.gCodesBox.TabIndex = 1;
+            this.gCodesBox.WordWrap = false;
+            // 
             // tpWorkspaces
             // 
             this.tpWorkspaces.Controls.Add(this.tlpWorkspaceInfo);
@@ -1042,22 +1065,6 @@
             this.rightSidePanel.Size = new System.Drawing.Size(382, 491);
             this.rightSidePanel.TabIndex = 7;
             // 
-            // gCodesBox
-            // 
-            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gCodesBox.Enable = true;
-            this.gCodesBox.FontSize = ((byte)(14));
-            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
-            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
-            this.gCodesBox.Lines = new string[0];
-            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
-            this.gCodesBox.Name = "gCodesBox";
-            this.gCodesBox.ReadOnly = false;
-            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
-            this.gCodesBox.Size = new System.Drawing.Size(533, 302);
-            this.gCodesBox.TabIndex = 1;
-            this.gCodesBox.WordWrap = false;
-            // 
             // directionPanel
             // 
             this.directionPanel.ColumnCount = 4;
@@ -1221,10 +1228,27 @@
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.directionPanel.IsZeroEnabled = true;
             this.directionPanel.Location = new System.Drawing.Point(10, 0);
             this.directionPanel.Name = "directionPanel";
             this.directionPanel.RowCount = 4;
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));

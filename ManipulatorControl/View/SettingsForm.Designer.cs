@@ -78,8 +78,8 @@
             this.designParametersTabs = new ManipulatorControl.DesignParametersTabControl();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabSettings.SuspendLayout();
             this.pagePinSettings.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -630,7 +630,6 @@
             this.stepperSettingsPanel3.Name = "stepperSettingsPanel3";
             this.stepperSettingsPanel3.Size = new System.Drawing.Size(363, 242);
             this.stepperSettingsPanel3.Speed = 0F;
-            this.stepperSettingsPanel3.Stepper = null;
             this.stepperSettingsPanel3.TabIndex = 0;
             // 
             // stepperSettingsPanel2
@@ -644,7 +643,6 @@
             this.stepperSettingsPanel2.Name = "stepperSettingsPanel2";
             this.stepperSettingsPanel2.Size = new System.Drawing.Size(354, 244);
             this.stepperSettingsPanel2.Speed = 0F;
-            this.stepperSettingsPanel2.Stepper = null;
             this.stepperSettingsPanel2.TabIndex = 0;
             // 
             // stepperSettingsPanel1
@@ -658,7 +656,6 @@
             this.stepperSettingsPanel1.Name = "stepperSettingsPanel1";
             this.stepperSettingsPanel1.Size = new System.Drawing.Size(363, 243);
             this.stepperSettingsPanel1.Speed = 0F;
-            this.stepperSettingsPanel1.Stepper = null;
             this.stepperSettingsPanel1.TabIndex = 0;
             // 
             // pageDesignParameters
@@ -711,16 +708,6 @@
             this.button2.Text = "По умолчанию";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(561, 13);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(99, 30);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Применить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(666, 13);
@@ -730,6 +717,16 @@
             this.button3.Text = "Отмена";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(561, 13);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(99, 30);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Применить";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // SettingsForm
             // 
