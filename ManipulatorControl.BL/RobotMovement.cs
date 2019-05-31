@@ -100,6 +100,10 @@ namespace ManipulatorControl.BL
             leverMovement.Abort();
         }
 
+        public void SetStepsInterval(int interval)
+        {
+            leverMovement.StepsInterval = interval;
+        }
 
         private void ChangeLeverPosition(LeverType type, long stepsCount)
         {
