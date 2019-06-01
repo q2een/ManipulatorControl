@@ -69,9 +69,9 @@ namespace ManipulatorControl.BL
         {
             return new Location()
             {
-                X = AnglesCalculation.GetCurrentX(DesignParameters),
-                Y = AnglesCalculation.GetCurrentY(DesignParameters),
-                Z = DesignParameters.HorizontalLever.AB
+                X = GetCurrentX(),
+                Y = GetCurrentY(),
+                Z = GetCurrentZ()
             };
         }
 
@@ -150,6 +150,12 @@ namespace ManipulatorControl.BL
             yield return new StepLever(LeverType.Lever1, PulseCalculation.GetPulsesCount(DesignParameters.Lever1, angles.Phi1));
             yield return new StepLever(LeverType.Lever2, PulseCalculation.GetPulsesCount(DesignParameters.Lever2, angles.Phi2));
             yield return new StepLever(LeverType.Horizontal, PulseCalculation.GetPulsesCount(DesignParameters.HorizontalLever,z));
+        }
+
+        public IEnumerable<StepLever> StepLeversToAbZero(IEnumerable<LeverType> levers)
+        {
+            foreach (var leverType in levers)
+                yield return new StepLever(leverType, CalculateStepsToLeverZero(leverType));
         }
 
         public IRobotLever GetPartMovableByLeverType(LeverType type)

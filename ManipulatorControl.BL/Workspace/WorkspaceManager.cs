@@ -9,13 +9,10 @@ namespace ManipulatorControl.BL.Workspace
 {
     public class WorkspaceManager
     {
-        private int editingWorkspaceIndex = -1;
-
         private readonly DesignParameters parameters;
 
         private RobotWorkspace activeWorkspace;
-
-        private List<RobotWorkspace> robotWorkspaces;
+        private List<RobotWorkspace> robotWorkspaces = new List<RobotWorkspace>();
 
         public ReadOnlyCollection<RobotWorkspace> RobotWorkspaces
         {
@@ -24,9 +21,17 @@ namespace ManipulatorControl.BL.Workspace
                 return robotWorkspaces.AsReadOnly();
             }
         }
-
-        public RobotWorkspace ActiveWorkspace { get; set; }
-
+        public RobotWorkspace ActiveWorkspace
+        {
+            get
+            {
+                return activeWorkspace;
+            }
+            set
+            {
+                SetActiveWorkspace(value);
+            }
+        }
         public int ActiveWorkspaceIndex
         {
             get
@@ -34,23 +39,51 @@ namespace ManipulatorControl.BL.Workspace
                 return RobotWorkspaces.IndexOf(ActiveWorkspace);
             }
         }
-
+        
         public WorkspaceManager(DesignParameters parameters, List<RobotWorkspace> robotWorkspaces)
         {
-            this.parameters = parameters;
-        }
+            this.parameters = parameters;                              
 
+            Add(GetDesignParametersWorkspace("Конструктивные параметры"));
+
+            if (robotWorkspaces != null)
+                this.robotWorkspaces.AddRange(robotWorkspaces);
+        }
+        
         public void Add(RobotWorkspace robotWorkspace)
         {
-            robotWorkspaces.Add(robotWorkspace);
+            if(!robotWorkspaces.Contains(robotWorkspace))
+                robotWorkspaces.Add(robotWorkspace);
         }
 
         public void Rename(int index, string name)
         {
+            if (index == -1)
+                throw new Exception("Заданная рабочая зона не найдена");
+
+            if (index == 0)
+                throw new Exception("Нельзя переименовать данную рабочую зону");
+
             if (name.Replace("\n", " ").Trim().Length < 3)
                 throw new ArgumentException("Имя рабочей зоны должно содержать, как минимум, три символа");
 
             robotWorkspaces[index].Name = name;
+        }
+
+        public void Remove(int index)
+        {
+            if (index == -1)
+                throw new Exception("Заданная рабочая зона не найдена");
+
+            if (index == 0)
+                throw new Exception("Нельзя удалить данную рабочую зону");
+
+            robotWorkspaces.RemoveAt(index);
+        }
+
+        public void Remove(RobotWorkspace workspace)
+        {
+            Remove(robotWorkspaces.IndexOf(workspace));
         }
 
         public void SetValue(IWorkspace workspace, MovableValueType valueType, double ab)
@@ -72,9 +105,8 @@ namespace ManipulatorControl.BL.Workspace
                 default: throw new ArgumentException("Тип значения не корректен");
             }
         }
-
-
-        private bool IsRobotInWorkspace(RobotWorkspace workspace)
+        
+        public bool IsRobotInWorkspace(RobotWorkspace workspace)
         {
             var horizontal = workspace.HorizontalLever.IsBetweenMinAndMax(parameters.HorizontalLever.AB);
             var lever1 = workspace.Lever1.IsBetweenMinAndMax(parameters.Lever1.AB);                     
@@ -83,14 +115,42 @@ namespace ManipulatorControl.BL.Workspace
             return horizontal && lever1 && lever2;
         }
 
-        public Queue<StepLever> StepsTo
-
-
         public static void RemoveWorkspacesFromDesignParameters(DesignParameters parameters)
         {
             parameters.Lever1.Workspace = null;
             parameters.Lever2.Workspace = null;
             parameters.HorizontalLever.Workspace = null;
+        }
+
+        public IEnumerable<LeverType> GetLeversOutOfWorkspaceRange(RobotWorkspace workspace)
+        {
+            if (!workspace.HorizontalLever.IsBetweenMinAndMax(parameters.HorizontalLever.AB))
+                yield return LeverType.Horizontal;
+
+            if (!workspace.Lever1.IsBetweenMinAndMax(parameters.Lever1.AB))
+                yield return LeverType.Lever1;
+
+            if (!workspace.Lever2.IsBetweenMinAndMax(parameters.Lever2.AB))
+                yield return LeverType.Lever2;
+        }
+
+        // Устанавливает заданную рабочую зону в качестве активной рабочей зоны.
+        private void SetActiveWorkspace(RobotWorkspace workspace)
+        {
+            if (!IsRobotInWorkspace(workspace))
+                throw new ArgumentException("Заданная рабочая зона не удовлетворяет конструктивным параметрам робота-манипулятора");
+
+            if (GetLeversOutOfWorkspaceRange(workspace).Count() != 0)
+                throw new ArgumentException("Текущее положение плеч робота находится вне рабочей зоны");
+
+            if (!robotWorkspaces.Contains(workspace))
+                robotWorkspaces.Add(workspace);
+
+            parameters.Lever1.Workspace = workspace.Lever1;
+            parameters.Lever2.Workspace = workspace.Lever2;
+            parameters.HorizontalLever.Workspace = workspace.HorizontalLever;
+
+            activeWorkspace = workspace;
         }
 
         // Устанавливает в качестве рабочей зоны конструктивные параметры робота.
@@ -127,17 +187,6 @@ namespace ManipulatorControl.BL.Workspace
                 Lever2 = parameters.Lever2 as IPartMovable
             };
         }
-
-        // Устанавливает заданную рабочую зону в качестве активной рабочей зоны.
-        private void SetActiveWorkspace(RobotWorkspace workspace)
-        {   
-            parameters.Lever1.Workspace = workspace.Lever1;
-            parameters.Lever2.Workspace = workspace.Lever2;
-            parameters.HorizontalLever.Workspace = workspace.HorizontalLever;
-
-            activeWorkspace = workspace;
-        }
-
 
         private bool IsWorkspaceInMovableRange(IWorkspace workspace, IPartMovable lever)
         {
