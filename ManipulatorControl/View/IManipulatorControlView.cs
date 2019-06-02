@@ -1,5 +1,6 @@
 ﻿using GCodeParser;
-using ManipulatorControl.Workspace;
+using ManipulatorControl.BL;
+using ManipulatorControl.BL.Workspace;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,9 @@ namespace ManipulatorControl
         List<GCodeException> ParserErrors { get; set; }
         string[] GCodeLines { get; set; }
 
-        void SetCurrentPosition(bool isRunning, double x, double y, double z);
+        void SetCurrentLocation(bool isRunning, double x, double y, double z);
+
+        void SetCurrentPosition(LeverPosition position);
 
         void SetZeroPositionState(bool isXYZero, bool isZZero);
 

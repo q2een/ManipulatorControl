@@ -21,6 +21,7 @@ namespace ManipulatorControl.BL.Workspace
                 return robotWorkspaces.AsReadOnly();
             }
         }
+
         public RobotWorkspace ActiveWorkspace
         {
             get
@@ -32,6 +33,7 @@ namespace ManipulatorControl.BL.Workspace
                 SetActiveWorkspace(value);
             }
         }
+
         public int ActiveWorkspaceIndex
         {
             get
@@ -49,7 +51,14 @@ namespace ManipulatorControl.BL.Workspace
             if (robotWorkspaces != null)
                 this.robotWorkspaces.AddRange(robotWorkspaces);
         }
-        
+
+        public void Add(string name)
+        {
+            var workspace = GetDesignParametersWorkspaceClone(name);
+
+            robotWorkspaces.Add(workspace);
+        }
+
         public void Add(RobotWorkspace robotWorkspace)
         {
             if(!robotWorkspaces.Contains(robotWorkspace))
@@ -134,14 +143,38 @@ namespace ManipulatorControl.BL.Workspace
                 yield return LeverType.Lever2;
         }
 
+        public IEnumerable<LeverPosition> GetLeverPositionsToWorkspaceZero(RobotWorkspace workspace)
+        {
+            if (workspace.HorizontalLever.ABzero == null)
+                throw new DesignParametersException(LeverType.Horizontal.ToRuString() + ": не задана нулевая точка. Перемещение невозможно");
+            else yield return new LeverPosition(LeverType.Horizontal, (double)workspace.HorizontalLever.ABzero);
+
+            if (workspace.Lever1.ABzero == null)
+                throw new DesignParametersException(LeverType.Lever1.ToRuString() + ": не задана нулевая точка. Перемещение невозможно");
+            else yield return new LeverPosition(LeverType.Lever1, (double)workspace.Lever1.ABzero);
+
+            if (workspace.Lever2.ABzero == null)
+                throw new DesignParametersException(LeverType.Lever2.ToRuString() + ": не задана нулевая точка. Перемещение невозможно");
+            else yield return new LeverPosition(LeverType.Lever2, (double)workspace.Lever2.ABzero);
+        }
+
+        public void SetActiveWorkspace(int index)
+        {
+            SetActiveWorkspace(robotWorkspaces[index]);
+        }
+
+        public void SetWorkspace(int index, RobotWorkspace workspace)
+        {
+            robotWorkspaces[index] = workspace;
+        }
+
         // Устанавливает заданную рабочую зону в качестве активной рабочей зоны.
         private void SetActiveWorkspace(RobotWorkspace workspace)
         {
-            if (!IsRobotInWorkspace(workspace))
-                throw new ArgumentException("Заданная рабочая зона не удовлетворяет конструктивным параметрам робота-манипулятора");
-
-            if (GetLeversOutOfWorkspaceRange(workspace).Count() != 0)
-                throw new ArgumentException("Текущее положение плеч робота находится вне рабочей зоны");
+            var outOfRange = GetLeversOutOfWorkspaceRange(workspace).Select(lever => lever.ToRuString());
+            if (outOfRange.Count() != 0)
+                throw new ArgumentException("Текущее положение плеч робота находится вне рабочей зоны. " + 
+                                            "Необходимо переместить следующие механизмы робота:\n" + string.Join("\n", outOfRange).Trim());
 
             if (!robotWorkspaces.Contains(workspace))
                 robotWorkspaces.Add(workspace);
@@ -153,15 +186,20 @@ namespace ManipulatorControl.BL.Workspace
             activeWorkspace = workspace;
         }
 
+        public RobotWorkspace GetClone(int index)
+        {
+            return robotWorkspaces[index].Clone() as RobotWorkspace;
+        }
+
         // Устанавливает в качестве рабочей зоны конструктивные параметры робота.
-        private void SetDefaultWorkspace()
+        public void SetDefaultWorkspace()
         {
             RemoveWorkspacesFromDesignParameters(this.parameters);
             this.activeWorkspace = null;
         }
 
         // Возвращает копию рабочей зоны соответствующую конструктивным параметрам робота.
-        private RobotWorkspace GetDesignParametersWorkspaceClone(string name)
+        public RobotWorkspace GetDesignParametersWorkspaceClone(string name)
         {
             if (parameters == null)
                 return null;
@@ -175,7 +213,7 @@ namespace ManipulatorControl.BL.Workspace
         }
 
         // Возвращает копию рабочей зоны соответствующую конструктивным параметрам робота.
-        private RobotWorkspace GetDesignParametersWorkspace(string name)
+        public RobotWorkspace GetDesignParametersWorkspace(string name)
         {
             if (parameters == null)
                 return null;

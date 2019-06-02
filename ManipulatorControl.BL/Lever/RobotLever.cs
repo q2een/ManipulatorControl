@@ -2,13 +2,13 @@
 
 namespace ManipulatorControl.BL
 {
-    public class RobotLever
+    public class LeverStepper
     {
         public LeverType Type { get; private set; }
 
         public StepperMotor Stepper { get; set; }
 
-        public RobotLever(LeverType type, StepperMotor stepper)
+        public LeverStepper(LeverType type, StepperMotor stepper)
         {
             Type = type;
             Stepper = stepper;

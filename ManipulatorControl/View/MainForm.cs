@@ -1,5 +1,6 @@
 ﻿using GCodeParser;
-using ManipulatorControl.Workspace;
+using ManipulatorControl.BL;
+using ManipulatorControl.BL.Workspace;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -81,18 +82,6 @@ namespace ManipulatorControl
                 gCodesBox.Lines = value;
             }
         }
-
-     /*   public bool IsZeroPositionSet
-        {
-            get
-            {
-                return directionPanel.IsZeroEnabled;
-            }
-            set
-            {
-                directionPanel.IsZeroEnabled = value;
-            }
-        }  */
 
         public bool IsEditWorkspaceMode
         {
@@ -350,8 +339,9 @@ namespace ManipulatorControl
 
             if (!showLabels)
             {
-                rbLever1.Checked = true;
-                rbHorizontalLever.Checked = true;
+                rbLever1.Checked = false;
+                rbHorizontalLever.Checked = false;
+                rbLever2.Checked = false;
             }
         }
 
@@ -464,7 +454,7 @@ namespace ManipulatorControl
             OnViewClosing(this, EventArgs.Empty);
         }
 
-        public void SetCurrentPosition(bool isRunning, double x, double y, double z)
+        public void SetCurrentLocation(bool isRunning, double x, double y, double z)
         {
             var action = new Action(() =>
             {
@@ -481,6 +471,27 @@ namespace ManipulatorControl
         public void SetZeroPositionState(bool isXYZero, bool isZZero)
         {
             directionPanel.SetZeroPositionState(isXYZero, isZZero);
+        }
+
+        public void SetCurrentPosition(LeverPosition position)
+        {
+            var action = new Action(() =>
+            {
+                if (position.Lever == LeverType.Horizontal)
+                    lblHorizontalCurrent.Text = position.Position.ToString();
+
+                if (position.Lever == LeverType.Lever1)
+                    lblLever1Current.Text = position.Position.ToString();
+
+                if (position.Lever == LeverType.Lever2)
+                    lblLever2Current.Text = position.Position.ToString();
+            });
+
+            if (this.InvokeRequired)
+                this.Invoke(action);
+            else
+                action();
+
         }
     }
 }

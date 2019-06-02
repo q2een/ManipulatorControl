@@ -624,7 +624,7 @@
             this.stepperSettingsPanel3.Acceleration = 0F;
             this.stepperSettingsPanel3.AccelerationInMS = 0;
             this.stepperSettingsPanel3.CWDirectionIsLogicalZero = true;
-            this.stepperSettingsPanel3.LeverType = ManipulatorControl.LeverType.Lever1;
+            this.stepperSettingsPanel3.LeverType = ManipulatorControl.BL.LeverType.Lever1;
             this.stepperSettingsPanel3.Location = new System.Drawing.Point(9, 253);
             this.stepperSettingsPanel3.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.stepperSettingsPanel3.Name = "stepperSettingsPanel3";
@@ -637,7 +637,7 @@
             this.stepperSettingsPanel2.Acceleration = 0F;
             this.stepperSettingsPanel2.AccelerationInMS = 0;
             this.stepperSettingsPanel2.CWDirectionIsLogicalZero = true;
-            this.stepperSettingsPanel2.LeverType = ManipulatorControl.LeverType.Lever1;
+            this.stepperSettingsPanel2.LeverType = ManipulatorControl.BL.LeverType.Lever1;
             this.stepperSettingsPanel2.Location = new System.Drawing.Point(389, 4);
             this.stepperSettingsPanel2.Margin = new System.Windows.Forms.Padding(5);
             this.stepperSettingsPanel2.Name = "stepperSettingsPanel2";
@@ -650,7 +650,7 @@
             this.stepperSettingsPanel1.Acceleration = 0F;
             this.stepperSettingsPanel1.AccelerationInMS = 0;
             this.stepperSettingsPanel1.CWDirectionIsLogicalZero = true;
-            this.stepperSettingsPanel1.LeverType = ManipulatorControl.LeverType.Lever1;
+            this.stepperSettingsPanel1.LeverType = ManipulatorControl.BL.LeverType.Lever1;
             this.stepperSettingsPanel1.Location = new System.Drawing.Point(9, 4);
             this.stepperSettingsPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.stepperSettingsPanel1.Name = "stepperSettingsPanel1";

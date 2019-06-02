@@ -75,20 +75,15 @@
     <Compile Include="Controls\StepperSettingsPanel.Designer.cs">
       <DependentUpon>StepperSettingsPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\Extensions.cs" />
     <Compile Include="MessageService\IMessageService.cs" />
     <Compile Include="MessageService\MessageBoxMessageService.cs" />
     <Compile Include="MessageService\UserResponse.cs" />
-    <Compile Include="Model\Calculation.cs" />
     <Compile Include="Controls\DirectionIndicationPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\DirectionIndicationPanel.Designer.cs">
       <DependentUpon>DirectionIndicationPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\GCodeInterpreter.cs" />
-    <Compile Include="Model\Lever\LeverType.cs" />
-    <Compile Include="Model\Lever\StepLever.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -102,10 +97,6 @@
     <Compile Include="View\InputMessageBox.Designer.cs">
       <DependentUpon>InputMessageBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\Workspace\MovableValueType.cs" />
-    <Compile Include="Model\Workspace\RobotWorkspace.cs" />
-    <Compile Include="Model\Workspace\EditWorkspaceEventArgs.cs" />
-    <Compile Include="Model\Workspace\WorkspaceEventArgs.cs" />
     <Compile Include="Settings\StepDirName.cs" />
     <Compile Include="Settings\StepDirPinType.cs" />
     <Compile Include="View\IManipulatorControlView.cs" />
@@ -124,14 +115,12 @@
     <Compile Include="ManualContorl\ManualUserControls.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\Lever\RobotLever.cs" />
     <Compile Include="View\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SettingsReader.cs" />
     <EmbeddedResource Include="Controls\DesignParametersTabControl.resx">
       <DependentUpon>DesignParametersTabControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -184,6 +173,10 @@
     <ProjectReference Include="..\LptStepperMotorControl\LptStepperMotorControl.csproj">
       <Project>{4f11a3c5-f7bc-40cc-99f1-b74e4029a744}</Project>
       <Name>LptStepperMotorControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManipulatorControl.BL\ManipulatorControl.BL.csproj">
+      <Project>{2A0235D4-5509-4F2F-8067-C10533DC2AB3}</Project>
+      <Name>ManipulatorControl.BL</Name>
     </ProjectReference>
     <ProjectReference Include="..\UM160CalculationLib\UM160CalculationLib.csproj">
       <Project>{c2e1d77b-1754-4936-83ea-1d93fde406c5}</Project>

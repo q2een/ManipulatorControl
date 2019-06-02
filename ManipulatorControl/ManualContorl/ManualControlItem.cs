@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ManipulatorControl.BL;
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;

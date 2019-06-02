@@ -40,7 +40,7 @@ namespace ManipulatorControl.BL
 
         public MovementScript(Queue<LeverPosition> movementPath, IEnumerable<LeverPosition> startPosition, IEnumerable<LeverPosition> ednPosition)
         {
-            this.movementPath = movementPath;
+            this.movementPath = Optimize(movementPath);
             this.startPosition = startPosition;
             this.ednPosition = ednPosition;
         }

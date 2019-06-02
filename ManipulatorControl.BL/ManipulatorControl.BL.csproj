@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calculation.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Interpreter\GCodeInterpreter.cs" />
     <Compile Include="Lever\LeverMovement.cs" />
     <Compile Include="Lever\LeverPosition.cs" />

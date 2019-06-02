@@ -1,4 +1,4 @@
 ﻿namespace ManipulatorControl.BL
 {
-    public delegate void LocationEventHandler(Location location);
+    public delegate void LocationEventHandler(bool isRunning, Location location);
 }

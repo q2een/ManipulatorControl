@@ -10,34 +10,34 @@
         /// <summary>
         /// Возвращает длину плеча 1, мм.
         /// </summary>
-        public double L1 { get; private set; }
+        public double L1 { get; set; }
         
         /// <summary>
         /// Возвращает длину плеча 2, мм.
         /// </summary>
-        public double L2 { get; private set; }
+        public double L2 { get; set; }
         
         /// <summary>
         /// Возвращает расстояние от центра схвата до точки его подвеса на плече 2, мм.
         /// </summary>
-        public double Lc { get; private set; }
+        public double Lc { get; set; }
 
         #region Конструктивные параметры плеч манипулятора. 
 
         /// <summary>
         /// Возвращает конструктивные параметры для расчета перемещения робота по подвесной балке.
         /// </summary>
-        public HorizontalLeverDesignParameters HorizontalLever { get; private set; }
+        public HorizontalLeverDesignParameters HorizontalLever { get; set; }
 
         /// <summary>
         /// Возвращает конструктивные параметры для расчета угла φ1 (плечо 1).
         /// </summary>
-        public LeverDesignParameters Lever1 { get; private set; }
+        public LeverDesignParameters Lever1 { get; set; }
 
         /// <summary>
         /// Возвращает конструктивные параметры для расчета угла φ2 (плечо 2).
         /// </summary>
-        public LeverDesignParameters Lever2 { get; private set; }
+        public LeverDesignParameters Lever2 { get; set; }
 
         #endregion
 

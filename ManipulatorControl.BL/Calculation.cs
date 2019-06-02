@@ -102,6 +102,11 @@ namespace ManipulatorControl.BL
             PulseCalculation.GetPulsesCount(DesignParameters.HorizontalLever, z);  
         }
 
+        public StepLever GetStepLeverToPosition(LeverPosition position)
+        {
+            return new StepLever(position.Lever, CalculateStepsToAbValue(position.Lever, position.Position));
+        }
+
         public void SetNewAB(LeverType type, long stepsCount)
         {
             var lever = GetPartMovableByLeverType(type);

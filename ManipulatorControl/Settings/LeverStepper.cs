@@ -1,4 +1,6 @@
-﻿namespace ManipulatorControl.Settings
+﻿using ManipulatorControl.BL;
+
+namespace ManipulatorControl.Settings
 {
     public class LeverStepper
     {

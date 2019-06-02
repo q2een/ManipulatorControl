@@ -113,6 +113,10 @@
             this.rbLever2 = new System.Windows.Forms.RadioButton();
             this.rightSidePanel = new System.Windows.Forms.Panel();
             this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lblHorizontalCurrent = new System.Windows.Forms.Label();
+            this.lblLever1Current = new System.Windows.Forms.Label();
+            this.lblLever2Current = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -489,7 +493,7 @@
             this.lblHorizontalLever.Name = "lblHorizontalLever";
             this.lblHorizontalLever.Size = new System.Drawing.Size(171, 30);
             this.lblHorizontalLever.TabIndex = 0;
-            this.lblHorizontalLever.Text = "Z";
+            this.lblHorizontalLever.Text = "Каретка робота";
             this.lblHorizontalLever.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLever1
@@ -499,7 +503,7 @@
             this.lblLever1.Name = "lblLever1";
             this.lblLever1.Size = new System.Drawing.Size(171, 30);
             this.lblLever1.TabIndex = 1;
-            this.lblLever1.Text = "Плечо 1";
+            this.lblLever1.Text = "Плечо";
             this.lblLever1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLever2
@@ -509,7 +513,7 @@
             this.lblLever2.Name = "lblLever2";
             this.lblLever2.Size = new System.Drawing.Size(173, 30);
             this.lblLever2.TabIndex = 2;
-            this.lblLever2.Text = "Плечо 2";
+            this.lblLever2.Text = "Предплечье";
             this.lblLever2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnZNull
@@ -806,6 +810,7 @@
             this.tlpWorkspaceInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlpWorkspaceInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlpWorkspaceInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpWorkspaceInfo.Controls.Add(this.label9, 0, 4);
             this.tlpWorkspaceInfo.Controls.Add(this.label1, 0, 1);
             this.tlpWorkspaceInfo.Controls.Add(this.label2, 0, 2);
             this.tlpWorkspaceInfo.Controls.Add(this.label3, 0, 3);
@@ -821,15 +826,19 @@
             this.tlpWorkspaceInfo.Controls.Add(this.lblHorizontalZero, 1, 3);
             this.tlpWorkspaceInfo.Controls.Add(this.lblLever1Zero, 2, 3);
             this.tlpWorkspaceInfo.Controls.Add(this.lblLever2Zero, 3, 3);
+            this.tlpWorkspaceInfo.Controls.Add(this.lblHorizontalCurrent, 1, 4);
+            this.tlpWorkspaceInfo.Controls.Add(this.lblLever1Current, 2, 4);
+            this.tlpWorkspaceInfo.Controls.Add(this.lblLever2Current, 3, 4);
             this.tlpWorkspaceInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpWorkspaceInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tlpWorkspaceInfo.Location = new System.Drawing.Point(0, 180);
             this.tlpWorkspaceInfo.Name = "tlpWorkspaceInfo";
-            this.tlpWorkspaceInfo.RowCount = 4;
-            this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpWorkspaceInfo.RowCount = 5;
+            this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpWorkspaceInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlpWorkspaceInfo.Size = new System.Drawing.Size(539, 273);
             this.tlpWorkspaceInfo.TabIndex = 1;
             // 
@@ -837,9 +846,9 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(4, 69);
+            this.label1.Location = new System.Drawing.Point(4, 55);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(127, 67);
+            this.label1.Size = new System.Drawing.Size(127, 53);
             this.label1.TabIndex = 0;
             this.label1.Text = "Максимальное значение";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -848,9 +857,9 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(4, 137);
+            this.label2.Location = new System.Drawing.Point(4, 109);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(127, 67);
+            this.label2.Size = new System.Drawing.Size(127, 53);
             this.label2.TabIndex = 0;
             this.label2.Text = "Минимальное значение";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -859,9 +868,9 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Location = new System.Drawing.Point(4, 205);
+            this.label3.Location = new System.Drawing.Point(4, 163);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(127, 67);
+            this.label3.Size = new System.Drawing.Size(127, 53);
             this.label3.TabIndex = 0;
             this.label3.Text = "Нулевое значение";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -872,9 +881,9 @@
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label4.Location = new System.Drawing.Point(138, 1);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(127, 67);
+            this.label4.Size = new System.Drawing.Size(127, 53);
             this.label4.TabIndex = 0;
-            this.label4.Text = "Горизонтальное плечо";
+            this.label4.Text = "Каретка робота";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label5
@@ -883,9 +892,9 @@
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label5.Location = new System.Drawing.Point(272, 1);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(127, 67);
+            this.label5.Size = new System.Drawing.Size(127, 53);
             this.label5.TabIndex = 0;
-            this.label5.Text = "Плечо 1";
+            this.label5.Text = "Плечо";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label8
@@ -894,19 +903,19 @@
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label8.Location = new System.Drawing.Point(406, 1);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(129, 67);
+            this.label8.Size = new System.Drawing.Size(129, 53);
             this.label8.TabIndex = 0;
-            this.label8.Text = "Плечо 2";
+            this.label8.Text = "Предплечье";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblHorizontalMax
             // 
             this.lblHorizontalMax.AutoSize = true;
             this.lblHorizontalMax.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblHorizontalMax.Location = new System.Drawing.Point(135, 69);
+            this.lblHorizontalMax.Location = new System.Drawing.Point(135, 55);
             this.lblHorizontalMax.Margin = new System.Windows.Forms.Padding(0);
             this.lblHorizontalMax.Name = "lblHorizontalMax";
-            this.lblHorizontalMax.Size = new System.Drawing.Size(133, 67);
+            this.lblHorizontalMax.Size = new System.Drawing.Size(133, 53);
             this.lblHorizontalMax.TabIndex = 1;
             this.lblHorizontalMax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -914,10 +923,10 @@
             // 
             this.lblLever1Max.AutoSize = true;
             this.lblLever1Max.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLever1Max.Location = new System.Drawing.Point(269, 69);
+            this.lblLever1Max.Location = new System.Drawing.Point(269, 55);
             this.lblLever1Max.Margin = new System.Windows.Forms.Padding(0);
             this.lblLever1Max.Name = "lblLever1Max";
-            this.lblLever1Max.Size = new System.Drawing.Size(133, 67);
+            this.lblLever1Max.Size = new System.Drawing.Size(133, 53);
             this.lblLever1Max.TabIndex = 1;
             this.lblLever1Max.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -925,10 +934,10 @@
             // 
             this.lblLever2Max.AutoSize = true;
             this.lblLever2Max.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLever2Max.Location = new System.Drawing.Point(403, 69);
+            this.lblLever2Max.Location = new System.Drawing.Point(403, 55);
             this.lblLever2Max.Margin = new System.Windows.Forms.Padding(0);
             this.lblLever2Max.Name = "lblLever2Max";
-            this.lblLever2Max.Size = new System.Drawing.Size(135, 67);
+            this.lblLever2Max.Size = new System.Drawing.Size(135, 53);
             this.lblLever2Max.TabIndex = 1;
             this.lblLever2Max.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -936,10 +945,10 @@
             // 
             this.lblHorizontalMin.AutoSize = true;
             this.lblHorizontalMin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblHorizontalMin.Location = new System.Drawing.Point(135, 137);
+            this.lblHorizontalMin.Location = new System.Drawing.Point(135, 109);
             this.lblHorizontalMin.Margin = new System.Windows.Forms.Padding(0);
             this.lblHorizontalMin.Name = "lblHorizontalMin";
-            this.lblHorizontalMin.Size = new System.Drawing.Size(133, 67);
+            this.lblHorizontalMin.Size = new System.Drawing.Size(133, 53);
             this.lblHorizontalMin.TabIndex = 1;
             this.lblHorizontalMin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -947,10 +956,10 @@
             // 
             this.lblLever1Min.AutoSize = true;
             this.lblLever1Min.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLever1Min.Location = new System.Drawing.Point(269, 137);
+            this.lblLever1Min.Location = new System.Drawing.Point(269, 109);
             this.lblLever1Min.Margin = new System.Windows.Forms.Padding(0);
             this.lblLever1Min.Name = "lblLever1Min";
-            this.lblLever1Min.Size = new System.Drawing.Size(133, 67);
+            this.lblLever1Min.Size = new System.Drawing.Size(133, 53);
             this.lblLever1Min.TabIndex = 1;
             this.lblLever1Min.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -958,10 +967,10 @@
             // 
             this.lblLever2Min.AutoSize = true;
             this.lblLever2Min.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLever2Min.Location = new System.Drawing.Point(403, 137);
+            this.lblLever2Min.Location = new System.Drawing.Point(403, 109);
             this.lblLever2Min.Margin = new System.Windows.Forms.Padding(0);
             this.lblLever2Min.Name = "lblLever2Min";
-            this.lblLever2Min.Size = new System.Drawing.Size(135, 67);
+            this.lblLever2Min.Size = new System.Drawing.Size(135, 53);
             this.lblLever2Min.TabIndex = 1;
             this.lblLever2Min.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -969,10 +978,10 @@
             // 
             this.lblHorizontalZero.AutoSize = true;
             this.lblHorizontalZero.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblHorizontalZero.Location = new System.Drawing.Point(135, 205);
+            this.lblHorizontalZero.Location = new System.Drawing.Point(135, 163);
             this.lblHorizontalZero.Margin = new System.Windows.Forms.Padding(0);
             this.lblHorizontalZero.Name = "lblHorizontalZero";
-            this.lblHorizontalZero.Size = new System.Drawing.Size(133, 67);
+            this.lblHorizontalZero.Size = new System.Drawing.Size(133, 53);
             this.lblHorizontalZero.TabIndex = 1;
             this.lblHorizontalZero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -980,10 +989,10 @@
             // 
             this.lblLever1Zero.AutoSize = true;
             this.lblLever1Zero.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLever1Zero.Location = new System.Drawing.Point(269, 205);
+            this.lblLever1Zero.Location = new System.Drawing.Point(269, 163);
             this.lblLever1Zero.Margin = new System.Windows.Forms.Padding(0);
             this.lblLever1Zero.Name = "lblLever1Zero";
-            this.lblLever1Zero.Size = new System.Drawing.Size(133, 67);
+            this.lblLever1Zero.Size = new System.Drawing.Size(133, 53);
             this.lblLever1Zero.TabIndex = 1;
             this.lblLever1Zero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -991,10 +1000,10 @@
             // 
             this.lblLever2Zero.AutoSize = true;
             this.lblLever2Zero.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLever2Zero.Location = new System.Drawing.Point(403, 205);
+            this.lblLever2Zero.Location = new System.Drawing.Point(403, 163);
             this.lblLever2Zero.Margin = new System.Windows.Forms.Padding(0);
             this.lblLever2Zero.Name = "lblLever2Zero";
-            this.lblLever2Zero.Size = new System.Drawing.Size(135, 67);
+            this.lblLever2Zero.Size = new System.Drawing.Size(135, 53);
             this.lblLever2Zero.TabIndex = 1;
             this.lblLever2Zero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -1020,7 +1029,7 @@
             this.rbHorizontalLever.Size = new System.Drawing.Size(32, 17);
             this.rbHorizontalLever.TabIndex = 7;
             this.rbHorizontalLever.TabStop = true;
-            this.rbHorizontalLever.Text = "Z";
+            this.rbHorizontalLever.Text = this.lblHorizontalLever.Text;
             this.rbHorizontalLever.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rbHorizontalLever.UseVisualStyleBackColor = true;
             this.rbHorizontalLever.CheckedChanged += new System.EventHandler(this.TableHeaderRadiobuttons_CheckedChanged);
@@ -1034,7 +1043,7 @@
             this.rbLever1.Size = new System.Drawing.Size(65, 17);
             this.rbLever1.TabIndex = 7;
             this.rbLever1.TabStop = true;
-            this.rbLever1.Text = "Плечо 1";
+            this.rbLever1.Text = this.lblLever1.Text;
             this.rbLever1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rbLever1.UseVisualStyleBackColor = true;
             this.rbLever1.CheckedChanged += new System.EventHandler(this.TableHeaderRadiobuttons_CheckedChanged);
@@ -1048,7 +1057,7 @@
             this.rbLever2.Size = new System.Drawing.Size(65, 17);
             this.rbLever2.TabIndex = 7;
             this.rbLever2.TabStop = true;
-            this.rbLever2.Text = "Плечо 2";
+            this.rbLever2.Text = this.lblLever2.Text;
             this.rbLever2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rbLever2.UseVisualStyleBackColor = true;
             this.rbLever2.CheckedChanged += new System.EventHandler(this.TableHeaderRadiobuttons_CheckedChanged);
@@ -1068,6 +1077,14 @@
             // directionPanel
             // 
             this.directionPanel.ColumnCount = 4;
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -1409,12 +1426,67 @@
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.Size = new System.Drawing.Size(362, 198);
             this.directionPanel.TabIndex = 0;
             this.directionPanel.TabStop = true;
             this.directionPanel.X = 0D;
             this.directionPanel.Y = 0D;
             this.directionPanel.Z = 0D;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label9.Location = new System.Drawing.Point(4, 217);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(127, 55);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Текущее значение";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblHorizontalCurrent
+            // 
+            this.lblHorizontalCurrent.AutoSize = true;
+            this.lblHorizontalCurrent.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.lblHorizontalCurrent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblHorizontalCurrent.Location = new System.Drawing.Point(135, 217);
+            this.lblHorizontalCurrent.Margin = new System.Windows.Forms.Padding(0);
+            this.lblHorizontalCurrent.Name = "lblHorizontalCurrent";
+            this.lblHorizontalCurrent.Size = new System.Drawing.Size(133, 55);
+            this.lblHorizontalCurrent.TabIndex = 1;
+            this.lblHorizontalCurrent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLever1Current
+            // 
+            this.lblLever1Current.AutoSize = true;
+            this.lblLever1Current.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.lblLever1Current.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLever1Current.Location = new System.Drawing.Point(269, 217);
+            this.lblLever1Current.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLever1Current.Name = "lblLever1Current";
+            this.lblLever1Current.Size = new System.Drawing.Size(133, 55);
+            this.lblLever1Current.TabIndex = 1;
+            this.lblLever1Current.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLever2Current
+            // 
+            this.lblLever2Current.AutoSize = true;
+            this.lblLever2Current.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.lblLever2Current.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLever2Current.Location = new System.Drawing.Point(403, 217);
+            this.lblLever2Current.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLever2Current.Name = "lblLever2Current";
+            this.lblLever2Current.Size = new System.Drawing.Size(135, 55);
+            this.lblLever2Current.TabIndex = 1;
+            this.lblLever2Current.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
@@ -1541,6 +1613,10 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel statusLblCurrentPosition;
         private System.Windows.Forms.Panel rightSidePanel;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblHorizontalCurrent;
+        private System.Windows.Forms.Label lblLever1Current;
+        private System.Windows.Forms.Label lblLever2Current;
     }
 }
 

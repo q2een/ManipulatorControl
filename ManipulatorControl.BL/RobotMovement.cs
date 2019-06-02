@@ -26,10 +26,10 @@ namespace ManipulatorControl.BL
             private set
             {
                 location = value;
-                LocationChanged(value);
+                LocationChanged(leverMovement.IsRunning, value);
             }
         }
-        
+
         public Calculation Calculation { get; set; }
 
         public DesignParameters DesignParameters
@@ -40,9 +40,21 @@ namespace ManipulatorControl.BL
             }
         }
 
+        public bool IsRunning
+        {
+            get
+            {
+                return leverMovement.IsRunning;
+            }
+        }
+
 
         public event LocationEventHandler LocationChanged = delegate { };
         public event EventHandler<LeverPosition> LeverPositionChanged = delegate { };
+
+        public event EventHandler<StepLever> OnMovingStart = delegate { };
+        public event EventHandler<StepLever> OnMovingEnd = delegate { };
+
 
         public event EventHandler<StepLever> OnZeroPosition;
 
@@ -54,6 +66,8 @@ namespace ManipulatorControl.BL
             this.parser = new Parser(interpreter);
 
             this.leverMovement = leverMovement;
+
+            Location = Calculation.GetCurrentLocation();
 
             this.leverMovement.OnMovingEnd += LeverMovement_OnMovingEnd;
             this.leverMovement.OnMovingStart += LeverMovement_OnMovingStart;
@@ -75,8 +89,23 @@ namespace ManipulatorControl.BL
             return new List<GCodeException>();
         }
 
+        public void MoveRobotByPath(IEnumerable<LeverPosition> leverPositions, Action doAfter)
+        {
+            var queue = new Queue<StepLever>();
+
+            foreach (var leverPosition in leverPositions)
+            {
+                queue.Enqueue(Calculation.GetStepLeverToPosition(leverPosition));
+            }
+
+            leverMovement.Run(queue, doAfter);
+        }
+
         public void ManulControlRun(StepLever stepLever)
-        {                                
+        {
+            if (leverMovement.IsRunning)
+                return;
+
             if (stepLever.StepsCount == 0)
                 stepLever.StepsCount = Calculation.CalculateStepsToLeverZero(stepLever.Lever);
             else
@@ -105,11 +134,16 @@ namespace ManipulatorControl.BL
             leverMovement.StepsInterval = interval;
         }
 
+        public double GetLeverPosition(LeverType type)
+        {
+            return Calculation.GetPartMovableByLeverType(type).AB;
+        }
+
         private void ChangeLeverPosition(LeverType type, long stepsCount)
         {
             Calculation.SetNewAB(type, stepsCount);
 
-            Location = Calculation.GetLocation(Location, new StepLever(type, stepsCount));
+            Location = Calculation.GetCurrentLocation();
 
             var newValue = Calculation.GetPartMovableByLeverType(type).AB;
 
@@ -133,14 +167,13 @@ namespace ManipulatorControl.BL
 
         private void LeverMovement_OnMovingStart(object sender, StepLever e)
         {
-            throw new NotImplementedException();
+            OnMovingStart(this, e);
         }
 
         private void LeverMovement_OnMovingEnd(object sender, StepLever e)
         {
             ChangeLeverPosition(e.Lever, e.StepsCount);
-
-            throw new NotImplementedException();
+            OnMovingEnd(this, e);
         }
     }
 }

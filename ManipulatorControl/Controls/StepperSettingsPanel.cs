@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using LptStepperMotorControl.Stepper;
-using ManipulatorControl.Model;
+using ManipulatorControl.BL;
 
 namespace ManipulatorControl.Controls
 {
@@ -29,7 +29,7 @@ namespace ManipulatorControl.Controls
         {
             get
             {
-                return (LeverType)Enum.Parse(typeof(LeverType), cmbLeverType.SelectedValue.ToString()); ;
+                return (LeverType)cmbLeverType.SelectedIndex;
             }
             set
             {
@@ -138,7 +138,12 @@ namespace ManipulatorControl.Controls
         {
             InitializeComponent();
 
-            cmbLeverType.DataSource = Enum.GetNames(typeof(LeverType));
+            var leverTypes = Enum.GetValues(typeof(LeverType));
+
+            LeverType[] levers = new LeverType[leverTypes.Length];
+            leverTypes.CopyTo(levers, 0);
+            
+            cmbLeverType.DataSource = levers.Select(lever => lever.ToRuString()).ToList();
         }
 
         public StepperSettingsPanel(IEnumerable<StepDirName> pins) : this()

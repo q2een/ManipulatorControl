@@ -18,7 +18,7 @@ namespace ManipulatorControl.MessageService
 
         public UserResponse ShowExclamation(string exclamation)
         {
-            var mbox = MessageBox.Show(exclamation, "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            var mbox = MessageBox.Show(exclamation, "Предупреждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
             return ConvertDialogResultToUserResponse(mbox);
         }
 

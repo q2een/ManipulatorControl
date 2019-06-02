@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading;
 
 namespace LptStepperMotorControl.Stepper
 {
     public class StepperWorker
     {
-        System.Threading.Thread threadTimer = null;
-        bool stopTimer = true;
+        private Thread threadTimer = null;
+        private bool stopTimer = true;
 
         public StepperMotor Stepper { get; set; }
 
@@ -28,7 +29,8 @@ namespace LptStepperMotorControl.Stepper
             }
             get
             {
-                return (this.threadTimer != null && this.threadTimer.IsAlive);
+                 return Stepper != null && Stepper.IsRunning && Stepper.Enabled;
+                // return (this.threadTimer != null && this.threadTimer.IsAlive);
             }
         }
 
@@ -49,20 +51,20 @@ namespace LptStepperMotorControl.Stepper
         public void Start()
         {
             if (Enabled)
-                return;
+                return;   
 
             this.stopTimer = false;
             StopReason = StepperStopReason.None;
 
             Stepper.ResetSteps();
 
-            System.Threading.ThreadStart threadStart = delegate ()
+            ThreadStart threadStart = delegate ()
             {
                 Loop(ref this.stopTimer);
             };
 
-            this.threadTimer = new System.Threading.Thread(threadStart);
-            this.threadTimer.Priority = System.Threading.ThreadPriority.Normal;
+            this.threadTimer = new Thread(threadStart);
+            this.threadTimer.Priority = ThreadPriority.Normal;
             this.threadTimer.Start();
         }
 

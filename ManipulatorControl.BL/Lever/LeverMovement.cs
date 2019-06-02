@@ -13,10 +13,12 @@ namespace ManipulatorControl.BL
         private readonly StepperWorker worker = new StepperWorker(100);
         private LPTPort port;
 
-        private readonly RobotLever[] levers;
-        private RobotLever movingLever;
+        private readonly LeverStepper[] levers;
+        private LeverStepper movingLever;
 
-        private Queue<StepLever> steppersQueue;
+        private Queue<StepLever> steppersQueue = new Queue<StepLever>();
+        
+        private Action doAfterWorkEnd = null;
 
         public bool IsRunning
         {
@@ -42,7 +44,7 @@ namespace ManipulatorControl.BL
         public event EventHandler<StepLever> OnMovingEnd = delegate { };
         public event EventHandler<StepLever> OnStepsIntervalElapsed = delegate { };
 
-        public LeverMovement(LPTPort port, RobotLever[] levers)
+        public LeverMovement(LPTPort port, LeverStepper[] levers)
         {
             this.port = port;
             this.levers = levers;
@@ -56,6 +58,9 @@ namespace ManipulatorControl.BL
         {
             if (IsRunning || (worker.Stepper != null && worker.Stepper.Enabled))
                 throw new Exception("Невозможно запустить перемещение плеча, так как перемещение другого плеча еще не окончено");
+                      
+            if (stepLever.StepsCount == 0)
+                return;
 
             movingLever = levers.Single(lever => lever.Type == stepLever.Lever);
 
@@ -67,8 +72,15 @@ namespace ManipulatorControl.BL
 
         public void Run(Queue<StepLever> steppersQueue)
         {
+            Run(steppersQueue, null);
+        }
+
+        public void Run(Queue<StepLever> steppersQueue, Action doAfterWorkEnd)
+        {
             if (IsRunning || (worker.Stepper != null && worker.Stepper.Enabled))
                 throw new Exception("Невозможно запустить перемещение плеча, так как перемещение другого плеча еще не окончено");
+
+            this.doAfterWorkEnd = doAfterWorkEnd;
 
             this.steppersQueue = steppersQueue;
             Continue();
@@ -76,7 +88,7 @@ namespace ManipulatorControl.BL
 
         public void Stop(LeverType type)
         {
-            if (movingLever.Type == type)
+            if (movingLever != null && movingLever.Type == type)
                 worker.Stop();
         }
 
@@ -93,7 +105,12 @@ namespace ManipulatorControl.BL
         private void Continue()
         {
             if (steppersQueue == null || steppersQueue.Count == 0)
+            {
+                if (doAfterWorkEnd != null)
+                    doAfterWorkEnd();
+
                 return;
+            }
 
             Run(steppersQueue.Dequeue());
         }
@@ -104,23 +121,25 @@ namespace ManipulatorControl.BL
         }
 
         private void Worker_OnStop(object sender, EventArgs e)
-        {               
-            if(steppersQueue.Count > 0)
+        {
+            var stepLever = new StepLever(movingLever.Type, movingLever.Stepper.CurrentStepsCount);
+            movingLever = null;
+
+            OnMovingEnd(this, stepLever);
+
+            if (steppersQueue.Count > 0)
             {
                 if (worker.StopReason != StepperStopReason.WorkDone)
                     steppersQueue.Clear();
                 else
                     new Task(Continue).Start();
             }
-
-            OnMovingEnd(this, new StepLever(movingLever.Type, movingLever.Stepper.CurrentStepsCount));
-            movingLever = null;   
         }
 
         private void Worker_OnStart(object sender, EventArgs e)
         {   
             if(steppersQueue.Count == 0)
-            OnMovingStart(this, new StepLever(movingLever.Type, movingLever.Stepper.CurrentStepsCount));
+                OnMovingStart(this, new StepLever(movingLever.Type, movingLever.Stepper.CurrentStepsCount));
         }
     }
 }

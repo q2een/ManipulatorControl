@@ -19,11 +19,11 @@ namespace ManipulatorControl
             var view = new MainForm();
 
             var presenter = new ManipulatorPresenter(view, new MessageService.MessageBoxMessageService());
-
+             /*
             // Для тестирования.
             if (args.Length == 1)
                 presenter.SetWorkerInterval(int.Parse(args[0]));
-
+                             */
 
             Application.Run(view);
         }

@@ -54,6 +54,8 @@ namespace ManipulatorControl.BL.Interpreter
         public GCodeInterpreter(Calculation calculation)
         {
             this.calculation = calculation;
+
+            calculation.SetCurrentCoordinates(ref x, ref y, ref z);
         }
 
         /// <summary>
