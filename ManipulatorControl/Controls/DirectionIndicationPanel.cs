@@ -42,18 +42,6 @@ namespace ManipulatorControl
             }
         }
 
-        //public void InicateOnZero(CoordinateDirections dir)
-        //{
-        //    if (dir.HasFlag(CoordinateDirections.XZero))
-        //        xZeroIndicator.IndicatorColor = Color.Blue;
-        //    else if (dir.HasFlag(CoordinateDirections.YZero))
-        //        yZeroIndicator.IndicatorColor = Color.Blue;
-        //    else if (dir.HasFlag(CoordinateDirections.ZZero))
-        //        zZeroIndicator.IndicatorColor = Color.Blue;
-        //    else
-        //        ;// Directions = dir;
-        //}
-
         public void SetZeroPositionState(bool isXYZero, bool isZZero)
         {
             xZeroIndicator.IndicatorColor = isXYZero ? Color.Blue : Color.DarkGray;

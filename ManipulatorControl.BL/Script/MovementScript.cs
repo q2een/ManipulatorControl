@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
-namespace ManipulatorControl.BL
+namespace ManipulatorControl.BL.Script
 {
     public class MovementScript
     {
-        private readonly Queue<LeverPosition> movementPath;
+        private readonly Queue<LeverScriptPosition> movementPath;
 
         private readonly IEnumerable<LeverPosition> startPosition, ednPosition;
 
@@ -30,31 +30,31 @@ namespace ManipulatorControl.BL
 
         public bool IsReverse { get; set; }
 
-        public Queue<LeverPosition> MovementPath
+        public Queue<LeverScriptPosition> MovementPath
         {
             get
             {
-                return new Queue<LeverPosition>(IsReverse ? movementPath.Reverse() : movementPath);
+                return new Queue<LeverScriptPosition>(IsReverse ? movementPath.Reverse() : movementPath);
             }
         }
 
-        public MovementScript(Queue<LeverPosition> movementPath, IEnumerable<LeverPosition> startPosition, IEnumerable<LeverPosition> ednPosition)
+        public MovementScript(Queue<LeverScriptPosition> movementPath, IEnumerable<LeverPosition> startPosition, IEnumerable<LeverPosition> ednPosition)
         {
             this.movementPath = Optimize(movementPath);
             this.startPosition = startPosition;
             this.ednPosition = ednPosition;
         }
 
-        public static Queue<LeverPosition> Optimize(Queue<LeverPosition> movementPath)
+        public static Queue<LeverScriptPosition> Optimize(Queue<LeverScriptPosition> movementPath)
         {
-            Queue<LeverPosition> path = new Queue<LeverPosition>();
+            Queue<LeverScriptPosition> path = new Queue<LeverScriptPosition>();
 
             var lastPosition = movementPath.Dequeue();
             while(movementPath.Count > 0)
             {
                 var position = movementPath.Dequeue();
 
-                if(lastPosition.Lever != position.Lever)
+                if(lastPosition.LeverType != position.LeverType)
                 {
                     path.Enqueue(lastPosition);
                     path.Enqueue(position);

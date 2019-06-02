@@ -56,7 +56,7 @@ namespace ManipulatorControl.BL
         public event EventHandler<StepLever> OnMovingEnd = delegate { };
 
 
-        public event EventHandler<StepLever> OnZeroPosition;
+        public event EventHandler<LeverZeroPositionEventArgs> OnZeroPositionChanged;
 
 
         public RobotMovement(Calculation сalculation, LeverMovement leverMovement)
@@ -84,7 +84,7 @@ namespace ManipulatorControl.BL
 
             var queue = interpreter.Interprete(parser.CommandQueue);
 
-            leverMovement.Run(queue);
+            leverMovement.Move(queue);
 
             return new List<GCodeException>();
         }
@@ -97,8 +97,8 @@ namespace ManipulatorControl.BL
             {
                 queue.Enqueue(Calculation.GetStepLeverToPosition(leverPosition));
             }
-
-            leverMovement.Run(queue, doAfter);
+             
+            leverMovement.Move(queue, doAfter);
         }
 
         public void ManulControlRun(StepLever stepLever)
@@ -111,7 +111,7 @@ namespace ManipulatorControl.BL
             else
                 stepLever.StepsCount = Calculation.CalculateStepsByDirection(stepLever.Lever, stepLever.StepsCount == 1);
 
-            leverMovement.Run(stepLever);
+            leverMovement.Move(stepLever);
         }
 
         public void ManualControlStop(LeverType type)
@@ -139,25 +139,40 @@ namespace ManipulatorControl.BL
             return Calculation.GetPartMovableByLeverType(type).AB;
         }
 
+        public IEnumerable<LeverPosition> GetCurrentLeversPosition()
+        {
+            yield return new LeverPosition(LeverType.Horizontal, GetLeverPosition(LeverType.Horizontal));
+            yield return new LeverPosition(LeverType.Lever1, GetLeverPosition(LeverType.Lever1));
+            yield return new LeverPosition(LeverType.Lever2, GetLeverPosition(LeverType.Lever2));
+
+        }
+
         private void ChangeLeverPosition(LeverType type, long stepsCount)
         {
+            var lever = Calculation.GetPartMovableByLeverType(type);
+
+            var oldValue = lever.AB;
+
             Calculation.SetNewAB(type, stepsCount);
 
             Location = Calculation.GetCurrentLocation();
 
-            var newValue = Calculation.GetPartMovableByLeverType(type).AB;
+            var newValue = lever.AB;
 
             LeverPositionChanged(this, new LeverPosition(type, newValue));
 
-            if (IsOnZeroPosition(type))
-                OnZeroPosition(this, new StepLever(type, stepsCount));
+            if (lever.ABzero == null)
+                return;
+
+            if(oldValue == lever.Workspace.ABzero || newValue == lever.Workspace.ABzero)
+              OnZeroPositionChanged(this, new LeverZeroPositionEventArgs(type, newValue == lever.Workspace.ABzero));
         }
 
-        private bool IsOnZeroPosition(LeverType type)
+        public bool IsOnZeroPosition(LeverType type)
         {
             var lever = Calculation.GetPartMovableByLeverType(type);
 
-            return lever.ABzero == lever.AB;
+            return lever.Workspace.ABzero == lever.AB;
         }
 
         private void LeverMovement_OnStepsIntervalElapsed(object sender, StepLever e)

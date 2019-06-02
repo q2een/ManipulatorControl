@@ -54,6 +54,10 @@ namespace ManipulatorControl.BL.Workspace
 
         public void Add(string name)
         {
+            name = name.Replace("\n", " ").Trim();
+            if (name.Length < 3)
+                throw new ArgumentException("Имя рабочей зоны должно содержать, как минимум, три символа");
+
             var workspace = GetDesignParametersWorkspaceClone(name);
 
             robotWorkspaces.Add(workspace);
@@ -73,7 +77,8 @@ namespace ManipulatorControl.BL.Workspace
             if (index == 0)
                 throw new Exception("Нельзя переименовать данную рабочую зону");
 
-            if (name.Replace("\n", " ").Trim().Length < 3)
+            name = name.Replace("\n", " ").Trim();
+            if (name.Length < 3)
                 throw new ArgumentException("Имя рабочей зоны должно содержать, как минимум, три символа");
 
             robotWorkspaces[index].Name = name;
@@ -172,6 +177,7 @@ namespace ManipulatorControl.BL.Workspace
         private void SetActiveWorkspace(RobotWorkspace workspace)
         {
             var outOfRange = GetLeversOutOfWorkspaceRange(workspace).Select(lever => lever.ToRuString());
+
             if (outOfRange.Count() != 0)
                 throw new ArgumentException("Текущее положение плеч робота находится вне рабочей зоны. " + 
                                             "Необходимо переместить следующие механизмы робота:\n" + string.Join("\n", outOfRange).Trim());

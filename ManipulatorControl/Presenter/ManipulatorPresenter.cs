@@ -1,5 +1,4 @@
-﻿using GCodeParser;
-using LptStepperMotorControl.PortControl;
+﻿using LptStepperMotorControl.PortControl;
 using LptStepperMotorControl.Stepper;
 using ManipulatorControl.View;
 using System;
@@ -16,6 +15,7 @@ using ManipulatorControl.MessageService;
 using ManipulatorControl.Settings;
 using ManipulatorControl.BL;
 using ManipulatorControl.BL.Workspace;
+using ManipulatorControl.BL.Script;
 
 namespace ManipulatorControl
 {
@@ -31,6 +31,7 @@ namespace ManipulatorControl
 
         private DesignParameters parameters;
         private LPTPort port = new LPTPort();
+        private ScriptBuilder scriptBuilder;
 
         private readonly LeverMovement leverMovement;
         private readonly RobotMovement movement;
@@ -72,6 +73,8 @@ namespace ManipulatorControl
             this.view.InvokeAddWorkspace += View_InvokeAddWorkspace;
             this.view.InvokeRenameWorkspace += View_InvokeRenameWorkspace;
 
+            this.view.InvokeCreateScript += View_InvokeCreateScript;
+
 
             LoadApplicationSettings();
             this.levers = GetRobotLever().ToArray();
@@ -82,7 +85,7 @@ namespace ManipulatorControl
 
             movement.LocationChanged += Movement_LocationChanged;
             movement.LeverPositionChanged += Movement_LeverPositionChanged;
-            movement.OnZeroPosition += Movement_OnZeroPosition;
+            movement.OnZeroPositionChanged += Movement_OnZeroPositionChanged;
 
             Movement_LocationChanged(false, movement.Calculation.GetCurrentLocation());
             view.SetWorkspaces(workspaceManager.RobotWorkspaces, workspaceManager.ActiveWorkspaceIndex);
@@ -92,32 +95,18 @@ namespace ManipulatorControl
             view.SetCurrentPosition(new LeverPosition(LeverType.Lever2, movement.GetLeverPosition(LeverType.Lever2)));
         }
 
-        private void Movement_OnZeroPosition(object sender, StepLever e)
+        private void View_InvokeCreateScript(object sender, EventArgs e)
         {
-            //view.SetZeroPositionState()
+            scriptBuilder = new ScriptBuilder(movement);
+
+            scriptBuilder.SetCurrentPositionAsStart();
+
+            scriptBuilder.OnNewPathItem += ScriptBuilder_OnNewPathItem;
         }
 
-        private void Movement_LeverPositionChanged(object sender, LeverPosition e)
+        private void ScriptBuilder_OnNewPathItem(object sender, EventArgs e)
         {
-            if (view.IsEditWorkspaceMode)
-                view.SetCurrentEditWorkspaceModeLeverPosition(e.Lever, e.Position);
-
-            view.SetCurrentPosition(e);
-        }
-
-        private void Movement_LocationChanged(bool isRunning, Location location)
-        {
-            view.SetCurrentLocation(isRunning, location.X, location.Y, location.Z);
-        }
-
-        private void View_InvokeStepperAbort(object sender, EventArgs e)
-        {
-            movement.Abort();
-        }
-
-        private void View_InvokeStepperStop(object sender, EventArgs e)
-        {
-            movement.Stop();
+            view.SetScriptQueue(scriptBuilder.Path);         
         }
 
         #region Загрузка параметров, значений.
@@ -300,13 +289,20 @@ namespace ManipulatorControl
 
         private void Settings_SaveSettings(object sender, EventArgs e)
         {
-            UpdateDesignParameters(this.settings.DesignParameters);
+            try
+            {
+                UpdateDesignParameters(this.settings.DesignParameters);
 
-            var settings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-            File.WriteAllText("design.settings", JsonConvert.SerializeObject(this.settings.DesignParameters, settings));
+                var settings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+                File.WriteAllText("design.settings", JsonConvert.SerializeObject(this.settings.DesignParameters, settings));
 
-            SaveStepDirNames();
-            SaveLeverSteppers();
+                SaveStepDirNames();
+                SaveLeverSteppers();
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
         }
 
         private void View_OpenSettings(object sender, EventArgs e)
@@ -374,10 +370,16 @@ namespace ManipulatorControl
         {
             if (view.IsEditWorkspaceMode)
                 return;
-
-            workspaceManager.Rename(e.Index, e.Name);
+            try
+            {
+                workspaceManager.Rename(e.Index, e.Name);
 
             view.SetWorkspaces(workspaceManager.RobotWorkspaces, e.Index);
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
         }
 
         // Добавить рабочую зону.
@@ -468,18 +470,25 @@ namespace ManipulatorControl
         // Установить режим редактирования рабочей зоны.
         private void View_InvokeSetEditWorkspaceMode(object sender, WorkspaceEventArgs e)
         {
-            workspaceManager.SetDefaultWorkspace();
+            try
+            {
+                workspaceManager.SetDefaultWorkspace();
 
-            editingWorkspace = workspaceManager.GetClone(e.Index);
+                editingWorkspace = workspaceManager.GetClone(e.Index);
 
-            var editValues = MovableValueType.Zero;
+                var editValues = MovableValueType.Zero;
 
-            if (e.Index != 0)
-                editValues |= MovableValueType.Max | MovableValueType.Min;
+                if (e.Index != 0)
+                    editValues |= MovableValueType.Max | MovableValueType.Min;
 
-            editingWorkspaceIndex = e.Index;
+                editingWorkspaceIndex = e.Index;
 
-            view.SetEditWorkspaceMode(true, editingWorkspace, editValues);
+                view.SetEditWorkspaceMode(true, editingWorkspace, editValues);
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
         }
 
         //  Изменение ограничений и задание нулевой точки для плеч робота.
@@ -496,7 +505,39 @@ namespace ManipulatorControl
         #endregion
 
         #region Перемещение плечей робота-манипулятора. Ручное управление. Управление G кодами.  
-         
+
+        private void Movement_OnZeroPositionChanged(object sender, LeverZeroPositionEventArgs e)
+        {
+            bool isOnZ = e.LeverType == LeverType.Horizontal ? e.IsOnZeroPosition : movement.IsOnZeroPosition(LeverType.Horizontal);
+            bool isOnXY = (e.LeverType == LeverType.Lever1 ? e.IsOnZeroPosition : movement.IsOnZeroPosition(LeverType.Lever1))
+                        && (e.LeverType == LeverType.Lever2 ? e.IsOnZeroPosition : movement.IsOnZeroPosition(LeverType.Lever2));
+
+            view.SetZeroPositionState(isOnXY, isOnZ);
+        }
+
+        private void Movement_LeverPositionChanged(object sender, LeverPosition e)
+        {
+            if (view.IsEditWorkspaceMode)
+                view.SetCurrentEditWorkspaceModeLeverPosition(e.Lever, e.Position);
+
+            view.SetCurrentPosition(e);
+        }
+
+        private void Movement_LocationChanged(bool isRunning, Location location)
+        {
+            view.SetCurrentLocation(isRunning, location.X, location.Y, location.Z);
+        }
+
+        private void View_InvokeStepperAbort(object sender, EventArgs e)
+        {
+            movement.Abort();
+        }
+
+        private void View_InvokeStepperStop(object sender, EventArgs e)
+        {
+            movement.Stop();
+        }
+
         private void View_RunGCodeInterpreter(object sender, EventArgs e)
         {
             if (view.IsManualControlMode)

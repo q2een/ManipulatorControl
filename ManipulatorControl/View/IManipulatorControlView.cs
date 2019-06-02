@@ -1,10 +1,9 @@
 ﻿using GCodeParser;
 using ManipulatorControl.BL;
+using ManipulatorControl.BL.Script;
 using ManipulatorControl.BL.Workspace;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ManipulatorControl
 {
@@ -41,6 +40,10 @@ namespace ManipulatorControl
         event EventHandler<WorkspaceEventArgs> InvokeRenameWorkspace;
 
         #endregion
+
+        void SetScriptQueue(IEnumerable<LeverScriptPosition> scriptPositions);
+
+        event EventHandler InvokeCreateScript;
 
         event EventHandler RunGCodeInterpreter;
 

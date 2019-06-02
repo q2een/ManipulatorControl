@@ -1,5 +1,6 @@
 ﻿using GCodeParser;
 using ManipulatorControl.BL;
+using ManipulatorControl.BL.Script;
 using ManipulatorControl.BL.Workspace;
 using System;
 using System.Collections.Generic;
@@ -161,6 +162,8 @@ namespace ManipulatorControl
         public event EventHandler<EditWorkspaceEventArgs> OnActiveEditingLeverChanged = delegate { };
 
         #endregion
+
+        public event EventHandler InvokeCreateScript = delegate { };
 
         private void HandleStartManualMove(object sender, EventArgs e)
         {
@@ -446,8 +449,24 @@ namespace ManipulatorControl
         {
             InvokeSetActiveWorkspace(this, new WorkspaceEventArgs(lstWorkspaces.SelectedIndex));
         }
-        
+
         #endregion
+
+        public void SetScriptQueue(IEnumerable<LeverScriptPosition> scriptPositions)
+        {
+            var action = new Action(() =>
+            {
+                lstScriptQueue.Items.Clear();
+                lstScriptQueue.Items.AddRange(scriptPositions.ToArray());
+
+                lstScriptQueue.SelectedIndex = scriptPositions.Count() - 1;
+            });
+
+            if (this.InvokeRequired)
+                this.Invoke(action);
+            else
+                action();
+        }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -466,6 +485,11 @@ namespace ManipulatorControl
                 Invoke(action);
             else
                 action();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            InvokeCreateScript(this, EventArgs.Empty);
         }
 
         public void SetZeroPositionState(bool isXYZero, bool isZZero)

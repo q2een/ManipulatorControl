@@ -3,21 +3,20 @@ using LptStepperMotorControl.Stepper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ManipulatorControl.BL
 {
     public class LeverMovement
     {
-        private readonly StepperWorker worker = new StepperWorker(100);
+        private readonly StepperWorker worker = new StepperWorker(50);
         private LPTPort port;
 
         private readonly LeverStepper[] levers;
         private LeverStepper movingLever;
 
         private Queue<StepLever> steppersQueue = new Queue<StepLever>();
-        
+
         private Action doAfterWorkEnd = null;
 
         public bool IsRunning
@@ -27,6 +26,8 @@ namespace ManipulatorControl.BL
                 return movingLever != null;
             }
         }
+
+        public bool IsQueueMoving { get; private set; }
 
         public int StepsInterval
         {
@@ -54,35 +55,34 @@ namespace ManipulatorControl.BL
             this.worker.Elapsed += Worker_Elapsed;
         }
 
-        public void Run(StepLever stepLever)
+        public void Move(StepLever stepLever)
         {
-            if (IsRunning || (worker.Stepper != null && worker.Stepper.Enabled))
+            if (IsRunning || worker.Enabled)
                 throw new Exception("Невозможно запустить перемещение плеча, так как перемещение другого плеча еще не окончено");
-                      
+
             if (stepLever.StepsCount == 0)
                 return;
 
-            movingLever = levers.Single(lever => lever.Type == stepLever.Lever);
+            IsQueueMoving = false;
 
-            worker.Stepper = movingLever.Stepper;
-            worker.Stepper.TargetStepsCount = stepLever.StepsCount;
-
-            new Task(worker.Start).Start();
+            Run(stepLever);
         }
 
-        public void Run(Queue<StepLever> steppersQueue)
+        public void Move(Queue<StepLever> steppersQueue)
         {
-            Run(steppersQueue, null);
+            Move(steppersQueue, null);
         }
 
-        public void Run(Queue<StepLever> steppersQueue, Action doAfterWorkEnd)
+        public void Move(Queue<StepLever> steppersQueue, Action doAfterWorkEnd)
         {
-            if (IsRunning || (worker.Stepper != null && worker.Stepper.Enabled))
+            if (IsRunning || worker.Enabled)
                 throw new Exception("Невозможно запустить перемещение плеча, так как перемещение другого плеча еще не окончено");
 
-            this.doAfterWorkEnd = doAfterWorkEnd;
+            this.steppersQueue = new Queue<StepLever>(steppersQueue.Where(stepLever => stepLever.StepsCount != 0));
 
-            this.steppersQueue = steppersQueue;
+            IsQueueMoving = true;
+
+            this.doAfterWorkEnd = doAfterWorkEnd;
             Continue();
         }
 
@@ -100,6 +100,16 @@ namespace ManipulatorControl.BL
         public void Abort()
         {
             worker.Abort();
+        }
+
+        private void Run(StepLever stepLever)
+        {
+            movingLever = levers.Single(lever => lever.Type == stepLever.Lever);
+
+            worker.Stepper = movingLever.Stepper;
+            worker.Stepper.TargetStepsCount = stepLever.StepsCount;
+
+            new Task(worker.Start).Start();
         }
 
         private void Continue()
@@ -127,7 +137,7 @@ namespace ManipulatorControl.BL
 
             OnMovingEnd(this, stepLever);
 
-            if (steppersQueue.Count > 0)
+            if (IsQueueMoving)
             {
                 if (worker.StopReason != StepperStopReason.WorkDone)
                     steppersQueue.Clear();

@@ -89,7 +89,6 @@
             this.lblWorkspaceAB = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.tpGCodes = new System.Windows.Forms.TabPage();
-            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.tpWorkspaces = new System.Windows.Forms.TabPage();
             this.tlpWorkspaceInfo = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -112,11 +111,15 @@
             this.rbLever1 = new System.Windows.Forms.RadioButton();
             this.rbLever2 = new System.Windows.Forms.RadioButton();
             this.rightSidePanel = new System.Windows.Forms.Panel();
-            this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
             this.label9 = new System.Windows.Forms.Label();
             this.lblHorizontalCurrent = new System.Windows.Forms.Label();
             this.lblLever1Current = new System.Windows.Forms.Label();
             this.lblLever2Current = new System.Windows.Forms.Label();
+            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
+            this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
+            this.tpScripts = new System.Windows.Forms.TabPage();
+            this.lstScriptQueue = new System.Windows.Forms.ListBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -131,6 +134,7 @@
             this.tpWorkspaces.SuspendLayout();
             this.tlpWorkspaceInfo.SuspendLayout();
             this.rightSidePanel.SuspendLayout();
+            this.tpScripts.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -582,6 +586,7 @@
             // 
             this.tabControlType.Controls.Add(this.tpManualControl);
             this.tabControlType.Controls.Add(this.tpGCodes);
+            this.tabControlType.Controls.Add(this.tpScripts);
             this.tabControlType.Controls.Add(this.tpWorkspaces);
             this.tabControlType.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlType.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -773,23 +778,6 @@
             this.tpGCodes.TabIndex = 1;
             this.tpGCodes.Text = "Выполнение G-кодов";
             this.tpGCodes.UseVisualStyleBackColor = true;
-            // 
-            // gCodesBox
-            // 
-            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gCodesBox.Enable = true;
-            this.gCodesBox.EnableLineNumbering = false;
-            this.gCodesBox.FontSize = ((byte)(14));
-            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
-            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
-            this.gCodesBox.Lines = new string[0];
-            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
-            this.gCodesBox.Name = "gCodesBox";
-            this.gCodesBox.ReadOnly = false;
-            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
-            this.gCodesBox.Size = new System.Drawing.Size(533, 302);
-            this.gCodesBox.TabIndex = 1;
-            this.gCodesBox.WordWrap = false;
             // 
             // tpWorkspaces
             // 
@@ -1064,6 +1052,7 @@
             // 
             // rightSidePanel
             // 
+            this.rightSidePanel.Controls.Add(this.button1);
             this.rightSidePanel.Controls.Add(this.panel1);
             this.rightSidePanel.Controls.Add(this.directionPanel);
             this.rightSidePanel.Dock = System.Windows.Forms.DockStyle.Right;
@@ -1073,6 +1062,70 @@
             this.rightSidePanel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.rightSidePanel.Size = new System.Drawing.Size(382, 491);
             this.rightSidePanel.TabIndex = 7;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label9.Location = new System.Drawing.Point(4, 217);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(127, 55);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Текущее значение";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblHorizontalCurrent
+            // 
+            this.lblHorizontalCurrent.AutoSize = true;
+            this.lblHorizontalCurrent.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.lblHorizontalCurrent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblHorizontalCurrent.Location = new System.Drawing.Point(135, 217);
+            this.lblHorizontalCurrent.Margin = new System.Windows.Forms.Padding(0);
+            this.lblHorizontalCurrent.Name = "lblHorizontalCurrent";
+            this.lblHorizontalCurrent.Size = new System.Drawing.Size(133, 55);
+            this.lblHorizontalCurrent.TabIndex = 1;
+            this.lblHorizontalCurrent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLever1Current
+            // 
+            this.lblLever1Current.AutoSize = true;
+            this.lblLever1Current.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.lblLever1Current.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLever1Current.Location = new System.Drawing.Point(269, 217);
+            this.lblLever1Current.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLever1Current.Name = "lblLever1Current";
+            this.lblLever1Current.Size = new System.Drawing.Size(133, 55);
+            this.lblLever1Current.TabIndex = 1;
+            this.lblLever1Current.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLever2Current
+            // 
+            this.lblLever2Current.AutoSize = true;
+            this.lblLever2Current.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.lblLever2Current.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLever2Current.Location = new System.Drawing.Point(403, 217);
+            this.lblLever2Current.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLever2Current.Name = "lblLever2Current";
+            this.lblLever2Current.Size = new System.Drawing.Size(135, 55);
+            this.lblLever2Current.TabIndex = 1;
+            this.lblLever2Current.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // gCodesBox
+            // 
+            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gCodesBox.Enable = true;
+            this.gCodesBox.EnableLineNumbering = false;
+            this.gCodesBox.FontSize = ((byte)(14));
+            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
+            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
+            this.gCodesBox.Lines = new string[0];
+            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
+            this.gCodesBox.Name = "gCodesBox";
+            this.gCodesBox.ReadOnly = false;
+            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
+            this.gCodesBox.Size = new System.Drawing.Size(533, 302);
+            this.gCodesBox.TabIndex = 1;
+            this.gCodesBox.WordWrap = false;
             // 
             // directionPanel
             // 
@@ -1441,52 +1494,36 @@
             this.directionPanel.Y = 0D;
             this.directionPanel.Z = 0D;
             // 
-            // label9
+            // tpScripts
             // 
-            this.label9.AutoSize = true;
-            this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label9.Location = new System.Drawing.Point(4, 217);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(127, 55);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Текущее значение";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.tpScripts.Controls.Add(this.lstScriptQueue);
+            this.tpScripts.Location = new System.Drawing.Point(4, 34);
+            this.tpScripts.Name = "tpScripts";
+            this.tpScripts.Padding = new System.Windows.Forms.Padding(3);
+            this.tpScripts.Size = new System.Drawing.Size(539, 453);
+            this.tpScripts.TabIndex = 3;
+            this.tpScripts.Text = "Сценарии";
+            this.tpScripts.UseVisualStyleBackColor = true;
             // 
-            // lblHorizontalCurrent
+            // lstScriptQueue
             // 
-            this.lblHorizontalCurrent.AutoSize = true;
-            this.lblHorizontalCurrent.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.lblHorizontalCurrent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblHorizontalCurrent.Location = new System.Drawing.Point(135, 217);
-            this.lblHorizontalCurrent.Margin = new System.Windows.Forms.Padding(0);
-            this.lblHorizontalCurrent.Name = "lblHorizontalCurrent";
-            this.lblHorizontalCurrent.Size = new System.Drawing.Size(133, 55);
-            this.lblHorizontalCurrent.TabIndex = 1;
-            this.lblHorizontalCurrent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lstScriptQueue.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lstScriptQueue.FormattingEnabled = true;
+            this.lstScriptQueue.ItemHeight = 15;
+            this.lstScriptQueue.Location = new System.Drawing.Point(3, 3);
+            this.lstScriptQueue.Name = "lstScriptQueue";
+            this.lstScriptQueue.Size = new System.Drawing.Size(533, 229);
+            this.lstScriptQueue.TabIndex = 0;
             // 
-            // lblLever1Current
+            // button1
             // 
-            this.lblLever1Current.AutoSize = true;
-            this.lblLever1Current.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.lblLever1Current.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLever1Current.Location = new System.Drawing.Point(269, 217);
-            this.lblLever1Current.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLever1Current.Name = "lblLever1Current";
-            this.lblLever1Current.Size = new System.Drawing.Size(133, 55);
-            this.lblLever1Current.TabIndex = 1;
-            this.lblLever1Current.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLever2Current
-            // 
-            this.lblLever2Current.AutoSize = true;
-            this.lblLever2Current.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.lblLever2Current.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLever2Current.Location = new System.Drawing.Point(403, 217);
-            this.lblLever2Current.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLever2Current.Name = "lblLever2Current";
-            this.lblLever2Current.Size = new System.Drawing.Size(135, 55);
-            this.lblLever2Current.TabIndex = 1;
-            this.lblLever2Current.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.button1.Location = new System.Drawing.Point(44, 365);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
@@ -1522,6 +1559,7 @@
             this.tlpWorkspaceInfo.ResumeLayout(false);
             this.tlpWorkspaceInfo.PerformLayout();
             this.rightSidePanel.ResumeLayout(false);
+            this.tpScripts.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1617,6 +1655,9 @@
         private System.Windows.Forms.Label lblHorizontalCurrent;
         private System.Windows.Forms.Label lblLever1Current;
         private System.Windows.Forms.Label lblLever2Current;
+        private System.Windows.Forms.TabPage tpScripts;
+        private System.Windows.Forms.ListBox lstScriptQueue;
+        private System.Windows.Forms.Button button1;
     }
 }
 
