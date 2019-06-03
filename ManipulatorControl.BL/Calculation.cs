@@ -104,7 +104,7 @@ namespace ManipulatorControl.BL
 
         public StepLever GetStepLeverToPosition(LeverPosition position)
         {
-            return new StepLever(position.Lever, CalculateStepsToLeverPosition(position.Lever, position.Position));
+            return new StepLever(position.LeverType, CalculateStepsToLeverPosition(position.LeverType, position.Position));
         }
 
         public void SetNewLeverPosition(LeverType type, long stepsCount)

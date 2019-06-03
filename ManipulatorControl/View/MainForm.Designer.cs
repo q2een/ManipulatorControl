@@ -52,9 +52,31 @@
             this.editValuesSeparatorMI = new System.Windows.Forms.ToolStripSeparator();
             this.saveWorkspaceValuesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.closeEditWorkspaceModeMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.сценарийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runScriptMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.runScriptReverseMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.scriptCreateMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.scriptRemoveMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.scriptMoveToStartMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.scriptMoveToEndMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.scriptMoveBackToMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.scriptSetCurrentAsStartMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.scriptSetCurrentAsEndMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.saveScriptMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.scriptCancelEditingMI = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusLblState = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusLblSeparator = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusLblCurrentPosition = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusLblWorkspace = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnAbort = new System.Windows.Forms.Button();
@@ -118,29 +140,9 @@
             this.rbLever1 = new System.Windows.Forms.RadioButton();
             this.rbLever2 = new System.Windows.Forms.RadioButton();
             this.rightSidePanel = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
-            this.statusLblState = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusLblSeparator = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusLblWorkspace = new System.Windows.Forms.ToolStripStatusLabel();
-            this.сценарийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.выполнитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.выполнитьВОбратномПорядкеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.переместитьКНачалуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.переместитьККонечнойТочкеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.задатьНачаломToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.задатьКонечнойТочнойToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.отменитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.создатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.scriptMoveBackToMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.lstMovementScripts = new System.Windows.Forms.ListBox();
+            this.scriptRenameMI = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -348,6 +350,132 @@
             this.closeEditWorkspaceModeMI.Visible = false;
             this.closeEditWorkspaceModeMI.Click += new System.EventHandler(this.closeEditWorkspaceMode_Click);
             // 
+            // сценарийToolStripMenuItem
+            // 
+            this.сценарийToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.runScriptMI,
+            this.runScriptReverseMI,
+            this.toolStripMenuItem4,
+            this.scriptCreateMI,
+            this.scriptRenameMI,
+            this.scriptRemoveMI,
+            this.toolStripMenuItem1,
+            this.scriptMoveToStartMI,
+            this.scriptMoveToEndMI,
+            this.toolStripMenuItem5,
+            this.scriptMoveBackToMI,
+            this.toolStripMenuItem3,
+            this.scriptSetCurrentAsStartMI,
+            this.scriptSetCurrentAsEndMI,
+            this.toolStripMenuItem2,
+            this.saveScriptMI,
+            this.scriptCancelEditingMI});
+            this.сценарийToolStripMenuItem.Name = "сценарийToolStripMenuItem";
+            this.сценарийToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
+            this.сценарийToolStripMenuItem.Text = "Сценарий";
+            // 
+            // runScriptMI
+            // 
+            this.runScriptMI.Name = "runScriptMI";
+            this.runScriptMI.Size = new System.Drawing.Size(270, 22);
+            this.runScriptMI.Text = "Выполнить";
+            this.runScriptMI.Click += new System.EventHandler(this.runScriptMI_Click);
+            // 
+            // runScriptReverseMI
+            // 
+            this.runScriptReverseMI.Name = "runScriptReverseMI";
+            this.runScriptReverseMI.Size = new System.Drawing.Size(270, 22);
+            this.runScriptReverseMI.Text = "Выполнить в обратном порядке";
+            this.runScriptReverseMI.Click += new System.EventHandler(this.runScriptReverseMI_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(267, 6);
+            // 
+            // scriptCreateMI
+            // 
+            this.scriptCreateMI.Name = "scriptCreateMI";
+            this.scriptCreateMI.Size = new System.Drawing.Size(270, 22);
+            this.scriptCreateMI.Text = "Создать";
+            this.scriptCreateMI.Click += new System.EventHandler(this.scriptCreateMI_Click);
+            // 
+            // scriptRemoveMI
+            // 
+            this.scriptRemoveMI.Name = "scriptRemoveMI";
+            this.scriptRemoveMI.Size = new System.Drawing.Size(270, 22);
+            this.scriptRemoveMI.Text = "Удалить";
+            this.scriptRemoveMI.Click += new System.EventHandler(this.scriptRemoveMI_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(267, 6);
+            // 
+            // scriptMoveToStartMI
+            // 
+            this.scriptMoveToStartMI.Name = "scriptMoveToStartMI";
+            this.scriptMoveToStartMI.Size = new System.Drawing.Size(270, 22);
+            this.scriptMoveToStartMI.Text = "Переместить к начальной точке";
+            this.scriptMoveToStartMI.Click += new System.EventHandler(this.scriptMoveToStartMI_Click);
+            // 
+            // scriptMoveToEndMI
+            // 
+            this.scriptMoveToEndMI.Name = "scriptMoveToEndMI";
+            this.scriptMoveToEndMI.Size = new System.Drawing.Size(270, 22);
+            this.scriptMoveToEndMI.Text = "Переместить к конечной точке";
+            this.scriptMoveToEndMI.Click += new System.EventHandler(this.scriptMoveToEndMI_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(267, 6);
+            // 
+            // scriptMoveBackToMI
+            // 
+            this.scriptMoveBackToMI.Name = "scriptMoveBackToMI";
+            this.scriptMoveBackToMI.Size = new System.Drawing.Size(270, 22);
+            this.scriptMoveBackToMI.Text = "Вернуться в выбранное положение";
+            this.scriptMoveBackToMI.Click += new System.EventHandler(this.scriptMoveBackToMI_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(267, 6);
+            // 
+            // scriptSetCurrentAsStartMI
+            // 
+            this.scriptSetCurrentAsStartMI.Name = "scriptSetCurrentAsStartMI";
+            this.scriptSetCurrentAsStartMI.Size = new System.Drawing.Size(270, 22);
+            this.scriptSetCurrentAsStartMI.Text = "Задать начальной точкой";
+            this.scriptSetCurrentAsStartMI.Click += new System.EventHandler(this.scriptSetCurrentAsStartMI_Click);
+            // 
+            // scriptSetCurrentAsEndMI
+            // 
+            this.scriptSetCurrentAsEndMI.Name = "scriptSetCurrentAsEndMI";
+            this.scriptSetCurrentAsEndMI.Size = new System.Drawing.Size(270, 22);
+            this.scriptSetCurrentAsEndMI.Text = "Задать конечной точной";
+            this.scriptSetCurrentAsEndMI.Click += new System.EventHandler(this.scriptSetCurrentAsEndMI_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(267, 6);
+            // 
+            // saveScriptMI
+            // 
+            this.saveScriptMI.Name = "saveScriptMI";
+            this.saveScriptMI.Size = new System.Drawing.Size(270, 22);
+            this.saveScriptMI.Text = "Сохранить";
+            this.saveScriptMI.Click += new System.EventHandler(this.saveScriptMI_Click);
+            // 
+            // scriptCancelEditingMI
+            // 
+            this.scriptCancelEditingMI.Name = "scriptCancelEditingMI";
+            this.scriptCancelEditingMI.Size = new System.Drawing.Size(270, 22);
+            this.scriptCancelEditingMI.Text = "Отменить";
+            this.scriptCancelEditingMI.Click += new System.EventHandler(this.scriptCancelEditingMI_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -365,6 +493,18 @@
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // statusLblState
+            // 
+            this.statusLblState.Name = "statusLblState";
+            this.statusLblState.Size = new System.Drawing.Size(0, 17);
+            // 
+            // statusLblSeparator
+            // 
+            this.statusLblSeparator.Name = "statusLblSeparator";
+            this.statusLblSeparator.Size = new System.Drawing.Size(16, 17);
+            this.statusLblSeparator.Text = " | ";
+            this.statusLblSeparator.Visible = false;
+            // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
@@ -375,6 +515,23 @@
             // 
             this.statusLblCurrentPosition.Name = "statusLblCurrentPosition";
             this.statusLblCurrentPosition.Size = new System.Drawing.Size(0, 17);
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(16, 17);
+            this.toolStripStatusLabel2.Text = " | ";
+            // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(84, 17);
+            this.toolStripStatusLabel3.Text = "Рабочая зона:";
+            // 
+            // statusLblWorkspace
+            // 
+            this.statusLblWorkspace.Name = "statusLblWorkspace";
+            this.statusLblWorkspace.Size = new System.Drawing.Size(0, 17);
             // 
             // panel1
             // 
@@ -826,6 +983,7 @@
             // tpScripts
             // 
             this.tpScripts.Controls.Add(this.lstScriptQueue);
+            this.tpScripts.Controls.Add(this.lstMovementScripts);
             this.tpScripts.Location = new System.Drawing.Point(4, 34);
             this.tpScripts.Name = "tpScripts";
             this.tpScripts.Padding = new System.Windows.Forms.Padding(3);
@@ -840,7 +998,7 @@
             this.lstScriptQueue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lstScriptQueue.FormattingEnabled = true;
             this.lstScriptQueue.ItemHeight = 20;
-            this.lstScriptQueue.Location = new System.Drawing.Point(3, 3);
+            this.lstScriptQueue.Location = new System.Drawing.Point(3, 203);
             this.lstScriptQueue.Name = "lstScriptQueue";
             this.lstScriptQueue.Size = new System.Drawing.Size(533, 224);
             this.lstScriptQueue.TabIndex = 0;
@@ -1165,7 +1323,6 @@
             // 
             // rightSidePanel
             // 
-            this.rightSidePanel.Controls.Add(this.button1);
             this.rightSidePanel.Controls.Add(this.panel1);
             this.rightSidePanel.Controls.Add(this.directionPanel);
             this.rightSidePanel.Dock = System.Windows.Forms.DockStyle.Right;
@@ -1176,19 +1333,13 @@
             this.rightSidePanel.Size = new System.Drawing.Size(382, 491);
             this.rightSidePanel.TabIndex = 7;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(44, 365);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // directionPanel
             // 
             this.directionPanel.ColumnCount = 4;
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -1554,6 +1705,10 @@
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.Size = new System.Drawing.Size(362, 198);
             this.directionPanel.TabIndex = 0;
             this.directionPanel.TabStop = true;
@@ -1561,143 +1716,24 @@
             this.directionPanel.Y = 0D;
             this.directionPanel.Z = 0D;
             // 
-            // statusLblState
+            // lstMovementScripts
             // 
-            this.statusLblState.Name = "statusLblState";
-            this.statusLblState.Size = new System.Drawing.Size(0, 17);
+            this.lstMovementScripts.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lstMovementScripts.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lstMovementScripts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lstMovementScripts.FormattingEnabled = true;
+            this.lstMovementScripts.ItemHeight = 20;
+            this.lstMovementScripts.Location = new System.Drawing.Point(3, 3);
+            this.lstMovementScripts.Name = "lstMovementScripts";
+            this.lstMovementScripts.Size = new System.Drawing.Size(533, 200);
+            this.lstMovementScripts.TabIndex = 1;
             // 
-            // statusLblSeparator
+            // scriptRenameMI
             // 
-            this.statusLblSeparator.Name = "statusLblSeparator";
-            this.statusLblSeparator.Size = new System.Drawing.Size(16, 17);
-            this.statusLblSeparator.Text = " | ";
-            this.statusLblSeparator.Visible = false;
-            // 
-            // toolStripStatusLabel2
-            // 
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(16, 17);
-            this.toolStripStatusLabel2.Text = " | ";
-            // 
-            // toolStripStatusLabel3
-            // 
-            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(84, 17);
-            this.toolStripStatusLabel3.Text = "Рабочая зона:";
-            // 
-            // statusLblWorkspace
-            // 
-            this.statusLblWorkspace.Name = "statusLblWorkspace";
-            this.statusLblWorkspace.Size = new System.Drawing.Size(0, 17);
-            // 
-            // сценарийToolStripMenuItem
-            // 
-            this.сценарийToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.выполнитьToolStripMenuItem,
-            this.выполнитьВОбратномПорядкеToolStripMenuItem,
-            this.toolStripMenuItem4,
-            this.создатьToolStripMenuItem,
-            this.удалитьToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.переместитьКНачалуToolStripMenuItem,
-            this.переместитьККонечнойТочкеToolStripMenuItem,
-            this.toolStripMenuItem3,
-            this.задатьНачаломToolStripMenuItem,
-            this.scriptMoveBackToMI,
-            this.задатьКонечнойТочнойToolStripMenuItem,
-            this.toolStripMenuItem2,
-            this.сохранитьToolStripMenuItem,
-            this.отменитьToolStripMenuItem});
-            this.сценарийToolStripMenuItem.Name = "сценарийToolStripMenuItem";
-            this.сценарийToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
-            this.сценарийToolStripMenuItem.Text = "Сценарий";
-            // 
-            // выполнитьToolStripMenuItem
-            // 
-            this.выполнитьToolStripMenuItem.Name = "выполнитьToolStripMenuItem";
-            this.выполнитьToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
-            this.выполнитьToolStripMenuItem.Text = "Выполнить";
-            // 
-            // выполнитьВОбратномПорядкеToolStripMenuItem
-            // 
-            this.выполнитьВОбратномПорядкеToolStripMenuItem.Name = "выполнитьВОбратномПорядкеToolStripMenuItem";
-            this.выполнитьВОбратномПорядкеToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
-            this.выполнитьВОбратномПорядкеToolStripMenuItem.Text = "Выполнить в обратном порядке";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(267, 6);
-            // 
-            // переместитьКНачалуToolStripMenuItem
-            // 
-            this.переместитьКНачалуToolStripMenuItem.Name = "переместитьКНачалуToolStripMenuItem";
-            this.переместитьКНачалуToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
-            this.переместитьКНачалуToolStripMenuItem.Text = "Переместить к начальной точке";
-            // 
-            // переместитьККонечнойТочкеToolStripMenuItem
-            // 
-            this.переместитьККонечнойТочкеToolStripMenuItem.Name = "переместитьККонечнойТочкеToolStripMenuItem";
-            this.переместитьККонечнойТочкеToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
-            this.переместитьККонечнойТочкеToolStripMenuItem.Text = "Переместить к конечной точке";
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(267, 6);
-            // 
-            // задатьНачаломToolStripMenuItem
-            // 
-            this.задатьНачаломToolStripMenuItem.Name = "задатьНачаломToolStripMenuItem";
-            this.задатьНачаломToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
-            this.задатьНачаломToolStripMenuItem.Text = "Задать начальной точкой";
-            // 
-            // задатьКонечнойТочнойToolStripMenuItem
-            // 
-            this.задатьКонечнойТочнойToolStripMenuItem.Name = "задатьКонечнойТочнойToolStripMenuItem";
-            this.задатьКонечнойТочнойToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
-            this.задатьКонечнойТочнойToolStripMenuItem.Text = "Задать конечной точной";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(267, 6);
-            // 
-            // сохранитьToolStripMenuItem
-            // 
-            this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
-            this.сохранитьToolStripMenuItem.Text = "Сохранить";
-            // 
-            // отменитьToolStripMenuItem
-            // 
-            this.отменитьToolStripMenuItem.Name = "отменитьToolStripMenuItem";
-            this.отменитьToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
-            this.отменитьToolStripMenuItem.Text = "Отменить";
-            // 
-            // создатьToolStripMenuItem
-            // 
-            this.создатьToolStripMenuItem.Name = "создатьToolStripMenuItem";
-            this.создатьToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
-            this.создатьToolStripMenuItem.Text = "Создать";
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(267, 6);
-            // 
-            // удалитьToolStripMenuItem
-            // 
-            this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
-            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
-            this.удалитьToolStripMenuItem.Text = "Удалить";
-            // 
-            // scriptMoveBackToMI
-            // 
-            this.scriptMoveBackToMI.Name = "scriptMoveBackToMI";
-            this.scriptMoveBackToMI.Size = new System.Drawing.Size(270, 22);
-            this.scriptMoveBackToMI.Text = "Вернуться в выбранное положение";
-            this.scriptMoveBackToMI.Click += new System.EventHandler(this.scriptMoveBackToMI_Click);
+            this.scriptRenameMI.Name = "scriptRenameMI";
+            this.scriptRenameMI.Size = new System.Drawing.Size(270, 22);
+            this.scriptRenameMI.Text = "Переименовать";
+            this.scriptRenameMI.Click += new System.EventHandler(this.scriptRenameMI_Click);
             // 
             // MainForm
             // 
@@ -1831,28 +1867,30 @@
         private System.Windows.Forms.Label lblLever2Current;
         private System.Windows.Forms.TabPage tpScripts;
         private System.Windows.Forms.ListBox lstScriptQueue;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripStatusLabel statusLblState;
         private System.Windows.Forms.ToolStripStatusLabel statusLblSeparator;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.ToolStripStatusLabel statusLblWorkspace;
         private System.Windows.Forms.ToolStripMenuItem сценарийToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem выполнитьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem выполнитьВОбратномПорядкеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem runScriptMI;
+        private System.Windows.Forms.ToolStripMenuItem runScriptReverseMI;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
-        private System.Windows.Forms.ToolStripMenuItem создатьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scriptCreateMI;
+        private System.Windows.Forms.ToolStripMenuItem scriptRemoveMI;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem переместитьКНачалуToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem переместитьККонечнойТочкеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scriptMoveToStartMI;
+        private System.Windows.Forms.ToolStripMenuItem scriptMoveToEndMI;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem задатьНачаломToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scriptSetCurrentAsStartMI;
         private System.Windows.Forms.ToolStripMenuItem scriptMoveBackToMI;
-        private System.Windows.Forms.ToolStripMenuItem задатьКонечнойТочнойToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scriptSetCurrentAsEndMI;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem отменитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveScriptMI;
+        private System.Windows.Forms.ToolStripMenuItem scriptCancelEditingMI;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.ListBox lstMovementScripts;
+        private System.Windows.Forms.ToolStripMenuItem scriptRenameMI;
     }
 }
 

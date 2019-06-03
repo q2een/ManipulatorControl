@@ -43,6 +43,9 @@ namespace ManipulatorControl
         private int editingWorkspaceIndex = -1;
         private RobotWorkspace editingWorkspace;
 
+        private ScriptExecutor scriptExecutor;
+        private List<MovementScript> scripts = new List<MovementScript>();
+
         public ManipulatorPresenter(IManipulatorControlView view, IMessageService messageService)
         {
             this.view = view;
@@ -64,16 +67,25 @@ namespace ManipulatorControl
 
             // Подписка на события для редактирования рабочих зон.
             this.view.InvokeSetActiveWorkspace += View_InvokeSetActiveWorkspace;
-            this.view.InvokeSetEditWorkspaceMode += View_InvokeSetEditWorkspaceMode;  
-            this.view.OnActiveEditingLeverChanged += View_OnActiveEditingLeverChanged;   
-            this.view.InvokeWorkspaceValueChange += View_InvokeWorkspaceValueChange;      
+            this.view.InvokeSetEditWorkspaceMode += View_InvokeSetEditWorkspaceMode;
+            this.view.OnActiveEditingLeverChanged += View_OnActiveEditingLeverChanged;
+            this.view.InvokeWorkspaceValueChange += View_InvokeWorkspaceValueChange;
             this.view.InvokeSaveWorkspaceValues += View_InvokeSaveWorkspaceValues;
-            this.view.InvokeCloseEditWorkspaceMode += View_InvokeCloseEditWorkspaceMode;   
+            this.view.InvokeCloseEditWorkspaceMode += View_InvokeCloseEditWorkspaceMode;
             this.view.InvokeRemoveWorkspace += View_InvokeRemoveWorkspace;
             this.view.InvokeAddWorkspace += View_InvokeAddWorkspace;
             this.view.InvokeRenameWorkspace += View_InvokeRenameWorkspace;
 
             this.view.InvokeCreateScript += View_InvokeCreateScript;
+            this.view.InvokeSaveScript += View_InvokeSaveScript;
+
+
+
+            this.view.InvokeRunScript += View_InvokeRunScript;
+            this.view.InvokeRunScriptReverse += View_InvokeRunScriptReverse;
+            this.view.InvokeSetCurrentAsStart += View_InvokeSetCurrentAsStart;
+            this.view.InvokeSetCurrentAsEnd += View_InvokeSetCurrentAsEnd;
+
             this.view.InvokeScriptBackTo += View_InvokeScriptBackTo;
 
 
@@ -83,8 +95,9 @@ namespace ManipulatorControl
             leverMovement = new LeverMovement(port, levers);
 
             movement = new RobotMovement(new Calculation(parameters), leverMovement);
-
             workspaceManager = new WorkspaceManager(parameters, LoadWorkspaces());
+            scriptExecutor = new ScriptExecutor(movement);
+            
             workspaceManager.OnActiveWorkspaceChanged += WorkspaceManager_OnActiveWorkspaceChanged;
             workspaceManager.ActiveWorkspace = GetActiveRobotWorkspace();
 
@@ -93,6 +106,9 @@ namespace ManipulatorControl
             movement.OnZeroPositionChanged += Movement_OnZeroPositionChanged;
             movement.OnMovingStart += Movement_OnMovingStart;
             movement.OnMovingEnd += Movement_OnMovingEnd;
+
+            scriptExecutor.StepPassed += ScriptExecutor_StepPassed;
+            scriptExecutor.ScriptExecuted += ScriptExecutor_ScriptExecuted;
 
             Movement_LocationChanged(false, movement.Calculation.GetCurrentLocation());
 
@@ -103,13 +119,99 @@ namespace ManipulatorControl
             view.SetCurrentPosition(new LeverPosition(LeverType.Lever2, movement.GetLeverPosition(LeverType.Lever2)));
         }
 
+        private void ScriptExecutor_ScriptExecuted(object sender, EventArgs e)
+        {
+            messageService.ShowMessage("Сценарий выполнен");
+            view.SetScriptQueue(scriptExecutor.MovementScript.MovementPath, scriptExecutor.MovementScript.MovementPath.Count - 1, false);
+        }
+
+        private void ScriptExecutor_StepPassed(object sender, LeverScriptPosition e)
+        {
+            view.SetScriptQueue(scriptExecutor.MovementScript.MovementPath, scriptExecutor.MovementScript.MovementPath.IndexOf(e), true);
+        }
+
+        private void View_InvokeSetCurrentAsEnd(object sender, EventArgs e)
+        {
+            try
+            {
+                if (scriptBuilder == null)
+                    throw new Exception("Невозможно установить конечное значение, так как сценарий еще не создан или не редактируется");
+
+                scriptBuilder.SetCurrentPositionAsEnd();
+
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
+        }
+
+        private void View_InvokeSetCurrentAsStart(object sender, EventArgs e)
+        {
+            try
+            {
+                if (scriptBuilder == null)
+                    throw new Exception("Невозможно установить начальное значение, так как сценарий еще не создан или не редактируется");
+
+                scriptBuilder.SetCurrentPositionAsStart();
+
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
+        }
+
+        private void View_InvokeRunScriptReverse(object sender, MovementScript e)
+        {
+            try
+            {
+                scriptExecutor.Execute(e, true);
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
+        }
+
+        private void View_InvokeRunScript(object sender, MovementScript e)
+        {
+            try
+            {
+                scriptExecutor.Execute(e, false);
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
+        }
+
+        private void View_InvokeSaveScript(object sender, EventArgs e)
+        {
+            try
+            {
+                if (scriptBuilder == null)
+                    throw new Exception("Невозможно сохранить сценарий, так как он еще не создан или не редактируется");
+
+                scripts.Add(scriptBuilder.GetScript());
+                view.SetScriptsList(scripts);
+                scriptBuilder.OnPathChanged -= ScriptBuilder_OnPathChanged;
+
+                messageService.ShowMessage("Сценарий сохранен");
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
+        }
+
         private void View_InvokeScriptBackTo(object sender, LeverScriptPosition e)
         {
             try
             {
                 scriptBuilder.BackTo(e);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 messageService.ShowError(ex.Message);
             }
@@ -117,25 +219,27 @@ namespace ManipulatorControl
 
         private void View_InvokeCreateScript(object sender, EventArgs e)
         {
-            scriptBuilder = new ScriptBuilder(movement); 
-            scriptBuilder.SetCurrentPositionAsStart();
+            scriptBuilder = new ScriptBuilder(movement);
 
             scriptBuilder.OnPathChanged += ScriptBuilder_OnPathChanged;
         }
 
         private void ScriptBuilder_OnPathChanged(object sender, EventArgs e)
         {
-            view.SetScriptQueue(scriptBuilder.Path);         
+            view.SetScriptQueue(scriptBuilder.Path, scriptBuilder.Path.Count - 1, false);
         }
 
         #region Загрузка параметров, значений.
 
         private void LoadApplicationSettings()
-        {   
+        {
             if (this.parameters == null)
                 throw new NullReferenceException();
 
             LoadStepDirNames();
+            LoadScripts();
+
+            view.SetScriptsList(scripts);
         }
 
         private DesignParameters LoadDesignParameters()
@@ -195,7 +299,7 @@ namespace ManipulatorControl
         }
 
         #endregion
-                              
+
         private void UpdateDesignParameters(DesignParameters designParameters)
         {
             if (parameters == designParameters)
@@ -221,9 +325,9 @@ namespace ManipulatorControl
             {
                 return JsonConvert.DeserializeObject<List<RobotWorkspace>>(File.ReadAllText("workspaces.settings"), new WorkspaceConverter());
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                messageService.ShowError(e.Message);                
+                messageService.ShowError(e.Message);
             }
 
             return new List<RobotWorkspace>();
@@ -303,6 +407,32 @@ namespace ManipulatorControl
             }
         }
 
+        private void SaveScripts()
+        {
+            try
+            {
+                File.WriteAllText("scripts.settings", JsonConvert.SerializeObject(scripts));
+            }
+            catch (Exception e)
+            {
+                messageService.ShowError(e.Message);
+            }
+        }
+
+        private void LoadScripts()
+        {
+            try
+            {
+                var savedScripts = JsonConvert.DeserializeObject<List<MovementScript>>(File.ReadAllText("scripts.settings"));
+
+                scripts = savedScripts == null ? new List<MovementScript>() : savedScripts;
+            }
+            catch (Exception e)
+            {
+                messageService.ShowError(e.Message);
+            }
+        }
+
         private IEnumerable<BL.LeverStepper> GetRobotLever()
         {
             LoadLeverSteppers();
@@ -353,6 +483,7 @@ namespace ManipulatorControl
         private void View_OnViewClosing(object sender, EventArgs e)
         {
             SaveWorkspaces();
+            SaveScripts();
 
             movement.Stop();
         }
@@ -568,10 +699,10 @@ namespace ManipulatorControl
 
         private void Movement_LeverPositionChanged(object sender, LeverPosition e)
         {
-            SaveLeverCurrentPosition(e.Lever, e.Position);
+            SaveLeverCurrentPosition(e.LeverType, e.Position);
 
             if (view.IsEditWorkspaceMode)
-                view.SetCurrentEditWorkspaceModeLeverPosition(e.Lever, e.Position);
+                view.SetCurrentEditWorkspaceModeLeverPosition(e.LeverType, e.Position);
 
             view.SetCurrentPosition(e);
         }

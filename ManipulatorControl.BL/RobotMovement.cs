@@ -88,6 +88,11 @@ namespace ManipulatorControl.BL
             return new List<GCodeException>();
         }
 
+        public void MoveLever(LeverPosition leverPosition)
+        {
+            leverMovement.Move(Calculation.GetStepLeverToPosition(leverPosition));
+        }
+
         public void MoveRobotByPath(IEnumerable<LeverPosition> leverPositions, Action doAfter)
         {
             var queue = new Queue<StepLever>();

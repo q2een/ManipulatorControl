@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 namespace ManipulatorControl.BL.Script
 {
-    public class MovementScript
+    public class MovementScript : EventArgs
     {
         private readonly Queue<LeverScriptPosition> movementPath;
 
@@ -16,7 +15,7 @@ namespace ManipulatorControl.BL.Script
         {
             get
             {
-                return IsReverse ? ednPosition : startPosition;
+                return startPosition;
             }
         }
 
@@ -24,27 +23,31 @@ namespace ManipulatorControl.BL.Script
         {
             get
             {
-                return IsReverse ? startPosition : ednPosition; 
+                return ednPosition; 
             }
         }
 
-        public bool IsReverse { get; set; }
-
-        public Queue<LeverScriptPosition> MovementPath
+        public ReadOnlyCollection<LeverScriptPosition> MovementPath
         {
             get
             {
-                return new Queue<LeverScriptPosition>(IsReverse ? movementPath.Reverse() : movementPath);
+                return movementPath.ToList().AsReadOnly();
             }
+        }
+
+        public MovementScript GetReversed()
+        {
+            var queue = new Queue<LeverScriptPosition>(movementPath.Select(i => i.GetReversed()).Reverse());
+            return new MovementScript(queue, ednPosition, startPosition);
         }
 
         public MovementScript(Queue<LeverScriptPosition> movementPath, IEnumerable<LeverPosition> startPosition, IEnumerable<LeverPosition> ednPosition)
         {
-            this.movementPath = Optimize(movementPath);
+            this.movementPath = movementPath;//Optimize(movementPath);
             this.startPosition = startPosition;
             this.ednPosition = ednPosition;
         }
-
+        /*
         public static Queue<LeverScriptPosition> Optimize(Queue<LeverScriptPosition> movementPath)
         {
             Queue<LeverScriptPosition> path = new Queue<LeverScriptPosition>();
@@ -67,6 +70,6 @@ namespace ManipulatorControl.BL.Script
             }
 
             return path;
-        }
+        }      */
     }
 }

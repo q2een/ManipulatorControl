@@ -45,11 +45,28 @@ namespace ManipulatorControl
 
         #endregion
 
-        void SetScriptQueue(IEnumerable<LeverScriptPosition> scriptPositions);
+        void SetScriptsList(IEnumerable<MovementScript> movementScripts);
+        void SetScriptQueue(IEnumerable<LeverScriptPosition> scriptPositions, int activeIndex, bool isQueueExecuting);
+
+
+        event EventHandler<MovementScript> InvokeRunScript;
+        event EventHandler<MovementScript> InvokeRunScriptReverse;
+
+        event EventHandler InvokeCreateScript;
+        event EventHandler InvokeScriptRename;
+        event EventHandler<MovementScript> InvokeRemoveScript;
+
+        event EventHandler<MovementScript> InvokeMoveToStartScript;
+        event EventHandler<MovementScript> InvokeMoveToEndScript;
 
         event EventHandler<LeverScriptPosition> InvokeScriptBackTo;
 
-        event EventHandler InvokeCreateScript;
+        event EventHandler InvokeSetCurrentAsStart;
+        event EventHandler InvokeSetCurrentAsEnd;
+
+        event EventHandler InvokeSaveScript;
+        event EventHandler InvokeCancelCreatingScript;
+
 
         event EventHandler RunGCodeInterpreter;
 

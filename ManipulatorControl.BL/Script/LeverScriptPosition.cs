@@ -10,6 +10,16 @@ namespace ManipulatorControl.BL.Script
 
         public double To { get; set; }
 
+        public LeverScriptPosition GetReversed()
+        {
+            return new LeverScriptPosition()
+            {
+                LeverType = LeverType,
+                From = To,
+                To = From
+            };
+        }
+
         public override bool Equals(object other)
         {
             if (other == null)

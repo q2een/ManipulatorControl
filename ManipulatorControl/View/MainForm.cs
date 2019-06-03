@@ -165,6 +165,16 @@ namespace ManipulatorControl
 
         public event EventHandler InvokeCreateScript = delegate { };
         public event EventHandler<LeverScriptPosition> InvokeScriptBackTo = delegate { };
+        public event EventHandler<MovementScript> InvokeRunScript = delegate { };
+        public event EventHandler<MovementScript> InvokeRunScriptReverse = delegate { };
+        public event EventHandler InvokeSaveScript = delegate { };
+        public event EventHandler<MovementScript> InvokeRemoveScript;
+        public event EventHandler<MovementScript> InvokeMoveToStartScript;
+        public event EventHandler<MovementScript> InvokeMoveToEndScript;
+        public event EventHandler InvokeSetCurrentAsStart = delegate { };
+        public event EventHandler InvokeSetCurrentAsEnd = delegate { };
+        public event EventHandler InvokeCancelCreatingScript;
+        public event EventHandler InvokeScriptRename;
 
         private void HandleStartManualMove(object sender, EventArgs e)
         {
@@ -453,22 +463,6 @@ namespace ManipulatorControl
 
         #endregion
 
-        public void SetScriptQueue(IEnumerable<LeverScriptPosition> scriptPositions)
-        {
-            var action = new Action(() =>
-            {
-                lstScriptQueue.Items.Clear();
-                lstScriptQueue.Items.AddRange(scriptPositions.ToArray());
-
-                lstScriptQueue.SelectedIndex = scriptPositions.Count() - 1;
-            });
-
-            if (this.InvokeRequired)
-                this.Invoke(action);
-            else
-                action();
-        }
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             OnViewClosing(this, EventArgs.Empty);
@@ -488,11 +482,6 @@ namespace ManipulatorControl
                 action();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            InvokeCreateScript(this, EventArgs.Empty);
-        }
-
         public void SetZeroPositionState(bool isXYZero, bool isZZero)
         {
             directionPanel.SetZeroPositionState(isXYZero, isZZero);
@@ -502,13 +491,13 @@ namespace ManipulatorControl
         {
             var action = new Action(() =>
             {
-                if (position.Lever == LeverType.Horizontal)
+                if (position.LeverType == LeverType.Horizontal)
                     lblHorizontalCurrent.Text = position.Position.ToString();
 
-                if (position.Lever == LeverType.Lever1)
+                if (position.LeverType == LeverType.Lever1)
                     lblLever1Current.Text = position.Position.ToString();
 
-                if (position.Lever == LeverType.Lever2)
+                if (position.LeverType == LeverType.Lever2)
                     lblLever2Current.Text = position.Position.ToString();
             });
 
@@ -517,11 +506,6 @@ namespace ManipulatorControl
             else
                 action();
 
-        }
-
-        private void scriptMoveBackToMI_Click(object sender, EventArgs e)
-        {
-            InvokeScriptBackTo(this, lstScriptQueue.SelectedItem as LeverScriptPosition);
         }
 
         public void SetStatusMessage(string message, bool append)
@@ -536,5 +520,111 @@ namespace ManipulatorControl
         {
             statusLblWorkspace.Text = workspace.Name;
         }
+
+        public void SetScriptQueue(IEnumerable<LeverScriptPosition> scriptPositions, int activeIndex, bool isQueueExecuting)
+        {
+            var action = new Action(() =>
+            {
+                lstScriptQueue.Enabled = !isQueueExecuting;
+
+                lstScriptQueue.Items.Clear();
+                lstScriptQueue.Items.AddRange(scriptPositions.ToArray());
+
+                lstScriptQueue.SelectedIndex = activeIndex;
+            });
+
+            if (this.InvokeRequired)
+                this.Invoke(action);
+            else
+                action();
+        }
+
+        public void SetScriptsList(IEnumerable<MovementScript> movementScripts)
+        {
+            var action = new Action(() =>
+            {
+                lstMovementScripts.Items.Clear();
+                lstMovementScripts.Items.AddRange(movementScripts.ToArray());
+
+                lstMovementScripts.SelectedIndex = lstMovementScripts.Items.Count > 0 ? 0 : -1;
+            });
+
+            if (this.InvokeRequired)
+                this.Invoke(action);
+            else
+                action();
+        }
+
+        private void runScriptMI_Click(object sender, EventArgs e)
+        {
+            var script = lstMovementScripts.SelectedItem as MovementScript;
+
+            if (script == null)
+                return;
+
+            InvokeRunScript(this, script);
+        }
+
+        private void runScriptReverseMI_Click(object sender, EventArgs e)
+        {
+            var script = lstMovementScripts.SelectedItem as MovementScript;
+
+            if (script == null)
+                return;
+
+            InvokeRunScriptReverse(this, script);
+        }
+
+        private void scriptCreateMI_Click(object sender, EventArgs e)
+        {
+            InvokeCreateScript(this, EventArgs.Empty);
+        }
+
+        private void scriptRenameMI_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void scriptRemoveMI_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void scriptMoveToStartMI_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void scriptMoveToEndMI_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void scriptMoveBackToMI_Click(object sender, EventArgs e)
+        {
+            InvokeScriptBackTo(this, lstScriptQueue.SelectedItem as LeverScriptPosition);
+        }
+
+        private void scriptSetCurrentAsStartMI_Click(object sender, EventArgs e)
+        {
+            InvokeSetCurrentAsStart(this, EventArgs.Empty);
+        }
+
+        private void scriptSetCurrentAsEndMI_Click(object sender, EventArgs e)
+        {
+            InvokeSetCurrentAsEnd(this, EventArgs.Empty);
+        }
+
+        private void saveScriptMI_Click(object sender, EventArgs e)
+        {
+            InvokeSaveScript(this, EventArgs.Empty);
+        }
+
+        private void scriptCancelEditingMI_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }

@@ -10,7 +10,7 @@ namespace ManipulatorControl.BL.Script
     {
         private readonly RobotMovement movement;
 
-        private bool IsMovingBack;
+        private bool IsMoving = false;
 
         private IEnumerable<LeverPosition> startPosition, endPosition;
 
@@ -33,8 +33,25 @@ namespace ManipulatorControl.BL.Script
             this.movement = movement;
         }
 
+        public MovementScript GetScript()
+        {
+            if (scriptPosition != null || IsMoving)
+                throw new Exception("Дождидесь окончания перемещения робота");
+
+            if(endPosition == null || endPosition.Count() == 0)
+                SetCurrentPositionAsEnd();
+
+            return new MovementScript(new Queue<LeverScriptPosition>(Path), startPosition, endPosition);
+        }
+
         public void SetCurrentPositionAsStart()
         {
+            if(startPosition == null || startPosition.Count() == 0)
+            {
+                this.movement.OnMovingStart -= Movement_OnMovingStart;
+                this.movement.OnMovingEnd -= Movement_OnMovingEnd;
+            }
+
             startPosition = movement.GetCurrentLeversPosition();
 
             endPosition = null;
@@ -47,6 +64,9 @@ namespace ManipulatorControl.BL.Script
         public void SetCurrentPositionAsEnd()
         {
             endPosition = movement.GetCurrentLeversPosition();
+
+            this.movement.OnMovingStart -= Movement_OnMovingStart;
+            this.movement.OnMovingEnd -= Movement_OnMovingEnd;
         }
 
         public void BackTo(LeverScriptPosition scriptPosition)
@@ -72,20 +92,42 @@ namespace ManipulatorControl.BL.Script
 
             leverPositions.RemoveRange(startIndex, count);
 
-            IsMovingBack = true;
+            IsMoving = true;
 
             movement.MoveRobotByPath(movePositions, new Action(Continue));
         }
+        
+        public void MoveTo(LeverScriptPosition scriptPosition)
+        {
+            var currentPosition = movement.GetCurrentLeversPosition().OrderBy(i => i.LeverType);
 
+            if (!startPosition.OrderBy(i => i.LeverType).SequenceEqual(currentPosition))
+                throw new Exception("Необходимо переместить робот в начальное положение");
+
+            var startIndex = Path.IndexOf(scriptPosition);
+
+            var movePositions = new List<LeverPosition>();
+
+            for (int i = 0; i < startIndex + 1; i++)
+            {
+                var pos = leverPositions[i];
+                movePositions.Add(new LeverPosition(pos.LeverType, pos.To));
+            }
+
+            IsMoving = true;
+
+            movement.MoveRobotByPath(movePositions, new Action(Continue));
+        }
+        
         private void Continue()
         {
-            IsMovingBack = false;
+            IsMoving = false;
             OnPathChanged(this, EventArgs.Empty);
         }
 
         private void Movement_OnMovingEnd(object sender, StepLever e)
         {
-            if (IsMovingBack)
+            if (IsMoving)
                 return;
 
             if (scriptPosition.LeverType != e.Lever)
@@ -101,7 +143,7 @@ namespace ManipulatorControl.BL.Script
 
         private void Movement_OnMovingStart(object sender, StepLever e)
         {
-            if(!IsMovingBack)
+            if(!IsMoving)
                 scriptPosition = new LeverScriptPosition() { LeverType = e.Lever, From = movement.GetLeverPosition(e.Lever)};
         }
     }

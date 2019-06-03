@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="RobotMovement.cs" />
     <Compile Include="Script\ScriptBuilder.cs" />
+    <Compile Include="Script\ScriptExecutor.cs" />
     <Compile Include="Workspace\WorkspaceManager.cs" />
     <Compile Include="Workspace\EditWorkspaceEventArgs.cs" />
     <Compile Include="Workspace\MovableValueType.cs" />
