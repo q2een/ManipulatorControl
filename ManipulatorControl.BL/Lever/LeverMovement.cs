@@ -148,8 +148,7 @@ namespace ManipulatorControl.BL
 
         private void Worker_OnStart(object sender, EventArgs e)
         {   
-            if(steppersQueue.Count == 0)
-                OnMovingStart(this, new StepLever(movingLever.Type, movingLever.Stepper.CurrentStepsCount));
+            OnMovingStart(this, new StepLever(movingLever.Type, movingLever.Stepper.TargetStepsCount));
         }
     }
 }

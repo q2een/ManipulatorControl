@@ -12,9 +12,6 @@ namespace ManipulatorControl.BL
     {
         private readonly LeverMovement leverMovement;
 
-        private readonly GCodeInterpreter interpreter;
-        private readonly Parser parser;
-
         private Location location;
 
         public Location Location
@@ -56,14 +53,13 @@ namespace ManipulatorControl.BL
         public event EventHandler<StepLever> OnMovingEnd = delegate { };
 
 
-        public event EventHandler<LeverZeroPositionEventArgs> OnZeroPositionChanged;
+        public event EventHandler<LeverZeroPositionEventArgs> OnZeroPositionChanged = delegate { };
 
 
         public RobotMovement(Calculation сalculation, LeverMovement leverMovement)
         {
             Calculation = сalculation;
-            this.interpreter = new GCodeInterpreter(Calculation);
-            this.parser = new Parser(interpreter);
+;
 
             this.leverMovement = leverMovement;
 
@@ -77,6 +73,9 @@ namespace ManipulatorControl.BL
 
         public List<GCodeException> RunGCode(string[] lines)
         {
+            var interpreter = new GCodeInterpreter(Calculation);
+            var parser = new Parser(interpreter);
+
             var result = parser.Parse(lines);
 
             if (!result)
@@ -105,11 +104,11 @@ namespace ManipulatorControl.BL
         {
             if (leverMovement.IsRunning)
                 return;
-
-            if (stepLever.StepsCount == 0)
-                stepLever.StepsCount = Calculation.CalculateStepsToLeverZero(stepLever.Lever);
-            else
-                stepLever.StepsCount = Calculation.CalculateStepsByDirection(stepLever.Lever, stepLever.StepsCount == 1);
+         
+             if (stepLever.StepsCount == 0)
+                 stepLever.StepsCount = Calculation.CalculateStepsToLeverZero(stepLever.Lever);
+             else
+                 stepLever.StepsCount = Calculation.CalculateStepsByDirection(stepLever.Lever, stepLever.StepsCount == 1);
 
             leverMovement.Move(stepLever);
         }
@@ -153,7 +152,7 @@ namespace ManipulatorControl.BL
 
             var oldValue = lever.AB;
 
-            Calculation.SetNewAB(type, stepsCount);
+            Calculation.SetNewLeverPosition(type, stepsCount);
 
             Location = Calculation.GetCurrentLocation();
 

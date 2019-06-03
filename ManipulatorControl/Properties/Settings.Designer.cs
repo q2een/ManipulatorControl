@@ -58,5 +58,17 @@ namespace ManipulatorControl.Properties {
                 this["Lever2AB"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ActiveWorkspace {
+            get {
+                return ((string)(this["ActiveWorkspace"]));
+            }
+            set {
+                this["ActiveWorkspace"] = value;
+            }
+        }
     }
 }

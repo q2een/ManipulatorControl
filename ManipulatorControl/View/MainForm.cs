@@ -164,6 +164,7 @@ namespace ManipulatorControl
         #endregion
 
         public event EventHandler InvokeCreateScript = delegate { };
+        public event EventHandler<LeverScriptPosition> InvokeScriptBackTo = delegate { };
 
         private void HandleStartManualMove(object sender, EventArgs e)
         {
@@ -516,6 +517,24 @@ namespace ManipulatorControl
             else
                 action();
 
+        }
+
+        private void scriptMoveBackToMI_Click(object sender, EventArgs e)
+        {
+            InvokeScriptBackTo(this, lstScriptQueue.SelectedItem as LeverScriptPosition);
+        }
+
+        public void SetStatusMessage(string message, bool append)
+        {
+            statusLblState.Text = IsEditWorkspaceMode ? "Редактирование рабочей зоны. " : "";
+
+            statusLblSeparator.Visible = !string.IsNullOrEmpty(message);
+            statusLblState.Text += message;
+        }
+
+        public void SetCurrentWorkspace(RobotWorkspace workspace)
+        {
+            statusLblWorkspace.Text = workspace.Name;
         }
     }
 }

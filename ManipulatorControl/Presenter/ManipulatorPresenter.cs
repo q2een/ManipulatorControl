@@ -74,20 +74,28 @@ namespace ManipulatorControl
             this.view.InvokeRenameWorkspace += View_InvokeRenameWorkspace;
 
             this.view.InvokeCreateScript += View_InvokeCreateScript;
+            this.view.InvokeScriptBackTo += View_InvokeScriptBackTo;
 
 
             LoadApplicationSettings();
             this.levers = GetRobotLever().ToArray();
 
             leverMovement = new LeverMovement(port, levers);
+
             movement = new RobotMovement(new Calculation(parameters), leverMovement);
+
             workspaceManager = new WorkspaceManager(parameters, LoadWorkspaces());
+            workspaceManager.OnActiveWorkspaceChanged += WorkspaceManager_OnActiveWorkspaceChanged;
+            workspaceManager.ActiveWorkspace = GetActiveRobotWorkspace();
 
             movement.LocationChanged += Movement_LocationChanged;
             movement.LeverPositionChanged += Movement_LeverPositionChanged;
             movement.OnZeroPositionChanged += Movement_OnZeroPositionChanged;
+            movement.OnMovingStart += Movement_OnMovingStart;
+            movement.OnMovingEnd += Movement_OnMovingEnd;
 
             Movement_LocationChanged(false, movement.Calculation.GetCurrentLocation());
+
             view.SetWorkspaces(workspaceManager.RobotWorkspaces, workspaceManager.ActiveWorkspaceIndex);
 
             view.SetCurrentPosition(new LeverPosition(LeverType.Horizontal, movement.GetLeverPosition(LeverType.Horizontal)));
@@ -95,16 +103,27 @@ namespace ManipulatorControl
             view.SetCurrentPosition(new LeverPosition(LeverType.Lever2, movement.GetLeverPosition(LeverType.Lever2)));
         }
 
-        private void View_InvokeCreateScript(object sender, EventArgs e)
+        private void View_InvokeScriptBackTo(object sender, LeverScriptPosition e)
         {
-            scriptBuilder = new ScriptBuilder(movement);
-
-            scriptBuilder.SetCurrentPositionAsStart();
-
-            scriptBuilder.OnNewPathItem += ScriptBuilder_OnNewPathItem;
+            try
+            {
+                scriptBuilder.BackTo(e);
+            }
+            catch(Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
         }
 
-        private void ScriptBuilder_OnNewPathItem(object sender, EventArgs e)
+        private void View_InvokeCreateScript(object sender, EventArgs e)
+        {
+            scriptBuilder = new ScriptBuilder(movement); 
+            scriptBuilder.SetCurrentPositionAsStart();
+
+            scriptBuilder.OnPathChanged += ScriptBuilder_OnPathChanged;
+        }
+
+        private void ScriptBuilder_OnPathChanged(object sender, EventArgs e)
         {
             view.SetScriptQueue(scriptBuilder.Path);         
         }
@@ -130,6 +149,22 @@ namespace ManipulatorControl
         }
 
         #region Обращение к параметрам приложения.
+
+        private RobotWorkspace GetActiveRobotWorkspace()
+        {
+
+            return JsonConvert.DeserializeObject<RobotWorkspace>(Properties.Settings.Default.ActiveWorkspace, new WorkspaceConverter());
+        }
+
+        private void SaveActiveRobotWorkspace(RobotWorkspace workspace)
+        {
+            var settings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            settings.Converters.Add(new WorkspaceConverter());
+            settings.Formatting = Formatting.Indented;
+
+            Properties.Settings.Default.ActiveWorkspace = JsonConvert.SerializeObject(workspace, settings);
+            Properties.Settings.Default.Save();
+        }
 
         private void SetSavedCurrentPositionToDesignParameters(DesignParameters parameters)
         {
@@ -324,6 +359,12 @@ namespace ManipulatorControl
 
         #region Рабочие зоны манипулятора.
 
+        private void WorkspaceManager_OnActiveWorkspaceChanged(object sender, EventArgs e)
+        {
+            view.SetCurrentWorkspace(workspaceManager.ActiveWorkspace);
+            SaveActiveRobotWorkspace(workspaceManager.ActiveWorkspace);
+        }
+
         // Происходит при изменении активного плеча робота-манипулятора, значения которого редактируются пользователем.
         private void View_OnActiveEditingLeverChanged(object sender, EditWorkspaceEventArgs e)
         {
@@ -506,6 +547,16 @@ namespace ManipulatorControl
 
         #region Перемещение плечей робота-манипулятора. Ручное управление. Управление G кодами.  
 
+        private void Movement_OnMovingEnd(object sender, StepLever e)
+        {
+            view.SetStatusMessage("");
+        }
+
+        private void Movement_OnMovingStart(object sender, StepLever e)
+        {
+            view.SetStatusMessage(e.Lever.ToRuString() + ": перемещение");
+        }
+
         private void Movement_OnZeroPositionChanged(object sender, LeverZeroPositionEventArgs e)
         {
             bool isOnZ = e.LeverType == LeverType.Horizontal ? e.IsOnZeroPosition : movement.IsOnZeroPosition(LeverType.Horizontal);
@@ -517,6 +568,8 @@ namespace ManipulatorControl
 
         private void Movement_LeverPositionChanged(object sender, LeverPosition e)
         {
+            SaveLeverCurrentPosition(e.Lever, e.Position);
+
             if (view.IsEditWorkspaceMode)
                 view.SetCurrentEditWorkspaceModeLeverPosition(e.Lever, e.Position);
 

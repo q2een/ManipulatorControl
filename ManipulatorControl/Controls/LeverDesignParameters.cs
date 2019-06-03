@@ -10,7 +10,7 @@ namespace ManipulatorControl
         {
             get
             {
-                return new UM160CalculationLib.LeverDesignParameters(AO, BO, P, Ro, Alpha, Beta, IsABIncreasesOnStepperCW,AB, ABmin, ABmax, ABZero);
+                return new UM160CalculationLib.LeverDesignParameters(AO, BO, P, Ro, Alpha, Beta, I,IsABIncreasesOnStepperCW,AB, ABmin, ABmax, ABZero);
             }
             set
             {
@@ -27,6 +27,7 @@ namespace ManipulatorControl
                 Ro = value.Ro;
                 Alpha = value.Alpha;
                 Beta = value.Beta;
+                I = value.I;
                 IsABIncreasesOnStepperCW = value.IsABIncreasesOnStepperCW;
             }
         }
@@ -132,6 +133,25 @@ namespace ManipulatorControl
                 tbBeta.Text = value == double.NaN ? "" : value.ToString().Replace(',','.');
             }
         }
+
+        /// <summary>
+        /// Возвращает передаточное отношение.
+        /// </summary>
+        [Browsable(false)]
+        public double I
+        {
+            get
+            {
+                double i = double.NaN;
+                double.TryParse(tbI.Text, System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out i);
+                return i;
+            }
+            set
+            {
+                tbI.Text = value == double.NaN ? "" : value.ToString().Replace(',', '.');
+            }
+        }
+
 
         /// <summary>
         /// Возвращает или задает расстояние от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта, мм.

@@ -22,15 +22,17 @@ namespace ManipulatorControl.BL.Workspace
             }
         }
 
+        public event EventHandler OnActiveWorkspaceChanged = delegate { };
+
         public RobotWorkspace ActiveWorkspace
         {
             get
             {
-                return activeWorkspace;
+                return activeWorkspace ?? robotWorkspaces[0];
             }
             set
-            {
-                SetActiveWorkspace(value);
+            {                   
+                SetActiveWorkspace(value ?? robotWorkspaces[0]);
             }
         }
 
@@ -42,7 +44,7 @@ namespace ManipulatorControl.BL.Workspace
             }
         }
         
-        public WorkspaceManager(DesignParameters parameters, List<RobotWorkspace> robotWorkspaces)
+        public WorkspaceManager(DesignParameters parameters, List<RobotWorkspace> robotWorkspaces, RobotWorkspace activeWorkspace = null)
         {
             this.parameters = parameters;                              
 
@@ -50,6 +52,8 @@ namespace ManipulatorControl.BL.Workspace
 
             if (robotWorkspaces != null)
                 this.robotWorkspaces.AddRange(robotWorkspaces);
+
+            ActiveWorkspace = activeWorkspace ?? this.robotWorkspaces[0];
         }
 
         public void Add(string name)
@@ -86,11 +90,16 @@ namespace ManipulatorControl.BL.Workspace
 
         public void Remove(int index)
         {
-            if (index == -1)
+            if (index < 0 || index > robotWorkspaces.Count - 1)
                 throw new Exception("Заданная рабочая зона не найдена");
 
             if (index == 0)
                 throw new Exception("Нельзя удалить данную рабочую зону");
+
+            if (index == ActiveWorkspaceIndex)
+            {
+                ActiveWorkspace = null;
+            }
 
             robotWorkspaces.RemoveAt(index);
         }
@@ -190,6 +199,8 @@ namespace ManipulatorControl.BL.Workspace
             parameters.HorizontalLever.Workspace = workspace.HorizontalLever;
 
             activeWorkspace = workspace;
+
+            OnActiveWorkspaceChanged(this, EventArgs.Empty);
         }
 
         public RobotWorkspace GetClone(int index)

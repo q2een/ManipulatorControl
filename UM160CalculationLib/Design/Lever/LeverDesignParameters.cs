@@ -76,6 +76,11 @@ namespace UM160CalculationLib
         }
 
         /// <summary>
+        /// Возвращает передаточное отношение.
+        /// </summary>
+        public double I { get; private set; }
+
+        /// <summary>
         /// Возвращает значение угла φ (угол поворота плеча относительно основания манипулятора), градусы.
         /// </summary>
         public double Phi
@@ -140,12 +145,13 @@ namespace UM160CalculationLib
         /// <param name="ro">Характеристика шагового электродвигателя, градусы</param>
         /// <param name="alpha">Конструктивные параметры плеча робота, градусы</param>
         /// <param name="beta">Конструктивные параметры плеча робота, грудусы</param>
+        /// <param name="i">Передаточное отношение</param>
         /// <param name="isABIncreasesOnStepperCW">Указывает увеличивается ли расстояни от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта при движении ротора ШД по часовой стрелке.</param>
         /// <param name="ab">Текущее расстояние от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта, мм</param>
         /// <param name="abmin">Минимальное расстояние от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта, мм</param>
         /// <param name="abmax">Максимальное расстояние от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта, мм</param>
         /// <param name="abzero">Расстояние от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта являющееся нулевой точкой отсчета, мм</param>
-        public LeverDesignParameters(double ao, double bo, double p, double ro, double alpha, double beta, bool isABIncreasesOnStepperCW, double ab, double abmin, double abmax, double? abzero = null) 
+        public LeverDesignParameters(double ao, double bo, double p, double ro, double alpha, double beta, double i, bool isABIncreasesOnStepperCW, double ab, double abmin, double abmax, double? abzero = null) 
             : base(isABIncreasesOnStepperCW, ab, abmin, abmax, abzero)
         {
             AO = ao;
@@ -154,6 +160,7 @@ namespace UM160CalculationLib
             Beta = beta;
             P = p;
             Ro = ro;
+            I = i;
         }
 
         #endregion

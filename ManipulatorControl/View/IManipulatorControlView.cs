@@ -16,6 +16,10 @@ namespace ManipulatorControl
         List<GCodeException> ParserErrors { get; set; }
         string[] GCodeLines { get; set; }
 
+        void SetCurrentWorkspace(RobotWorkspace workspace);
+
+        void SetStatusMessage(string message, bool append = false);
+
         void SetCurrentLocation(bool isRunning, double x, double y, double z);
 
         void SetCurrentPosition(LeverPosition position);
@@ -42,6 +46,8 @@ namespace ManipulatorControl
         #endregion
 
         void SetScriptQueue(IEnumerable<LeverScriptPosition> scriptPositions);
+
+        event EventHandler<LeverScriptPosition> InvokeScriptBackTo;
 
         event EventHandler InvokeCreateScript;
 

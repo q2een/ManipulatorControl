@@ -149,9 +149,9 @@ namespace UM160CalculationLib
         {
             phi *= ldp.IsABIncreasesOnStepperCW ? -deg : deg;
             double pulsesCount = ldp.IsABIncreasesOnStepperCW ? -1 : 1;
-            pulsesCount *= (85.0 * (ldp.AB - Math.Sqrt(Math.Pow(ldp.AO, 2) + Math.Pow(ldp.BO, 2) - (2 * ldp.AO * ldp.BO * Math.Cos(ldp.AlphaRad + ldp.BetaRad + phi))))) / (51.0 * ldp.P * ldp.RoRad);
+            pulsesCount *= (1.0 / ldp.I) * ((ldp.AB - Math.Sqrt(Math.Pow(ldp.AO, 2) + Math.Pow(ldp.BO, 2) - (2 * ldp.AO * ldp.BO * Math.Cos(ldp.AlphaRad + ldp.BetaRad + phi)))) / (ldp.P * ldp.RoRad));
 
-            return Convert.ToInt64(Math.Round(pulsesCount));
+            return Convert.ToInt64(pulsesCount);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace UM160CalculationLib
         {
             pulsesCount = ldp.IsABIncreasesOnStepperCW ? pulsesCount : -pulsesCount;
             // Округляем сотые значение миллиментов.
-            return Math.Round(ldp.AB + (ldp.RoRad * pulsesCount * (51.0 / 85.0) * ldp.P), 0);
+            return Math.Round(ldp.AB + (ldp.RoRad * pulsesCount * ldp.I * ldp.P), 0);
         }
 
         #endregion

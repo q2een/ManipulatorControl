@@ -104,10 +104,10 @@ namespace ManipulatorControl.BL
 
         public StepLever GetStepLeverToPosition(LeverPosition position)
         {
-            return new StepLever(position.Lever, CalculateStepsToAbValue(position.Lever, position.Position));
+            return new StepLever(position.Lever, CalculateStepsToLeverPosition(position.Lever, position.Position));
         }
 
-        public void SetNewAB(LeverType type, long stepsCount)
+        public void SetNewLeverPosition(LeverType type, long stepsCount)
         {
             var lever = GetPartMovableByLeverType(type);
             var newABvalue = PulseCalculation.GetNewAB(lever, stepsCount);
@@ -115,7 +115,7 @@ namespace ManipulatorControl.BL
             lever.AB = newABvalue;
         }
 
-        public double GetNewAB(LeverType type, long stepsCount)
+        public double GetNewLeverPosition(LeverType type, long stepsCount)
         {
             return PulseCalculation.GetNewAB(GetPartMovableByLeverType(type), stepsCount);
         }
@@ -142,7 +142,7 @@ namespace ManipulatorControl.BL
         }
 
         // Перемещение в ноль.
-        public long CalculateStepsToAbValue(LeverType type, double ab)
+        public long CalculateStepsToLeverPosition(LeverType type, double ab)
         {
             return PulseCalculation.GetPulsesCountToAB(GetPartMovableByLeverType(type), ab);
         }
