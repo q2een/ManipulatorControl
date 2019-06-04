@@ -37,7 +37,7 @@ namespace UM160CalculationLib
             long pulsesCount = CalculatePulsesCount(ldp, phi);
 
             if (!IsPulsesCountCorrect(ldp, pulsesCount))
-                throw new DesignParametersException("Конструктивные параметры робота-манипулятора не позволяют достичь заданный угол");
+                throw new DesignParametersException("Конструктивные параметры робота-манипулятора (или рабочая зона) не позволяют достичь заданный угол");
 
             return pulsesCount;
         }
@@ -49,7 +49,7 @@ namespace UM160CalculationLib
         public static long GetPulsesCount(HorizontalLeverDesignParameters lever, double newValue)
         {
             if (!lever.Workspace.IsBetweenMinAndMax(newValue))
-                throw new DesignParametersException("Новое значение координаты Z не удовлетворяет конструктивным параметрам робота");
+                throw new DesignParametersException("Новое значение координаты Z не удовлетворяет конструктивным параметрам робота или рабочей зоны");
 
             var stepsCount = ((newValue - lever.AB) * lever.Coefficient);
 
@@ -78,7 +78,7 @@ namespace UM160CalculationLib
             double newValue = CalculateAB(ldp, pulsesCount);
 
             if (!ldp.Workspace.IsBetweenMinAndMax(newValue))
-                throw new DesignParametersException("Новое значение расстояния от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта не удовлетворяет конструктивным параметрам робота");
+                throw new DesignParametersException("Новое значение расстояния от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта не удовлетворяет конструктивным параметрам робота или рабочей зоны");
 
             return newValue;
         }
@@ -88,7 +88,7 @@ namespace UM160CalculationLib
             double newValue = Math.Round(lever.AB + ((lever.IsABIncreasesOnStepperCW ? 1 : -1) * (pulsesCount / lever.Coefficient)), 0);
 
             if (!lever.Workspace.IsBetweenMinAndMax(newValue))
-                throw new DesignParametersException("Новое значение координаты Z не удовлетворяет конструктивным параметрам робота");
+                throw new DesignParametersException("Новое значение координаты Z не удовлетворяет конструктивным параметрам робота или рабочей зоны");
 
             return newValue;
         }

@@ -100,11 +100,11 @@ namespace ManipulatorControl
             leverMovement = new LeverMovement(port, levers);
 
             movement = new RobotMovement(new Calculation(parameters), leverMovement);
-            workspaceManager = new WorkspaceManager(parameters, LoadWorkspaces());
+            workspaceManager = new WorkspaceManager(parameters, LoadWorkspaces(), Properties.Settings.Default.ActiveWorkspaceIndex);
             scriptExecutor = new ScriptExecutor(movement);
             
             workspaceManager.OnActiveWorkspaceChanged += WorkspaceManager_OnActiveWorkspaceChanged;
-            workspaceManager.ActiveWorkspace = GetActiveRobotWorkspace();
+            workspaceManager.ActiveWorkspace = workspaceManager.ActiveWorkspace;
 
             movement.LocationChanged += Movement_LocationChanged;
             movement.LeverPositionChanged += Movement_LeverPositionChanged;
@@ -125,6 +125,34 @@ namespace ManipulatorControl
             view.SetCurrentPosition(new LeverPosition(LeverType.Lever2, movement.GetLeverPosition(LeverType.Lever2)));
         }
 
+        public void SetWorkerInterval(int interval)
+        {
+            movement.SetStepsInterval(interval);
+        }
+
+        private void ScriptExecutor_OnExecutingEnd(object sender, EventArgs e)
+        {
+            view.SetScriptExecuting(false);
+            view.SetScriptQueue(scriptExecutor.MovementScript.MovementPath, scriptExecutor.MovementScript.MovementPath.Count - 1, false);
+
+            if (scriptExecutor.Exception == null)
+                messageService.ShowMessage("Сценарий «" + scriptExecutor.MovementScript.Name + "» успешно выполнен.");
+            else
+                messageService.ShowError("Сценарий «" + scriptExecutor.MovementScript.Name + "»  не выполнен. Ошибка:\n" + scriptExecutor.Exception.Message);
+        }
+
+        private void ScriptExecutor_OnExecutingStart(object sender, EventArgs e)
+        {
+            view.SetScriptExecuting(true);
+        }
+
+        private void ScriptExecutor_StepPassed(object sender, LeverScriptPosition e)
+        {
+            var path = new List<LeverScriptPosition>(scriptExecutor.MovementScript.MovementPath);
+            var index = path.IndexOf(e) + 1;
+            view.SetScriptQueue(path, index > path.Count - 1 ? index - 1 : index , true);
+        }
+        
         private void View_InvokeScriptRename(object sender, WorkspaceEventArgs e)
         {
             if (scriptExecutor.IsExecuting)
@@ -164,24 +192,16 @@ namespace ManipulatorControl
         {
             try
             {
-                scriptBuilder.Cancel();
+                if (messageService.ShowExclamation("Вы действительно хотите отменить создание сценария ?") == UserResponse.OK)
+                {
+                    scriptBuilder.Cancel();
+                    view.SetScriptCreatingMode(false);
+                }
             }
             catch (Exception ex)
             {
                 messageService.ShowError(ex.Message);
             }
-        }
-
-        private void ScriptExecutor_OnExecutingEnd(object sender, EventArgs e)
-        {
-            view.SetScriptExecuting(false);
-            view.SetScriptQueue(scriptExecutor.MovementScript.MovementPath, scriptExecutor.MovementScript.MovementPath.Count - 1, false);
-            messageService.ShowMessage(scriptExecutor.Exception == null ? "Сценарий выполнен"  : scriptExecutor.Exception.Message);
-        }
-
-        private void ScriptExecutor_OnExecutingStart(object sender, EventArgs e)
-        {
-            view.SetScriptExecuting(true);
         }
 
         private void View_InvokeMoveToEndScript(object sender, MovementScript e)
@@ -222,14 +242,6 @@ namespace ManipulatorControl
             {
                 messageService.ShowError(ex.Message);
             }
-        }
-
-
-
-        private void ScriptExecutor_StepPassed(object sender, LeverScriptPosition e)
-        {
-            var path = new List<LeverScriptPosition>(scriptExecutor.MovementScript.MovementPath); 
-            view.SetScriptQueue(path, path.IndexOf(e), true);
         }
 
         private void View_InvokeSetCurrentAsEnd(object sender, EventArgs e)
@@ -298,6 +310,7 @@ namespace ManipulatorControl
                 scripts.Add(scriptBuilder.GetScript());
                 view.SetScriptsList(scripts);
                 scriptBuilder.OnPathChanged -= ScriptBuilder_OnPathChanged;
+                view.SetScriptCreatingMode(false);
 
                 messageService.ShowMessage("Сценарий сохранен");
             }
@@ -305,6 +318,7 @@ namespace ManipulatorControl
             {
                 messageService.ShowError(ex.Message);
             }
+
         }
 
         private void View_InvokeScriptBackTo(object sender, LeverScriptPosition e)
@@ -321,6 +335,7 @@ namespace ManipulatorControl
 
         private void View_InvokeCreateScript(object sender, WorkspaceEventArgs e)
         {
+            view.SetScriptCreatingMode(true);
             scriptBuilder = new ScriptBuilder(movement, e.Name);
 
             scriptBuilder.OnPathChanged += ScriptBuilder_OnPathChanged;
@@ -356,19 +371,9 @@ namespace ManipulatorControl
 
         #region Обращение к параметрам приложения.
 
-        private RobotWorkspace GetActiveRobotWorkspace()
-        {
-
-            return JsonConvert.DeserializeObject<RobotWorkspace>(Properties.Settings.Default.ActiveWorkspace, new WorkspaceConverter());
-        }
-
         private void SaveActiveRobotWorkspace(RobotWorkspace workspace)
         {
-            var settings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-            settings.Converters.Add(new WorkspaceConverter());
-            settings.Formatting = Formatting.Indented;
-
-            Properties.Settings.Default.ActiveWorkspace = JsonConvert.SerializeObject(workspace, settings);
+            Properties.Settings.Default.ActiveWorkspaceIndex = workspaceManager.ActiveWorkspaceIndex;
             Properties.Settings.Default.Save();
         }
 

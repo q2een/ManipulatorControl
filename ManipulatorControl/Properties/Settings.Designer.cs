@@ -61,13 +61,13 @@ namespace ManipulatorControl.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ActiveWorkspace {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ActiveWorkspaceIndex {
             get {
-                return ((string)(this["ActiveWorkspace"]));
+                return ((int)(this["ActiveWorkspaceIndex"]));
             }
             set {
-                this["ActiveWorkspace"] = value;
+                this["ActiveWorkspaceIndex"] = value;
             }
         }
     }

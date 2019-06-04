@@ -44,19 +44,18 @@ namespace ManipulatorControl
 
                 tabControlType.SelectedTab = value ? tpManualControl : tpGCodes;
 
-                hotKeysControlMI.Visible = value;
-                hotKeysControlMI.Enabled = value;
-                buttonsControlMI.Visible = value;
-                buttonsControlMI.Enabled = value;
+                hotKeysControlMI.Visible(value);
+                buttonsControlMI.Visible(value);
                 controlTypeSeparatorMI.Visible = value;
 
-                interpreteGCodesMI.Visible = !value;
-                interpreteGCodesMI.Enabled = !value;
+                interpreteGCodesMI.Visible(!value);
                 interpreteSeparatorMI.Visible = !value;
 
                 isManualControlMode = value;
             }
         }
+
+        public bool IsScriptCreatingMode { get; set; }
 
         public List<GCodeException> ParserErrors
         {
@@ -253,6 +252,7 @@ namespace ManipulatorControl
         private void tabControlType_Selected(object sender, TabControlEventArgs e)
         {
             workspaceTSMI.Visible = tabControlType.SelectedTab == tpWorkspaces || IsEditWorkspaceMode;
+            scriptTSMI.Visible = tabControlType.SelectedTab == tpScripts || IsScriptCreatingMode;
 
             if (tabControlType.SelectedTab != tpManualControl && tabControlType.SelectedTab != tpGCodes)
                 return;
@@ -316,21 +316,21 @@ namespace ManipulatorControl
 
             var hasNotNoneFlag = !editValues.HasFlag(MovableValueType.None);
 
-            setMaxValueMI.Visible = hasNotNoneFlag && editValues.HasFlag(MovableValueType.Max);
-            setMinValueMI.Visible = hasNotNoneFlag && editValues.HasFlag(MovableValueType.Min);
-            setZeroValueMI.Visible = hasNotNoneFlag && editValues.HasFlag(MovableValueType.Zero);
+            setMaxValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueType.Max));
+            setMinValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueType.Min));
+            setZeroValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueType.Zero));
             editValuesSeparatorMI.Visible = hasNotNoneFlag;
 
-            setAsActiveWorkspaceMI.Visible = !enable;
-            editWorkspaceValuesMI.Visible = !enable;
+            setAsActiveWorkspaceMI.Visible(!enable);
+            editWorkspaceValuesMI.Visible(!enable);
 
             editWorkspaceSeparatorMI.Visible = !enable;
-            removeWorkspaceMI.Visible = !enable;
-            addWorkspaceMI.Visible = !enable;
-            renameWorkspace.Visible = !enable;
+            removeWorkspaceMI.Visible(!enable);
+            addWorkspaceMI.Visible(!enable);
+            renameWorkspace.Visible(!enable);
 
-            saveWorkspaceValuesMI.Visible = enable;
-            closeEditWorkspaceModeMI.Visible = enable;
+            saveWorkspaceValuesMI.Visible(enable);
+            closeEditWorkspaceModeMI.Visible(enable);
         }
 
         private void ToogleLeverNameLablesAndRadiobuttons(bool showLabels)
@@ -531,6 +531,7 @@ namespace ManipulatorControl
                 lstScriptQueue.Items.AddRange(scriptPositions.ToArray());
 
                 lstScriptQueue.SelectedIndex = activeIndex;
+
             });
 
             if (this.InvokeRequired)
@@ -549,10 +550,64 @@ namespace ManipulatorControl
                 lstMovementScripts.SelectedIndex = lstMovementScripts.Items.Count > 0 ? 0 : -1;
             });
 
-            if (this.InvokeRequired)
-                this.Invoke(action);
-            else
-                action();
+            this.InvokeEx(action);
+        }
+
+        public void SetActiveMovementScript(MovementScript movementScript)
+        {
+            if (movementScript == null)
+                movementScript = new MovementScript(null, null, null);
+
+            SetScriptQueue(movementScript.MovementPath, movementScript.MovementPath.Count - 1, false);
+
+            lblScriptStartPosition.Text = GetScriptPositionString(movementScript.Start);
+            lblScriptEndPosition.Text = GetScriptPositionString(movementScript.End);
+        }
+
+        private string GetScriptPositionString(IEnumerable<LeverPosition> leverPositions)
+        {
+            if (leverPositions == null || leverPositions.Count() == 0)
+                return "Не задано";
+
+            return string.Join("\n", leverPositions.Select(lp => string.Format("{0}: {1} мм", lp.LeverType.ToRuString(), lp.Position)));
+        }
+
+        public void SetScriptExecuting(bool isExecuting)
+        {
+            this.InvokeEx(new Action(() =>
+            {
+                SetStatusMessage(isExecuting ? "Выполнение сценария" : "", false);
+                scriptTSMI.Visible = !isExecuting;
+                scriptTSMI.Enabled = !isExecuting;
+                tabControlType.Enabled = !isExecuting;
+            }));
+        }
+
+        public void SetScriptCreatingMode(bool isCreating)
+        {
+            lblScriptState.Text = !isCreating ? "Сохраненные сценарии:" : "Создание сценария...";
+            lstMovementScripts.Visible = !isCreating;
+            SetActiveMovementScript(null);
+
+            scriptTSMI.Visible(true);
+            runScriptMI.Visible(!isCreating);
+            runScriptReverseMI.Visible(!isCreating);
+            scriptEditSeparatorMI.Visible = !isCreating;
+            scriptCreateMI.Visible(!isCreating);
+            scriptRemoveMI.Visible(!isCreating);
+            scriptRenameMI.Visible(!isCreating);
+            scriptMoveToSeparatorMI.Visible = !isCreating;
+            scriptMoveToStartMI.Visible(!isCreating);
+            scriptMoveToEndMI.Visible(!isCreating);
+            scriptSetAsPointSeparatorMI.Visible = isCreating;
+            scriptSetCurrentAsStartMI.Visible(isCreating);
+            scriptMoveBackToMI.Visible(isCreating);
+            scriptSetCurrentAsEndMI.Visible(isCreating);
+            scriptsaveCloseSeparatorMI.Visible = isCreating;
+            saveScriptMI.Visible(isCreating);
+            scriptCancelEditingMI.Visible(isCreating);
+
+            IsScriptCreatingMode = isCreating;
         }
 
         private void runScriptMI_Click(object sender, EventArgs e)
@@ -652,7 +707,7 @@ namespace ManipulatorControl
             if (script == null)
                 return;
 
-            SetScriptQueue(script.MovementPath, script.MovementPath.Count - 1, false);
+            SetActiveMovementScript(script);
         }
 
         private void saveScriptMI_Click(object sender, EventArgs e)
@@ -665,9 +720,6 @@ namespace ManipulatorControl
             InvokeCancelCreatingScript(this, EventArgs.Empty);
         }
 
-        public void SetScriptExecuting(bool isExecuting)
-        {
-            SetStatusMessage(isExecuting ? "Выполнение сценария" : "", false);
-        }
+
     }
 }

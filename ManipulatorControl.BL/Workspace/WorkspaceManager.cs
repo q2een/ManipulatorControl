@@ -44,7 +44,8 @@ namespace ManipulatorControl.BL.Workspace
             }
         }
         
-        public WorkspaceManager(DesignParameters parameters, List<RobotWorkspace> robotWorkspaces, RobotWorkspace activeWorkspace = null)
+
+        public WorkspaceManager(DesignParameters parameters, List<RobotWorkspace> robotWorkspaces, int activeWorkspaceIndex = 0)
         {
             this.parameters = parameters;                              
 
@@ -53,8 +54,10 @@ namespace ManipulatorControl.BL.Workspace
             if (robotWorkspaces != null)
                 this.robotWorkspaces.AddRange(robotWorkspaces);
 
-            ActiveWorkspace = activeWorkspace ?? this.robotWorkspaces[0];
+            ActiveWorkspace = this.robotWorkspaces[activeWorkspaceIndex];
         }
+
+
 
         public void Add(string name)
         {

@@ -75,6 +75,7 @@
     <Compile Include="Controls\StepperSettingsPanel.Designer.cs">
       <DependentUpon>StepperSettingsPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions.cs" />
     <Compile Include="MessageService\IMessageService.cs" />
     <Compile Include="MessageService\MessageBoxMessageService.cs" />
     <Compile Include="MessageService\UserResponse.cs" />

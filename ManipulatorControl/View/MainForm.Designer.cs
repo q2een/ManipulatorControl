@@ -52,22 +52,21 @@
             this.editValuesSeparatorMI = new System.Windows.Forms.ToolStripSeparator();
             this.saveWorkspaceValuesMI = new System.Windows.Forms.ToolStripMenuItem();
             this.closeEditWorkspaceModeMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.сценарийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scriptTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.runScriptMI = new System.Windows.Forms.ToolStripMenuItem();
             this.runScriptReverseMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.scriptEditSeparatorMI = new System.Windows.Forms.ToolStripSeparator();
             this.scriptCreateMI = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptRenameMI = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptRemoveMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.scriptMoveToSeparatorMI = new System.Windows.Forms.ToolStripSeparator();
             this.scriptMoveToStartMI = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptMoveToEndMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.scriptMoveBackToMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.scriptSetAsPointSeparatorMI = new System.Windows.Forms.ToolStripSeparator();
             this.scriptSetCurrentAsStartMI = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptSetCurrentAsEndMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.scriptsaveCloseSeparatorMI = new System.Windows.Forms.ToolStripSeparator();
             this.saveScriptMI = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptCancelEditingMI = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -141,6 +140,13 @@
             this.rbLever1 = new System.Windows.Forms.RadioButton();
             this.rbLever2 = new System.Windows.Forms.RadioButton();
             this.rightSidePanel = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblScriptState = new System.Windows.Forms.Label();
+            this.lblScriptStartPosition = new System.Windows.Forms.Label();
+            this.lblScriptEndPosition = new System.Windows.Forms.Label();
             this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
             this.menuStrip1.SuspendLayout();
@@ -158,6 +164,10 @@
             this.tpWorkspaces.SuspendLayout();
             this.tlpWorkspaceInfo.SuspendLayout();
             this.rightSidePanel.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -166,7 +176,7 @@
             this.controlTSMI,
             this.settingsMI,
             this.workspaceTSMI,
-            this.сценарийToolStripMenuItem});
+            this.scriptTSMI});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(929, 24);
@@ -350,29 +360,29 @@
             this.closeEditWorkspaceModeMI.Visible = false;
             this.closeEditWorkspaceModeMI.Click += new System.EventHandler(this.closeEditWorkspaceMode_Click);
             // 
-            // сценарийToolStripMenuItem
+            // scriptTSMI
             // 
-            this.сценарийToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.scriptTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.runScriptMI,
             this.runScriptReverseMI,
-            this.toolStripMenuItem4,
+            this.scriptEditSeparatorMI,
             this.scriptCreateMI,
             this.scriptRenameMI,
             this.scriptRemoveMI,
-            this.toolStripMenuItem1,
+            this.scriptMoveToSeparatorMI,
             this.scriptMoveToStartMI,
             this.scriptMoveToEndMI,
-            this.toolStripMenuItem5,
             this.scriptMoveBackToMI,
-            this.toolStripMenuItem3,
+            this.scriptSetAsPointSeparatorMI,
             this.scriptSetCurrentAsStartMI,
             this.scriptSetCurrentAsEndMI,
-            this.toolStripMenuItem2,
+            this.scriptsaveCloseSeparatorMI,
             this.saveScriptMI,
             this.scriptCancelEditingMI});
-            this.сценарийToolStripMenuItem.Name = "сценарийToolStripMenuItem";
-            this.сценарийToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
-            this.сценарийToolStripMenuItem.Text = "Сценарий";
+            this.scriptTSMI.Name = "scriptTSMI";
+            this.scriptTSMI.Size = new System.Drawing.Size(74, 20);
+            this.scriptTSMI.Text = "Сценарий";
+            this.scriptTSMI.Visible = false;
             // 
             // runScriptMI
             // 
@@ -388,10 +398,10 @@
             this.runScriptReverseMI.Text = "Выполнить в обратном порядке";
             this.runScriptReverseMI.Click += new System.EventHandler(this.runScriptReverseMI_Click);
             // 
-            // toolStripMenuItem4
+            // scriptEditSeparatorMI
             // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(267, 6);
+            this.scriptEditSeparatorMI.Name = "scriptEditSeparatorMI";
+            this.scriptEditSeparatorMI.Size = new System.Drawing.Size(267, 6);
             // 
             // scriptCreateMI
             // 
@@ -414,10 +424,10 @@
             this.scriptRemoveMI.Text = "Удалить";
             this.scriptRemoveMI.Click += new System.EventHandler(this.scriptRemoveMI_Click);
             // 
-            // toolStripMenuItem1
+            // scriptMoveToSeparatorMI
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(267, 6);
+            this.scriptMoveToSeparatorMI.Name = "scriptMoveToSeparatorMI";
+            this.scriptMoveToSeparatorMI.Size = new System.Drawing.Size(267, 6);
             // 
             // scriptMoveToStartMI
             // 
@@ -433,47 +443,48 @@
             this.scriptMoveToEndMI.Text = "Переместить к конечной точке";
             this.scriptMoveToEndMI.Click += new System.EventHandler(this.scriptMoveToEndMI_Click);
             // 
-            // toolStripMenuItem5
-            // 
-            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(267, 6);
-            // 
             // scriptMoveBackToMI
             // 
             this.scriptMoveBackToMI.Name = "scriptMoveBackToMI";
             this.scriptMoveBackToMI.Size = new System.Drawing.Size(270, 22);
             this.scriptMoveBackToMI.Text = "Вернуться в выбранное положение";
+            this.scriptMoveBackToMI.Visible = false;
             this.scriptMoveBackToMI.Click += new System.EventHandler(this.scriptMoveBackToMI_Click);
             // 
-            // toolStripMenuItem3
+            // scriptSetAsPointSeparatorMI
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(267, 6);
+            this.scriptSetAsPointSeparatorMI.Name = "scriptSetAsPointSeparatorMI";
+            this.scriptSetAsPointSeparatorMI.Size = new System.Drawing.Size(267, 6);
+            this.scriptSetAsPointSeparatorMI.Visible = false;
             // 
             // scriptSetCurrentAsStartMI
             // 
             this.scriptSetCurrentAsStartMI.Name = "scriptSetCurrentAsStartMI";
             this.scriptSetCurrentAsStartMI.Size = new System.Drawing.Size(270, 22);
             this.scriptSetCurrentAsStartMI.Text = "Задать начальной точкой";
+            this.scriptSetCurrentAsStartMI.Visible = false;
             this.scriptSetCurrentAsStartMI.Click += new System.EventHandler(this.scriptSetCurrentAsStartMI_Click);
             // 
             // scriptSetCurrentAsEndMI
             // 
             this.scriptSetCurrentAsEndMI.Name = "scriptSetCurrentAsEndMI";
             this.scriptSetCurrentAsEndMI.Size = new System.Drawing.Size(270, 22);
-            this.scriptSetCurrentAsEndMI.Text = "Задать конечной точной";
+            this.scriptSetCurrentAsEndMI.Text = "Задать конечной точкой";
+            this.scriptSetCurrentAsEndMI.Visible = false;
             this.scriptSetCurrentAsEndMI.Click += new System.EventHandler(this.scriptSetCurrentAsEndMI_Click);
             // 
-            // toolStripMenuItem2
+            // scriptsaveCloseSeparatorMI
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(267, 6);
+            this.scriptsaveCloseSeparatorMI.Name = "scriptsaveCloseSeparatorMI";
+            this.scriptsaveCloseSeparatorMI.Size = new System.Drawing.Size(267, 6);
+            this.scriptsaveCloseSeparatorMI.Visible = false;
             // 
             // saveScriptMI
             // 
             this.saveScriptMI.Name = "saveScriptMI";
             this.saveScriptMI.Size = new System.Drawing.Size(270, 22);
             this.saveScriptMI.Text = "Сохранить";
+            this.saveScriptMI.Visible = false;
             this.saveScriptMI.Click += new System.EventHandler(this.saveScriptMI_Click);
             // 
             // scriptCancelEditingMI
@@ -481,6 +492,7 @@
             this.scriptCancelEditingMI.Name = "scriptCancelEditingMI";
             this.scriptCancelEditingMI.Size = new System.Drawing.Size(270, 22);
             this.scriptCancelEditingMI.Text = "Отменить";
+            this.scriptCancelEditingMI.Visible = false;
             this.scriptCancelEditingMI.Click += new System.EventHandler(this.scriptCancelEditingMI_Click);
             // 
             // statusStrip1
@@ -583,7 +595,6 @@
             this.btnXPos.Name = "btnXPos";
             this.btnXPos.Size = new System.Drawing.Size(165, 65);
             this.btnXPos.TabIndex = 9;
-            this.btnXPos.Text = "↑";
             this.btnXPos.UseVisualStyleBackColor = true;
             // 
             // btnXNeg
@@ -596,7 +607,6 @@
             this.btnXNeg.Name = "btnXNeg";
             this.btnXNeg.Size = new System.Drawing.Size(165, 65);
             this.btnXNeg.TabIndex = 10;
-            this.btnXNeg.Text = "↓";
             this.btnXNeg.UseVisualStyleBackColor = true;
             // 
             // btnYPos
@@ -609,7 +619,6 @@
             this.btnYPos.Name = "btnYPos";
             this.btnYPos.Size = new System.Drawing.Size(163, 65);
             this.btnYPos.TabIndex = 6;
-            this.btnYPos.Text = "↑";
             this.btnYPos.UseVisualStyleBackColor = true;
             // 
             // btnZPos
@@ -622,7 +631,6 @@
             this.btnZPos.Name = "btnZPos";
             this.btnZPos.Size = new System.Drawing.Size(163, 65);
             this.btnZPos.TabIndex = 3;
-            this.btnZPos.Text = "→";
             this.btnZPos.UseVisualStyleBackColor = true;
             // 
             // btnZNeg
@@ -635,7 +643,6 @@
             this.btnZNeg.Name = "btnZNeg";
             this.btnZNeg.Size = new System.Drawing.Size(163, 65);
             this.btnZNeg.TabIndex = 4;
-            this.btnZNeg.Text = "←";
             this.btnZNeg.UseVisualStyleBackColor = true;
             // 
             // btnYNeg
@@ -648,7 +655,6 @@
             this.btnYNeg.Name = "btnYNeg";
             this.btnYNeg.Size = new System.Drawing.Size(163, 65);
             this.btnYNeg.TabIndex = 7;
-            this.btnYNeg.Text = "↓";
             this.btnYNeg.UseVisualStyleBackColor = true;
             // 
             // tlpManualControl
@@ -972,8 +978,10 @@
             // 
             // tpScripts
             // 
-            this.tpScripts.Controls.Add(this.lstScriptQueue);
+            this.tpScripts.Controls.Add(this.groupBox1);
+            this.tpScripts.Controls.Add(this.panel3);
             this.tpScripts.Controls.Add(this.lstMovementScripts);
+            this.tpScripts.Controls.Add(this.lblScriptState);
             this.tpScripts.Location = new System.Drawing.Point(4, 34);
             this.tpScripts.Name = "tpScripts";
             this.tpScripts.Padding = new System.Windows.Forms.Padding(3);
@@ -984,13 +992,14 @@
             // 
             // lstScriptQueue
             // 
-            this.lstScriptQueue.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lstScriptQueue.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lstScriptQueue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstScriptQueue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lstScriptQueue.FormattingEnabled = true;
             this.lstScriptQueue.ItemHeight = 20;
-            this.lstScriptQueue.Location = new System.Drawing.Point(3, 203);
+            this.lstScriptQueue.Location = new System.Drawing.Point(3, 22);
             this.lstScriptQueue.Name = "lstScriptQueue";
-            this.lstScriptQueue.Size = new System.Drawing.Size(533, 224);
+            this.lstScriptQueue.Size = new System.Drawing.Size(294, 237);
             this.lstScriptQueue.TabIndex = 0;
             // 
             // lstMovementScripts
@@ -1000,9 +1009,9 @@
             this.lstMovementScripts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lstMovementScripts.FormattingEnabled = true;
             this.lstMovementScripts.ItemHeight = 20;
-            this.lstMovementScripts.Location = new System.Drawing.Point(3, 3);
+            this.lstMovementScripts.Location = new System.Drawing.Point(3, 28);
             this.lstMovementScripts.Name = "lstMovementScripts";
-            this.lstMovementScripts.Size = new System.Drawing.Size(533, 200);
+            this.lstMovementScripts.Size = new System.Drawing.Size(533, 160);
             this.lstMovementScripts.TabIndex = 1;
             this.lstMovementScripts.SelectedIndexChanged += new System.EventHandler(this.lstMovementScripts_SelectedIndexChanged);
             // 
@@ -1336,11 +1345,85 @@
             this.rightSidePanel.Size = new System.Drawing.Size(382, 491);
             this.rightSidePanel.TabIndex = 7;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.lstScriptQueue);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBox1.Location = new System.Drawing.Point(3, 188);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(300, 262);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Траектория движения";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.lblScriptStartPosition);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(233, 128);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Начальное положение";
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.groupBox3);
+            this.panel3.Controls.Add(this.groupBox2);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel3.Location = new System.Drawing.Point(303, 188);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(233, 262);
+            this.panel3.TabIndex = 4;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.lblScriptEndPosition);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBox3.Location = new System.Drawing.Point(0, 128);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(233, 131);
+            this.groupBox3.TabIndex = 5;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Конечное положение";
+            // 
+            // lblScriptState
+            // 
+            this.lblScriptState.BackColor = System.Drawing.Color.AliceBlue;
+            this.lblScriptState.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblScriptState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblScriptState.Location = new System.Drawing.Point(3, 3);
+            this.lblScriptState.Name = "lblScriptState";
+            this.lblScriptState.Size = new System.Drawing.Size(533, 25);
+            this.lblScriptState.TabIndex = 5;
+            this.lblScriptState.Text = "Сохраненные сценарии:";
+            // 
+            // lblScriptStartPosition
+            // 
+            this.lblScriptStartPosition.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblScriptStartPosition.Location = new System.Drawing.Point(3, 22);
+            this.lblScriptStartPosition.Name = "lblScriptStartPosition";
+            this.lblScriptStartPosition.Size = new System.Drawing.Size(227, 103);
+            this.lblScriptStartPosition.TabIndex = 0;
+            this.lblScriptStartPosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblScriptEndPosition
+            // 
+            this.lblScriptEndPosition.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblScriptEndPosition.Location = new System.Drawing.Point(3, 22);
+            this.lblScriptEndPosition.Name = "lblScriptEndPosition";
+            this.lblScriptEndPosition.Size = new System.Drawing.Size(227, 106);
+            this.lblScriptEndPosition.TabIndex = 1;
+            this.lblScriptEndPosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // gCodesBox
             // 
             this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gCodesBox.Enable = true;
-            this.gCodesBox.EnableLineNumbering = false;
             this.gCodesBox.FontSize = ((byte)(14));
             this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
             this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
@@ -1356,6 +1439,10 @@
             // directionPanel
             // 
             this.directionPanel.ColumnCount = 4;
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -1737,6 +1824,10 @@
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.Size = new System.Drawing.Size(362, 198);
             this.directionPanel.TabIndex = 0;
             this.directionPanel.TabStop = true;
@@ -1779,6 +1870,10 @@
             this.tlpWorkspaceInfo.ResumeLayout(false);
             this.tlpWorkspaceInfo.PerformLayout();
             this.rightSidePanel.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1881,25 +1976,31 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.ToolStripStatusLabel statusLblWorkspace;
-        private System.Windows.Forms.ToolStripMenuItem сценарийToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scriptTSMI;
         private System.Windows.Forms.ToolStripMenuItem runScriptMI;
         private System.Windows.Forms.ToolStripMenuItem runScriptReverseMI;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripSeparator scriptEditSeparatorMI;
         private System.Windows.Forms.ToolStripMenuItem scriptCreateMI;
         private System.Windows.Forms.ToolStripMenuItem scriptRemoveMI;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator scriptMoveToSeparatorMI;
         private System.Windows.Forms.ToolStripMenuItem scriptMoveToStartMI;
         private System.Windows.Forms.ToolStripMenuItem scriptMoveToEndMI;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripSeparator scriptSetAsPointSeparatorMI;
         private System.Windows.Forms.ToolStripMenuItem scriptSetCurrentAsStartMI;
         private System.Windows.Forms.ToolStripMenuItem scriptMoveBackToMI;
         private System.Windows.Forms.ToolStripMenuItem scriptSetCurrentAsEndMI;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripSeparator scriptsaveCloseSeparatorMI;
         private System.Windows.Forms.ToolStripMenuItem saveScriptMI;
         private System.Windows.Forms.ToolStripMenuItem scriptCancelEditingMI;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ListBox lstMovementScripts;
         private System.Windows.Forms.ToolStripMenuItem scriptRenameMI;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label lblScriptState;
+        private System.Windows.Forms.Label lblScriptStartPosition;
+        private System.Windows.Forms.Label lblScriptEndPosition;
     }
 }
 

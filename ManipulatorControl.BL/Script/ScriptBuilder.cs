@@ -33,6 +33,7 @@ namespace ManipulatorControl.BL.Script
         {
             this.movement = movement;
             this.scriptName = scriptName;
+            SetCurrentPositionAsStart();
         }
 
         public MovementScript GetScript()
@@ -57,7 +58,7 @@ namespace ManipulatorControl.BL.Script
 
         public void SetCurrentPositionAsStart()
         {
-            if(startPosition == null || startPosition.Count() == 0)
+            if(startPosition != null && startPosition.Count() != 0)
             {
                 this.movement.OnMovingStart -= Movement_OnMovingStart;
                 this.movement.OnMovingEnd -= Movement_OnMovingEnd;
@@ -67,6 +68,7 @@ namespace ManipulatorControl.BL.Script
 
             endPosition = null;
             leverPositions = new List<LeverScriptPosition>();
+            OnPathChanged(this, EventArgs.Empty);
 
             this.movement.OnMovingStart += Movement_OnMovingStart;
             this.movement.OnMovingEnd += Movement_OnMovingEnd;

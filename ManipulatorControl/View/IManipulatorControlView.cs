@@ -49,6 +49,9 @@ namespace ManipulatorControl
         void SetScriptQueue(IEnumerable<LeverScriptPosition> scriptPositions, int activeIndex, bool isQueueExecuting);
         void SetScriptExecuting(bool isExecuting);
 
+        void SetScriptCreatingMode(bool isCreating);
+
+
         event EventHandler<MovementScript> InvokeRunScript;
         event EventHandler<MovementScript> InvokeRunScriptReverse;
 

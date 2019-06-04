@@ -38,13 +38,14 @@ namespace ManipulatorControl.BL.Script
 
                 if (!value)
                 {
-                    Exception = null;
                     isRunningToPoint = false;
                     path = null;
                     active = null;
                     movement.LeverPositionChanged -= Movement_LeverPositionChanged;
                     movement.OnMovingEnd -= Movement_OnMovingEnd;
                     OnExecutingEnd(this, EventArgs.Empty);
+                    Exception = null;
+                    MovementScript = null;
                 }
                 else
                 {
@@ -91,17 +92,25 @@ namespace ManipulatorControl.BL.Script
 
         private void Execute()
         {
-            IsExecuting = true;
-
-            if (!movement.IsNowAtPosition(MovementScript.Start))
+            try
             {
-                isRunningToPoint = true;
-                movement.MoveRobotByPath(MovementScript.Start, Execute);
-                return;
-            }
+                IsExecuting = true;
 
-            path = new Queue<LeverScriptPosition>(MovementScript.MovementPath);
-            Run();
+                if (!movement.IsNowAtPosition(MovementScript.Start))
+                {
+                    isRunningToPoint = true;
+                    movement.MoveRobotByPath(MovementScript.Start, Execute);
+                    return;
+                }
+
+                path = new Queue<LeverScriptPosition>(MovementScript.MovementPath);
+                Run();
+            }
+            catch (Exception ex)
+            {
+                Exception = ex;
+                IsExecuting = false;
+            }
         }
 
         private void Run()

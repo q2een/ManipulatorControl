@@ -36,7 +36,7 @@ namespace ManipulatorControl.BL.Script
         {
             get
             {
-                return new Queue<LeverScriptPosition>(movementPath);
+                return new Queue<LeverScriptPosition>(movementPath ?? new Queue<LeverScriptPosition>());
             }
         }
 
@@ -47,7 +47,7 @@ namespace ManipulatorControl.BL.Script
         public MovementScript GetReversed()
         {
             var queue = new Queue<LeverScriptPosition>(movementPath.Select(i => i.GetReversed()).Reverse());
-            return new MovementScript(queue, start: End, end: Start);
+            return new MovementScript(queue, start: End, end: Start) { Name = Name + "[REVERSE]" };
         }
 
         /// <summary>
