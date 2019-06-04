@@ -57,6 +57,7 @@
             this.runScriptReverseMI = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.scriptCreateMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.scriptRenameMI = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptRemoveMI = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.scriptMoveToStartMI = new System.Windows.Forms.ToolStripMenuItem();
@@ -111,9 +112,9 @@
             this.lblWorkspaceAB = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.tpGCodes = new System.Windows.Forms.TabPage();
-            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.tpScripts = new System.Windows.Forms.TabPage();
             this.lstScriptQueue = new System.Windows.Forms.ListBox();
+            this.lstMovementScripts = new System.Windows.Forms.ListBox();
             this.tpWorkspaces = new System.Windows.Forms.TabPage();
             this.tlpWorkspaceInfo = new System.Windows.Forms.TableLayoutPanel();
             this.label9 = new System.Windows.Forms.Label();
@@ -140,9 +141,8 @@
             this.rbLever1 = new System.Windows.Forms.RadioButton();
             this.rbLever2 = new System.Windows.Forms.RadioButton();
             this.rightSidePanel = new System.Windows.Forms.Panel();
+            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
-            this.lstMovementScripts = new System.Windows.Forms.ListBox();
-            this.scriptRenameMI = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -399,6 +399,13 @@
             this.scriptCreateMI.Size = new System.Drawing.Size(270, 22);
             this.scriptCreateMI.Text = "Создать";
             this.scriptCreateMI.Click += new System.EventHandler(this.scriptCreateMI_Click);
+            // 
+            // scriptRenameMI
+            // 
+            this.scriptRenameMI.Name = "scriptRenameMI";
+            this.scriptRenameMI.Size = new System.Drawing.Size(270, 22);
+            this.scriptRenameMI.Text = "Переименовать";
+            this.scriptRenameMI.Click += new System.EventHandler(this.scriptRenameMI_Click);
             // 
             // scriptRemoveMI
             // 
@@ -963,23 +970,6 @@
             this.tpGCodes.Text = "Выполнение G-кодов";
             this.tpGCodes.UseVisualStyleBackColor = true;
             // 
-            // gCodesBox
-            // 
-            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gCodesBox.Enable = true;
-            this.gCodesBox.EnableLineNumbering = false;
-            this.gCodesBox.FontSize = ((byte)(14));
-            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
-            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
-            this.gCodesBox.Lines = new string[0];
-            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
-            this.gCodesBox.Name = "gCodesBox";
-            this.gCodesBox.ReadOnly = false;
-            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
-            this.gCodesBox.Size = new System.Drawing.Size(533, 302);
-            this.gCodesBox.TabIndex = 1;
-            this.gCodesBox.WordWrap = false;
-            // 
             // tpScripts
             // 
             this.tpScripts.Controls.Add(this.lstScriptQueue);
@@ -1002,6 +992,19 @@
             this.lstScriptQueue.Name = "lstScriptQueue";
             this.lstScriptQueue.Size = new System.Drawing.Size(533, 224);
             this.lstScriptQueue.TabIndex = 0;
+            // 
+            // lstMovementScripts
+            // 
+            this.lstMovementScripts.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lstMovementScripts.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lstMovementScripts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lstMovementScripts.FormattingEnabled = true;
+            this.lstMovementScripts.ItemHeight = 20;
+            this.lstMovementScripts.Location = new System.Drawing.Point(3, 3);
+            this.lstMovementScripts.Name = "lstMovementScripts";
+            this.lstMovementScripts.Size = new System.Drawing.Size(533, 200);
+            this.lstMovementScripts.TabIndex = 1;
+            this.lstMovementScripts.SelectedIndexChanged += new System.EventHandler(this.lstMovementScripts_SelectedIndexChanged);
             // 
             // tpWorkspaces
             // 
@@ -1333,9 +1336,30 @@
             this.rightSidePanel.Size = new System.Drawing.Size(382, 491);
             this.rightSidePanel.TabIndex = 7;
             // 
+            // gCodesBox
+            // 
+            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gCodesBox.Enable = true;
+            this.gCodesBox.EnableLineNumbering = false;
+            this.gCodesBox.FontSize = ((byte)(14));
+            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
+            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
+            this.gCodesBox.Lines = new string[0];
+            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
+            this.gCodesBox.Name = "gCodesBox";
+            this.gCodesBox.ReadOnly = false;
+            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
+            this.gCodesBox.Size = new System.Drawing.Size(533, 302);
+            this.gCodesBox.TabIndex = 1;
+            this.gCodesBox.WordWrap = false;
+            // 
             // directionPanel
             // 
             this.directionPanel.ColumnCount = 4;
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -1709,31 +1733,16 @@
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.Size = new System.Drawing.Size(362, 198);
             this.directionPanel.TabIndex = 0;
             this.directionPanel.TabStop = true;
             this.directionPanel.X = 0D;
             this.directionPanel.Y = 0D;
             this.directionPanel.Z = 0D;
-            // 
-            // lstMovementScripts
-            // 
-            this.lstMovementScripts.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lstMovementScripts.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lstMovementScripts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lstMovementScripts.FormattingEnabled = true;
-            this.lstMovementScripts.ItemHeight = 20;
-            this.lstMovementScripts.Location = new System.Drawing.Point(3, 3);
-            this.lstMovementScripts.Name = "lstMovementScripts";
-            this.lstMovementScripts.Size = new System.Drawing.Size(533, 200);
-            this.lstMovementScripts.TabIndex = 1;
-            // 
-            // scriptRenameMI
-            // 
-            this.scriptRenameMI.Name = "scriptRenameMI";
-            this.scriptRenameMI.Size = new System.Drawing.Size(270, 22);
-            this.scriptRenameMI.Text = "Переименовать";
-            this.scriptRenameMI.Click += new System.EventHandler(this.scriptRenameMI_Click);
             // 
             // MainForm
             // 

@@ -2,19 +2,39 @@
 
 namespace ManipulatorControl.BL.Script
 {
+    /// <summary>
+    /// Предоставляет класс содержащий данные об одном шаге в сценарии.
+    /// </summary>
     public class LeverScriptPosition : EventArgs, IEquatable<LeverScriptPosition>
     {
-        public LeverType LeverType { get; set; }
+        /// <summary>
+        /// Возвращает тип плеча робота.
+        /// </summary>
+        public LeverType LeverType { get; private set; }
 
+        /// <summary>
+        /// Возвращает начальную точку плеча робота.
+        /// </summary>
         public double From { get; set; }
 
+        /// <summary>
+        /// Возвращает конечную точку плеча робота.
+        /// </summary>
         public double To { get; set; }
+
+        /// <summary>
+        /// Предоставляет класс содержащий данные об одном шаге в сценарии.
+        /// </summary>
+        /// <param name="leverType">Тип плеча робота</param>
+        public LeverScriptPosition(LeverType leverType)
+        {
+            LeverType = leverType;
+        }
 
         public LeverScriptPosition GetReversed()
         {
-            return new LeverScriptPosition()
+            return new LeverScriptPosition(LeverType)
             {
-                LeverType = LeverType,
                 From = To,
                 To = From
             };

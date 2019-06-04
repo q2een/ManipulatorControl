@@ -1,75 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace ManipulatorControl.BL.Script
 {
+    /// <summary>
+    /// Предоставляет класс содержащий данные сценария.
+    /// </summary>
     public class MovementScript : EventArgs
     {
         private readonly Queue<LeverScriptPosition> movementPath;
 
-        private readonly IEnumerable<LeverPosition> startPosition, ednPosition;
+        /// <summary>
+        /// Возвращает или задает наименование сценария.
+        /// </summary>
+        public string Name { get; set; }
 
-        public IEnumerable<LeverPosition> Start
+        /// <summary>
+        /// Возврвщает начальную положение робота в сценарии.
+        /// </summary>
+        public IEnumerable<LeverPosition> Start { get; private set; }
+
+        /// <summary>
+        /// Возврвщает конечное положение робота в сценарии.
+        /// </summary>
+        public IEnumerable<LeverPosition> End { get; private set; }
+
+        /// <summary>
+        /// Возвращает очередь положений робота - сценарий. 
+        /// </summary>
+        /// <remarks>
+        /// Возвращает копию очереди.
+        /// </remarks>
+        public Queue<LeverScriptPosition> MovementPath
         {
             get
             {
-                return startPosition;
+                return new Queue<LeverScriptPosition>(movementPath);
             }
         }
 
-        public IEnumerable<LeverPosition> End
-        {
-            get
-            {
-                return ednPosition; 
-            }
-        }
-
-        public ReadOnlyCollection<LeverScriptPosition> MovementPath
-        {
-            get
-            {
-                return movementPath.ToList().AsReadOnly();
-            }
-        }
-
+        /// <summary>
+        /// Возвращает экземпляр класса для исполнения сценария в обратном порядке.
+        /// </summary>
+        /// <returns>Экземпляр класса для исполнения сценария в обратном порядке</returns>
         public MovementScript GetReversed()
         {
             var queue = new Queue<LeverScriptPosition>(movementPath.Select(i => i.GetReversed()).Reverse());
-            return new MovementScript(queue, ednPosition, startPosition);
+            return new MovementScript(queue, start: End, end: Start);
         }
 
-        public MovementScript(Queue<LeverScriptPosition> movementPath, IEnumerable<LeverPosition> startPosition, IEnumerable<LeverPosition> ednPosition)
+        /// <summary>
+        /// Предоставляет класс содержащий данные сценария. Позволяет реализовать обучение робота.
+        /// </summary>
+        /// <param name="movementPath">Позиции плечей при движения робота.</param>
+        /// <param name="start">Начальное положения робота</param>
+        /// <param name="end">Конечное положение робота</param>
+        public MovementScript(Queue<LeverScriptPosition> movementPath, IEnumerable<LeverPosition> start, IEnumerable<LeverPosition> end)
         {
-            this.movementPath = movementPath;//Optimize(movementPath);
-            this.startPosition = startPosition;
-            this.ednPosition = ednPosition;
+            this.movementPath = movementPath;
+
+            Start = start;
+            End = end;
         }
-        /*
-        public static Queue<LeverScriptPosition> Optimize(Queue<LeverScriptPosition> movementPath)
+
+        public override string ToString()
         {
-            Queue<LeverScriptPosition> path = new Queue<LeverScriptPosition>();
-
-            var lastPosition = movementPath.Dequeue();
-            while(movementPath.Count > 0)
-            {
-                var position = movementPath.Dequeue();
-
-                if(lastPosition.LeverType != position.LeverType)
-                {
-                    path.Enqueue(lastPosition);
-                    path.Enqueue(position);
-                    continue;
-                }
-
-                path.Enqueue(position);                               
-
-                lastPosition = position;
-            }
-
-            return path;
-        }      */
+            return Name;
+        }
     }
 }

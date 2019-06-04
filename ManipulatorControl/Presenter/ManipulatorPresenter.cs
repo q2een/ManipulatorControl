@@ -78,13 +78,18 @@ namespace ManipulatorControl
 
             this.view.InvokeCreateScript += View_InvokeCreateScript;
             this.view.InvokeSaveScript += View_InvokeSaveScript;
+            this.view.InvokeCancelCreatingScript += View_InvokeCancelCreatingScript;
 
+            this.view.InvokeRemoveScript += View_InvokeRemoveScript;
+            this.view.InvokeScriptRename += View_InvokeScriptRename;
 
 
             this.view.InvokeRunScript += View_InvokeRunScript;
             this.view.InvokeRunScriptReverse += View_InvokeRunScriptReverse;
             this.view.InvokeSetCurrentAsStart += View_InvokeSetCurrentAsStart;
             this.view.InvokeSetCurrentAsEnd += View_InvokeSetCurrentAsEnd;
+            this.view.InvokeMoveToStartScript += View_InvokeMoveToStartScript;
+            this.view.InvokeMoveToEndScript += View_InvokeMoveToEndScript;
 
             this.view.InvokeScriptBackTo += View_InvokeScriptBackTo;
 
@@ -108,7 +113,8 @@ namespace ManipulatorControl
             movement.OnMovingEnd += Movement_OnMovingEnd;
 
             scriptExecutor.StepPassed += ScriptExecutor_StepPassed;
-            scriptExecutor.ScriptExecuted += ScriptExecutor_ScriptExecuted;
+            scriptExecutor.OnExecutingStart += ScriptExecutor_OnExecutingStart;
+            scriptExecutor.OnExecutingEnd += ScriptExecutor_OnExecutingEnd;
 
             Movement_LocationChanged(false, movement.Calculation.GetCurrentLocation());
 
@@ -119,15 +125,111 @@ namespace ManipulatorControl
             view.SetCurrentPosition(new LeverPosition(LeverType.Lever2, movement.GetLeverPosition(LeverType.Lever2)));
         }
 
-        private void ScriptExecutor_ScriptExecuted(object sender, EventArgs e)
+        private void View_InvokeScriptRename(object sender, WorkspaceEventArgs e)
         {
-            messageService.ShowMessage("Сценарий выполнен");
-            view.SetScriptQueue(scriptExecutor.MovementScript.MovementPath, scriptExecutor.MovementScript.MovementPath.Count - 1, false);
+            if (scriptExecutor.IsExecuting)
+                return;
+
+            try
+            {
+                scripts[e.Index].Name = e.Name;
+                view.SetScriptsList(scripts);
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
         }
+
+        private void View_InvokeRemoveScript(object sender, MovementScript e)
+        {
+            if (scriptExecutor.IsExecuting)
+                return;
+
+            try
+            {
+                if (messageService.ShowExclamation("Вы действительно хотите удалить сценарий «" + e.Name + "»") == UserResponse.OK)
+                {
+                    scripts.Remove(e);
+                    view.SetScriptsList(scripts);
+                }
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
+        }
+
+        private void View_InvokeCancelCreatingScript(object sender, EventArgs e)
+        {
+            try
+            {
+                scriptBuilder.Cancel();
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
+        }
+
+        private void ScriptExecutor_OnExecutingEnd(object sender, EventArgs e)
+        {
+            view.SetScriptExecuting(false);
+            view.SetScriptQueue(scriptExecutor.MovementScript.MovementPath, scriptExecutor.MovementScript.MovementPath.Count - 1, false);
+            messageService.ShowMessage(scriptExecutor.Exception == null ? "Сценарий выполнен"  : scriptExecutor.Exception.Message);
+        }
+
+        private void ScriptExecutor_OnExecutingStart(object sender, EventArgs e)
+        {
+            view.SetScriptExecuting(true);
+        }
+
+        private void View_InvokeMoveToEndScript(object sender, MovementScript e)
+        {
+            try
+            {
+                if (e == null)
+                    return;
+
+                if (messageService.ShowExclamation("Переместить манипулятор в конечную точку сценария  «" + e.Name + "»") == UserResponse.OK)
+                {
+                    var action = new Action(() => messageService.ShowMessage("Робот перемещен в конечную точку сценария «" + e.Name + "»"));
+
+                    movement.MoveRobotByPath(e.End, action);
+                }
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
+        }
+
+        private void View_InvokeMoveToStartScript(object sender, MovementScript e)
+        {
+            try
+            {
+                if (e == null)
+                    return;
+
+                if(messageService.ShowExclamation("Переместить манипулятор в начальную точку сценария  «" + e.Name + "»") == UserResponse.OK)
+                {
+                    var action = new Action(() => messageService.ShowMessage("Робот перемещен в начальную точку сценария «" + e.Name + "»"));
+
+                    movement.MoveRobotByPath(e.Start, action);
+                }
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
+        }
+
+
 
         private void ScriptExecutor_StepPassed(object sender, LeverScriptPosition e)
         {
-            view.SetScriptQueue(scriptExecutor.MovementScript.MovementPath, scriptExecutor.MovementScript.MovementPath.IndexOf(e), true);
+            var path = new List<LeverScriptPosition>(scriptExecutor.MovementScript.MovementPath); 
+            view.SetScriptQueue(path, path.IndexOf(e), true);
         }
 
         private void View_InvokeSetCurrentAsEnd(object sender, EventArgs e)
@@ -217,9 +319,9 @@ namespace ManipulatorControl
             }
         }
 
-        private void View_InvokeCreateScript(object sender, EventArgs e)
+        private void View_InvokeCreateScript(object sender, WorkspaceEventArgs e)
         {
-            scriptBuilder = new ScriptBuilder(movement);
+            scriptBuilder = new ScriptBuilder(movement, e.Name);
 
             scriptBuilder.OnPathChanged += ScriptBuilder_OnPathChanged;
         }
@@ -463,6 +565,8 @@ namespace ManipulatorControl
 
                 SaveStepDirNames();
                 SaveLeverSteppers();
+
+                this.settings.Close();
             }
             catch (Exception ex)
             {

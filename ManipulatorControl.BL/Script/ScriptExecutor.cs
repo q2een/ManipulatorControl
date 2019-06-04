@@ -16,12 +16,63 @@ namespace ManipulatorControl.BL.Script
         {
             get
             {
+                if (active == null)
+                    return null;
+
                 return new LeverPosition(active.LeverType, active.To);
             }
         }
 
+        private bool isExecuting, isRunningToPoint;
+
+        public bool IsExecuting
+        {
+            get
+            {
+                return isExecuting || active != null;
+            }
+            private set
+            {
+                if (isExecuting == value)
+                    return;
+
+                if (!value)
+                {
+                    Exception = null;
+                    isRunningToPoint = false;
+                    path = null;
+                    active = null;
+                    movement.LeverPositionChanged -= Movement_LeverPositionChanged;
+                    movement.OnMovingEnd -= Movement_OnMovingEnd;
+                    OnExecutingEnd(this, EventArgs.Empty);
+                }
+                else
+                {
+                    OnExecutingStart(this, EventArgs.Empty);
+                    movement.LeverPositionChanged += Movement_LeverPositionChanged;
+                    movement.OnMovingEnd += Movement_OnMovingEnd;
+                }
+
+                isExecuting = value;
+            }
+        }
+
+        private void Movement_OnMovingEnd(object sender, LeverMovingEndEventArgs e)
+        {
+            if (isExecuting && (e.StopReason == LptStepperMotorControl.Stepper.StepperStopReason.Aborted
+                || e.StopReason == LptStepperMotorControl.Stepper.StepperStopReason.Stoped))
+            {
+                Exception = new Exception("Выполнение сценария остановлено");
+                IsExecuting = false;
+            }
+
+        }
+
+        public Exception Exception { get; private set; }
+
         public event EventHandler<LeverScriptPosition> StepPassed = delegate { };
-        public event EventHandler ScriptExecuted = delegate { };
+        public event EventHandler OnExecutingStart = delegate { };
+        public event EventHandler OnExecutingEnd = delegate { };
 
         public ScriptExecutor(RobotMovement movement)
         {
@@ -30,7 +81,7 @@ namespace ManipulatorControl.BL.Script
 
         public void Execute(MovementScript movementScript, bool isReversed)
         {
-            if (active != null)
+            if (IsExecuting)
                 throw new Exception("Уже выполняется другой скрипт");
 
             this.MovementScript = isReversed ? movementScript.GetReversed() : movementScript;
@@ -40,40 +91,35 @@ namespace ManipulatorControl.BL.Script
 
         private void Execute()
         {
-            try
-            {
-                if (!IsNowInPosition(MovementScript.Start))
-                    movement.MoveRobotByPath(MovementScript.Start, Execute);
+            IsExecuting = true;
 
-                path = new Queue<LeverScriptPosition>(MovementScript.MovementPath);
-
-                movement.LeverPositionChanged += Movement_LeverPositionChanged;
-                Run();
-            }
-            catch(Exception ex)
+            if (!movement.IsNowAtPosition(MovementScript.Start))
             {
-                active = null;
-                movement.LeverPositionChanged -= Movement_LeverPositionChanged; 
-                throw ex;
+                isRunningToPoint = true;
+                movement.MoveRobotByPath(MovementScript.Start, Execute);
+                return;
             }
+
+            path = new Queue<LeverScriptPosition>(MovementScript.MovementPath);
+            Run();
         }
 
         private void Run()
         {
             try
             {
+                isRunningToPoint = false;
                 active = path.Dequeue();
 
-                if (!movement.GetLeverPosition(active.LeverType).Equals(active.From))
+                if (movement.GetLeverPosition(active.LeverType) != active.From)
                     throw new Exception("Ошибка при перемещении робота по сценарию");
 
                 movement.MoveLever(ActiveLeverPosition);
             }
             catch (Exception ex)
             {
-                active = null;
-                movement.LeverPositionChanged -= Movement_LeverPositionChanged;
-                throw ex;
+                Exception = ex;
+                IsExecuting = false;
             }
         }
 
@@ -81,6 +127,14 @@ namespace ManipulatorControl.BL.Script
         {
             try
             {
+                if (isRunningToPoint)
+                {
+                    if (!MovementScript.Start.Contains(e) && !MovementScript.End.Contains(e))
+                        throw new Exception("Ошибка при перемещении робота к " + (path == null ? "начальной" : "конечной") + " точке сценария");
+
+                    return;
+                }
+
                 if (!e.Equals(ActiveLeverPosition))
                     throw new Exception("Ошибка при перемещении робота по сценарию");
 
@@ -94,29 +148,20 @@ namespace ManipulatorControl.BL.Script
                     return;
                 }
 
-                if (!IsNowInPosition(MovementScript.End))
+                if (!movement.IsNowAtPosition(MovementScript.End))
                 {
-                    movement.MoveRobotByPath(MovementScript.End, null);
-                    ScriptExecuted(this, EventArgs.Empty);
-                    active = null;
-                    movement.LeverPositionChanged -= Movement_LeverPositionChanged;
+                    movement.MoveRobotByPath(MovementScript.End, new Action(() => isRunningToPoint = false));
+                    return;
                 }
+
+                IsExecuting = false;
 
             }
             catch (Exception ex)
             {
-                active = null;
-                movement.LeverPositionChanged -= Movement_LeverPositionChanged;
+                IsExecuting = false;
                 throw ex;
             }
-        }
-
-        private bool IsNowInPosition(IEnumerable<LeverPosition> position)
-        {
-            var current = movement.GetCurrentLeversPosition().OrderBy(i => i.LeverType);
-            position = position.OrderBy(i => i.LeverType);
-
-            return current.SequenceEqual(position);
         }
     }
 }

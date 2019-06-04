@@ -5,15 +5,15 @@ using System.Text;
 
 namespace ManipulatorControl.BL
 {
-    public class LeverPosition : EventArgs, IEquatable<LeverPosition>
+    public class LeverPosition : EventArgs, IEquatable<LeverPosition>, IEqualityComparer<LeverPosition>
     {
         public LeverType LeverType { get; private set; }
 
         public double Position{ get; set; }
 
-        public LeverPosition(LeverType lever, double position)
+        public LeverPosition(LeverType leverType, double position)
         {
-            LeverType = lever;
+            LeverType = leverType;
             Position = position;
         }
 
@@ -48,6 +48,16 @@ namespace ManipulatorControl.BL
         public override int GetHashCode()
         {
             return Position.GetHashCode() ^ LeverType.GetHashCode();
+        }
+
+        public bool Equals(LeverPosition x, LeverPosition y)
+        {
+            return x.Equals(y);
+        }
+
+        public int GetHashCode(LeverPosition obj)
+        {
+            return obj.GetHashCode();
         }
     }
 }

@@ -50,7 +50,7 @@ namespace ManipulatorControl.BL
         public event EventHandler<LeverPosition> LeverPositionChanged = delegate { };
 
         public event EventHandler<StepLever> OnMovingStart = delegate { };
-        public event EventHandler<StepLever> OnMovingEnd = delegate { };
+        public event EventHandler<LeverMovingEndEventArgs> OnMovingEnd = delegate { };
 
 
         public event EventHandler<LeverZeroPositionEventArgs> OnZeroPositionChanged = delegate { };
@@ -145,10 +145,31 @@ namespace ManipulatorControl.BL
 
         public IEnumerable<LeverPosition> GetCurrentLeversPosition()
         {
-            yield return new LeverPosition(LeverType.Horizontal, GetLeverPosition(LeverType.Horizontal));
-            yield return new LeverPosition(LeverType.Lever1, GetLeverPosition(LeverType.Lever1));
-            yield return new LeverPosition(LeverType.Lever2, GetLeverPosition(LeverType.Lever2));
+            //yield return new LeverPosition(LeverType.Horizontal, GetLeverPosition(LeverType.Horizontal));
+            //yield return new LeverPosition(LeverType.Lever1, GetLeverPosition(LeverType.Lever1));
+            //yield return new LeverPosition(LeverType.Lever2, GetLeverPosition(LeverType.Lever2));
+            return new[]
+            {
+                new LeverPosition(LeverType.Horizontal, GetLeverPosition(LeverType.Horizontal)),
+                new LeverPosition(LeverType.Lever1, GetLeverPosition(LeverType.Lever1)),
+                new LeverPosition(LeverType.Lever2, GetLeverPosition(LeverType.Lever2))
+            };
 
+        }
+
+        public bool IsNowAtPosition(IEnumerable<LeverPosition> position)
+        {
+            var current = GetCurrentLeversPosition().OrderBy(i => i.LeverType);
+            position = position.OrderBy(i => i.LeverType);
+
+            return current.SequenceEqual(position);
+        }
+
+        public bool IsOnZeroPosition(LeverType type)
+        {
+            var lever = Calculation.GetPartMovableByLeverType(type);
+
+            return lever.Workspace.ABzero == lever.AB;
         }
 
         private void ChangeLeverPosition(LeverType type, long stepsCount)
@@ -172,13 +193,6 @@ namespace ManipulatorControl.BL
               OnZeroPositionChanged(this, new LeverZeroPositionEventArgs(type, newValue == lever.Workspace.ABzero));
         }
 
-        public bool IsOnZeroPosition(LeverType type)
-        {
-            var lever = Calculation.GetPartMovableByLeverType(type);
-
-            return lever.Workspace.ABzero == lever.AB;
-        }
-
         private void LeverMovement_OnStepsIntervalElapsed(object sender, StepLever e)
         {
             Location = Calculation.GetLocation(Location, e);
@@ -189,7 +203,7 @@ namespace ManipulatorControl.BL
             OnMovingStart(this, e);
         }
 
-        private void LeverMovement_OnMovingEnd(object sender, StepLever e)
+        private void LeverMovement_OnMovingEnd(object sender, LeverMovingEndEventArgs e)
         {
             ChangeLeverPosition(e.Lever, e.StepsCount);
             OnMovingEnd(this, e);

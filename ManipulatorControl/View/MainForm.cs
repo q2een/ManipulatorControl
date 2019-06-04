@@ -163,18 +163,18 @@ namespace ManipulatorControl
 
         #endregion
 
-        public event EventHandler InvokeCreateScript = delegate { };
+        public event EventHandler<WorkspaceEventArgs> InvokeCreateScript = delegate { };
         public event EventHandler<LeverScriptPosition> InvokeScriptBackTo = delegate { };
         public event EventHandler<MovementScript> InvokeRunScript = delegate { };
         public event EventHandler<MovementScript> InvokeRunScriptReverse = delegate { };
         public event EventHandler InvokeSaveScript = delegate { };
-        public event EventHandler<MovementScript> InvokeRemoveScript;
-        public event EventHandler<MovementScript> InvokeMoveToStartScript;
-        public event EventHandler<MovementScript> InvokeMoveToEndScript;
+        public event EventHandler<MovementScript> InvokeRemoveScript = delegate { };
+        public event EventHandler<MovementScript> InvokeMoveToStartScript = delegate { };
+        public event EventHandler<MovementScript> InvokeMoveToEndScript = delegate { };
         public event EventHandler InvokeSetCurrentAsStart = delegate { };
         public event EventHandler InvokeSetCurrentAsEnd = delegate { };
-        public event EventHandler InvokeCancelCreatingScript;
-        public event EventHandler InvokeScriptRename;
+        public event EventHandler InvokeCancelCreatingScript = delegate { };
+        public event EventHandler<WorkspaceEventArgs> InvokeScriptRename = delegate { };
 
         private void HandleStartManualMove(object sender, EventArgs e)
         {
@@ -577,27 +577,57 @@ namespace ManipulatorControl
 
         private void scriptCreateMI_Click(object sender, EventArgs e)
         {
-            InvokeCreateScript(this, EventArgs.Empty);
+            var input = new InputMessageBox();
+
+            if (input.ShowDialog() != DialogResult.OK)
+                return;
+
+            InvokeCreateScript(this, new WorkspaceEventArgs(input.Input));
         }
 
         private void scriptRenameMI_Click(object sender, EventArgs e)
         {
+            var script = lstMovementScripts.SelectedItem as MovementScript;
 
+            if (script == null)
+                return;
+
+            var input = new InputMessageBox() { Input = script.Name };
+
+            if (input.ShowDialog() != DialogResult.OK)
+                return;
+
+            InvokeScriptRename(this, new WorkspaceEventArgs(input.Input, lstMovementScripts.SelectedIndex));
         }
 
         private void scriptRemoveMI_Click(object sender, EventArgs e)
         {
+            var script = lstMovementScripts.SelectedItem as MovementScript;
 
+            if (script == null)
+                return;
+
+            InvokeRemoveScript(this, script);
         }
 
         private void scriptMoveToStartMI_Click(object sender, EventArgs e)
         {
+            var script = lstMovementScripts.SelectedItem as MovementScript;
 
+            if (script == null)
+                return;
+
+            InvokeMoveToStartScript(this, script);
         }
 
         private void scriptMoveToEndMI_Click(object sender, EventArgs e)
         {
+            var script = lstMovementScripts.SelectedItem as MovementScript;
 
+            if (script == null)
+                return;
+
+            InvokeMoveToEndScript(this, script);
         }
 
         private void scriptMoveBackToMI_Click(object sender, EventArgs e)
@@ -615,6 +645,16 @@ namespace ManipulatorControl
             InvokeSetCurrentAsEnd(this, EventArgs.Empty);
         }
 
+        private void lstMovementScripts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var script = lstMovementScripts.SelectedItem as MovementScript;
+
+            if (script == null)
+                return;
+
+            SetScriptQueue(script.MovementPath, script.MovementPath.Count - 1, false);
+        }
+
         private void saveScriptMI_Click(object sender, EventArgs e)
         {
             InvokeSaveScript(this, EventArgs.Empty);
@@ -622,9 +662,12 @@ namespace ManipulatorControl
 
         private void scriptCancelEditingMI_Click(object sender, EventArgs e)
         {
-
+            InvokeCancelCreatingScript(this, EventArgs.Empty);
         }
 
-
+        public void SetScriptExecuting(bool isExecuting)
+        {
+            SetStatusMessage(isExecuting ? "Выполнение сценария" : "", false);
+        }
     }
 }

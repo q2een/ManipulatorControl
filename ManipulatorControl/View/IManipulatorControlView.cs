@@ -47,13 +47,13 @@ namespace ManipulatorControl
 
         void SetScriptsList(IEnumerable<MovementScript> movementScripts);
         void SetScriptQueue(IEnumerable<LeverScriptPosition> scriptPositions, int activeIndex, bool isQueueExecuting);
-
+        void SetScriptExecuting(bool isExecuting);
 
         event EventHandler<MovementScript> InvokeRunScript;
         event EventHandler<MovementScript> InvokeRunScriptReverse;
 
-        event EventHandler InvokeCreateScript;
-        event EventHandler InvokeScriptRename;
+        event EventHandler<WorkspaceEventArgs> InvokeCreateScript;
+        event EventHandler<WorkspaceEventArgs> InvokeScriptRename;
         event EventHandler<MovementScript> InvokeRemoveScript;
 
         event EventHandler<MovementScript> InvokeMoveToStartScript;

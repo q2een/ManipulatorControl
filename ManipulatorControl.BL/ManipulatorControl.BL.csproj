@@ -45,6 +45,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Interpreter\GCodeInterpreter.cs" />
     <Compile Include="Lever\LeverZeroPositionEventArgs.cs" />
+    <Compile Include="Lever\LeverMovingEndEventArgs.cs" />
     <Compile Include="Script\LeverScriptPosition.cs" />
     <Compile Include="Lever\LeverMovement.cs" />
     <Compile Include="Lever\LeverPosition.cs" />

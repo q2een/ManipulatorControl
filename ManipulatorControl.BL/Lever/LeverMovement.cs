@@ -42,7 +42,7 @@ namespace ManipulatorControl.BL
         }
 
         public event EventHandler<StepLever> OnMovingStart = delegate { };
-        public event EventHandler<StepLever> OnMovingEnd = delegate { };
+        public event EventHandler<LeverMovingEndEventArgs> OnMovingEnd = delegate { };
         public event EventHandler<StepLever> OnStepsIntervalElapsed = delegate { };
 
         public LeverMovement(LPTPort port, LeverStepper[] levers)
@@ -135,7 +135,7 @@ namespace ManipulatorControl.BL
             var stepLever = new StepLever(movingLever.Type, movingLever.Stepper.CurrentStepsCount);
             movingLever = null;
 
-            OnMovingEnd(this, stepLever);
+            OnMovingEnd(this, new LeverMovingEndEventArgs(stepLever, worker.StopReason));
 
             if (IsQueueMoving)
             {

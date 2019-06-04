@@ -19,5 +19,6 @@ namespace ManipulatorControl.View
         event EventHandler SaveSettings;
 
         void Show();
+        void Close();
     }
 }
