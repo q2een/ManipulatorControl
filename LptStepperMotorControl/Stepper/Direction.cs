@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace LptStepperMotorControl.Stepper
+﻿namespace LptStepperMotorControl.Stepper
 {
+    /// <summary>
+    /// Предоставляет направления движения ротора шагового двигателя.
+    /// </summary>
     public enum Direction
     {
         /// <summary>

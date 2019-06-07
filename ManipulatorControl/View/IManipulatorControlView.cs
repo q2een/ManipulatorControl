@@ -30,7 +30,7 @@ namespace ManipulatorControl
 
         void SetRobotWorkspaceParams(RobotWorkspace workspace);
         void SetCurrentEditWorkspaceModeLeverPosition(LeverType leverType, double currentValue);
-        void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueType editValues); 
+        void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueTypes editValues); 
         void SetWorkspaces(IEnumerable<RobotWorkspace> workspaces, int activeWorkspaceIndex = 0);
 
         event EventHandler<EditWorkspaceEventArgs> OnActiveEditingLeverChanged;

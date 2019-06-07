@@ -1,19 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ManipulatorControl.BL
+﻿namespace ManipulatorControl.BL
 {
+    /// <summary>
+    /// Предоставляет структуру, описывающую текущее положения центра схвата робота-манипулятора.
+    /// </summary>
     public struct Location
     {
+        /// <summary>
+        /// Возвращает или задает текущее положения центра схвата робота-манипулятора по оси X.
+        /// </summary>
         public double X { get; set; }
 
+        /// <summary>
+        /// Возвращает или задает текущее положения центра схвата робота-манипулятора по оси Y.
+        /// </summary>
         public double Y { get; set; }
 
+        /// <summary>
+        /// Возвращает или задает текущее положения центра схвата робота-манипулятора по оси Z.
+        /// </summary>
         public double Z { get; set; }
 
-
+        /// <summary>
+        /// Предоставляет структуру, описывающую текущее положения центра схвата робота-манипулятора.
+        /// </summary>
+        /// <param name="x">Текущее положения центра схвата робота-манипулятора по оси X</param>
+        /// <param name="y">Текущее положения центра схвата робота-манипулятора по оси Y</param>
+        /// <param name="z">Текущее положения центра схвата робота-манипулятора по оси Z</param>
         public Location(double x, double y, double z):this()
         {
             X = x;

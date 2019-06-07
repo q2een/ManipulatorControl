@@ -31,6 +31,11 @@ namespace ManipulatorControl.BL.Script
             LeverType = leverType;
         }
 
+        /// <summary>
+        /// Возвращает экземпляр класса в котором значения поменяны местами 
+        /// для выполнения сценария в обратном порядке. 
+        /// </summary>
+        /// <returns>Экземпляр класса в котором значения <see cref="From"/> и <seealso cref="To"/> поменяны местами</returns>
         public LeverScriptPosition GetReversed()
         {
             return new LeverScriptPosition(LeverType)

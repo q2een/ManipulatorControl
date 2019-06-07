@@ -5,6 +5,9 @@ using GCodeParser;
 
 namespace ManipulatorControl.BL.Interpreter
 {
+    /// <summary>
+    /// Предоставляет класс для интерпретации G-кода.
+    /// </summary>
     public class GCodeInterpreter : ICommandManager
     {
         private readonly Calculation calculation;
@@ -44,13 +47,10 @@ namespace ManipulatorControl.BL.Interpreter
             }
         }
 
-        public static Queue<StepLever> Interprete(Calculation calculation, Queue<KeyValuePair<string, Lexeme[]>> commands)
-        {
-            var interpreter = new GCodeInterpreter(calculation);
-
-            return interpreter.Interprete(commands);
-        }
-
+        /// <summary>
+        /// Предоставляет класс для интерпретации G-кода.
+        /// </summary>
+        /// <param name="calculation">Экземпляр класса для расчета значений перемещения робота</param>
         public GCodeInterpreter(Calculation calculation)
         {
             this.calculation = calculation;
@@ -61,7 +61,7 @@ namespace ManipulatorControl.BL.Interpreter
         /// <summary>
         /// Интерпретирует очередь команд <paramref name="commands"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Возвращает очередь указывающую количество шагов которое необходимо выполнить ШД плеча</returns>
         public Queue<StepLever> Interprete(Queue<KeyValuePair<string, Lexeme[]>> commands)
         {
             plane = PlaneType.XYZ;
@@ -108,6 +108,7 @@ namespace ManipulatorControl.BL.Interpreter
             return steppersQueue;
         }
 
+        // Добавляет коллекцию в в очередь
         private void Enqueue(Queue<StepLever> steppersQueue, IEnumerable<StepLever> stepLevers)
         {
             foreach (var stepLever in stepLevers)
@@ -203,6 +204,9 @@ namespace ManipulatorControl.BL.Interpreter
 
         #region ICommandManager Implementation.
 
+        /// <summary>
+        /// Возвращает коллекцию поддерживаемых команд.
+        /// </summary>
         string[] ICommandManager.SupportedCommands
         {
             get
@@ -211,6 +215,11 @@ namespace ManipulatorControl.BL.Interpreter
             }
         }
 
+        /// <summary>
+        /// Производит валидацию команды <paramref name="command"/> с заданными аргументами <paramref name="args"/> и возвращает 
+        /// коллекцию ошибок (экземпляры класса <seealso cref="GCodeException"/>) в случае если команда некорректна.
+        /// </summary>
+        /// <returns>Коллекция ошибок при валидации команды</returns>
         GCodeException[] ICommandManager.ValidateCommand(string command, params Lexeme[] args)
         {
             var errors = new List<GCodeException>();

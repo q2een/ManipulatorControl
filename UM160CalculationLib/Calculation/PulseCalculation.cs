@@ -6,7 +6,7 @@ using System.Text;
 namespace UM160CalculationLib
 {
     /// <summary>
-    /// Предоставляет класс для вычисления числа импульсов, необходимых для достижения угла. 
+    /// Предоставляет класс для вычислений, связанных с импульсами, выдаваемыми УЧПУ.
     /// </summary>
     public static class PulseCalculation
     {
@@ -14,7 +14,13 @@ namespace UM160CalculationLib
         private const double deg = Math.PI / 180.0;
 
         #region Публичные методы.
-         
+
+        /// <summary>
+        /// Возвращает число импульсов, выдаваемых УЧПУ.
+        /// </summary>
+        /// <param name="lever">Конструктивные параметры плеча робота-манипулятора</param>
+        /// <param name="param">Параметр влияющий на количество импульсов</param>
+        /// <returns>Число импульсов</returns>
         public static long GetPulsesCount(IRobotLever lever, double param)
         {
             if (lever is LeverDesignParameters)
@@ -55,7 +61,11 @@ namespace UM160CalculationLib
 
             return Convert.ToInt64(stepsCount) * (lever.IsABIncreasesOnStepperCW ? 1 : -1);
         }
-        
+
+        /// <summary>
+        /// Возвращает количество импульсов для достижения положения <paramref name="to"/> из положения <paramref name="from"/>
+        /// плеча <paramref name="lever"/>. 
+        /// </summary>
         public static long GetPulsesCount(IRobotLever lever, double abFrom, double abTo)
         {
             if (lever is LeverDesignParameters)
@@ -67,6 +77,10 @@ namespace UM160CalculationLib
             throw new Exception("Расчеты для данного экземпляра не реализованы");
         }
 
+        /// <summary>
+        /// Возвращает количество импульсов для достижения положения <paramref name="to"/> из положения <paramref name="from"/>
+        /// плеча <paramref name="ldp"/>. 
+        /// </summary>
         public static long GetPulsesCount(LeverDesignParameters ldp, double abFrom, double abTo)
         {
             if (!ldp.Workspace.IsBetweenMinAndMax(abFrom))
@@ -80,6 +94,10 @@ namespace UM160CalculationLib
             return Convert.ToInt64(pulsesCount);
         }
 
+        /// <summary>
+        /// Возвращает количество импульсов для достижения положения <paramref name="to"/> из положения <paramref name="from"/>
+        /// плеча <paramref name="lever"/>. 
+        /// </summary>
         public static long GetPulsesCount(HorizontalLeverDesignParameters lever, double abFrom, double abTo)
         {
             if (!lever.Workspace.IsBetweenMinAndMax(abFrom))
@@ -93,6 +111,12 @@ namespace UM160CalculationLib
             return Convert.ToInt64(stepsCount) * (lever.IsABIncreasesOnStepperCW ? 1 : -1);
         }
 
+        /// <summary>
+        /// Рассчитывает значение AB в зависимости от числа импульсов и текущего значения AB.
+        /// </summary>
+        /// <param name="lever">Конструктивные параметры плеча робота-манипулятора</param>
+        /// <param name="pulsesCount">Число импульсов</param>
+        /// <returns>Новое значение AB</returns>
         public static double GetNewAB(IRobotLever lever, long pulsesCount)
         {
             if (lever is LeverDesignParameters)
@@ -109,7 +133,7 @@ namespace UM160CalculationLib
         /// </summary>
         /// <param name="ldp">Конструктивные параметры плеча робота-манипулятора</param>
         /// <param name="pulsesCount">Число импульсов</param>
-        /// <returns>Новое значение ABh</returns>
+        /// <returns>Новое значение AB</returns>
         public static double GetNewAB(LeverDesignParameters ldp, long pulsesCount)
         {
             double newValue = CalculateAB(ldp, pulsesCount);
@@ -120,6 +144,12 @@ namespace UM160CalculationLib
             return newValue;
         }
 
+        /// <summary>
+        /// Рассчитывает значение AB в зависимости от числа импульсов и текущего значения AB.
+        /// </summary>
+        /// <param name="lever">Конструктивные параметры плеча робота-манипулятора</param>
+        /// <param name="pulsesCount">Число импульсов</param>
+        /// <returns>Новое значение AB</returns>
         public static double GetNewAB(HorizontalLeverDesignParameters lever, long pulsesCount)
         {
             double newValue = Math.Round(lever.AB + ((lever.IsABIncreasesOnStepperCW ? 1 : -1) * (pulsesCount / lever.Coefficient)), 0);
@@ -130,6 +160,10 @@ namespace UM160CalculationLib
             return newValue;
         }
 
+        /// <summary>
+        /// Возвращает количество импульсов для достижения значения <paramref name="ab"/> 
+        /// исходя из текущего положения плеча <paramref name="lever"/>.
+        /// </summary>
         public static long GetPulsesCountToAB(IRobotLever lever, double ab)
         {
             if (lever is HorizontalLeverDesignParameters)
@@ -144,6 +178,10 @@ namespace UM160CalculationLib
             throw new Exception("Расчеты для данного экземпляра не реализованы");
         }
          
+        /// <summary>
+        /// Возвращает количество импульсов для достижения крайнего положения плеча <paramref name="lever"/>
+        /// в зависимости от направления движения <paramref name="isCWDirection"/> ротора шагового двигателя.
+        /// </summary>
         public static long GetPulsesCountByDirection(IRobotLever lever, bool isCWDirection)
         {
             var target = lever.IsABIncreasesOnStepperCW && isCWDirection ? lever.Workspace.ABmax : lever.Workspace.ABmin;
@@ -154,11 +192,17 @@ namespace UM160CalculationLib
             return GetPulsesCountToAB(lever, target);
         }
 
+        /// <summary>
+        /// Возвращает количество импульсов для достижения максимального положения плеча <paramref name="lever"/>. 
+        /// </summary>
         public static long GetPulsesCountToMaxValue(IRobotLever lever)
         {
             return GetPulsesCountToAB(lever, lever.Workspace.ABmax);
         }
 
+        /// <summary>
+        /// Возвращает количество импульсов для достижения нулевого положения плеча <paramref name="lever"/>. 
+        /// </summary>
         public static long GetPulsesCountToZeroValue(IRobotLever lever)
         {
             if (lever.Workspace.ABzero == null)
@@ -167,6 +211,9 @@ namespace UM160CalculationLib
             return GetPulsesCountToAB(lever, (double)lever.Workspace.ABzero);
         }
 
+        /// <summary>
+        /// Возвращает количество импульсов для достижения минимального положения плеча <paramref name="lever"/>. 
+        /// </summary>
         public static long GetPulsesCountToMinValue(IRobotLever lever)
         {
             return GetPulsesCountToAB(lever, lever.Workspace.ABmin);

@@ -64,7 +64,6 @@
     <Compile Include="Exception\EndOfCodeException.cs" />
     <Compile Include="Command\ICommandManager.cs" />
     <Compile Include="Interpreter\CoordinateSystem.cs" />
-    <Compile Include="Interpreter\Interpreter.cs" />
     <Compile Include="Interpreter\PlaneType.cs" />
     <Compile Include="Parser\Lexeme.cs" />
     <Compile Include="Exception\GCodeException.cs" />

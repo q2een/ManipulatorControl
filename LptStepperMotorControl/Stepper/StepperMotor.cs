@@ -4,6 +4,9 @@ using System;
 
 namespace LptStepperMotorControl.Stepper
 {
+    /// <summary>
+    /// Предоставляет класс для управления шаговым двигателем.
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
     public class StepperMotor
     {  
@@ -226,6 +229,14 @@ namespace LptStepperMotorControl.Stepper
 
         #region Конструкторы.
 
+        /// <summary>
+        /// Предоставляет класс для управления шаговым двигателем.
+        /// </summary>
+        /// <param name="port">Порт</param>
+        /// <param name="pins">Управляющие пины</param>
+        /// <param name="cwDirectionIsLogicalZero">Флаг, указывающий на направление движения ротора
+        /// шагового двигателя в зависимости от поданного сигнала на пин DIR.
+        /// Движение ротора по часовой стрелке при логической единице (False) или нуле (True).</param>
         public StepperMotor(LPTPort port,StepDirPin pins, bool cwDirectionIsLogicalZero = true)
         {
             CWDirectionIsLogicalZero = cwDirectionIsLogicalZero;
@@ -270,6 +281,10 @@ namespace LptStepperMotorControl.Stepper
             TargetStepsCount = CurrentStepsCount + (stepsToStop * (speed > 0 ? 1 : -1));
         }
 
+        /// <summary>
+        /// Задает количество шагов которое необходимо выполнить.
+        /// </summary>
+        /// <param name="targetStepsCount">Количество шагов для выполнения</param>
         public void SetStepsCount(long targetStepsCount)
         {
             CurrentStepsCount = 0;

@@ -1,21 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ManipulatorControl.BL
 {
+    /// <summary>
+    /// Предоставляет класс содержащий данные о положении плеча робота-манипулятора.
+    /// </summary>
     public class LeverPosition : EventArgs, IEquatable<LeverPosition>, IEqualityComparer<LeverPosition>
     {
+        /// <summary>
+        /// Возвращает тип плеча робота.
+        /// </summary>
         public LeverType LeverType { get; private set; }
 
+        /// <summary>
+        /// Возвращает или задает положение плеча робота.
+        /// </summary>
         public double Position{ get; set; }
 
+        /// <summary>
+        /// Предоставляет класс содержащий данные о положении плеча робота-манипулятора.
+        /// </summary>
+        /// <param name="leverType">Тип плеча робота</param>
+        /// <param name="position">Положение плеча робота.</param>
         public LeverPosition(LeverType leverType, double position)
         {
             LeverType = leverType;
             Position = position;
         }
+
 
         public override bool Equals(object other)
         {

@@ -309,19 +309,19 @@ namespace ManipulatorControl
             lstWorkspaces.SelectedIndex = workspaces.Count() == 0 ? -1 : (workspaces.Count() < activeWorkspaceIndex ? 0 : activeWorkspaceIndex);
         }
 
-        public void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueType editValues)
+        public void SetEditWorkspaceMode(bool enable, RobotWorkspace workspace, MovableValueTypes editValues)
         {
             gbWorkspaceInfo.Text = "Рабочая зона: " + (enable ? workspace.Name : "");
             IsEditWorkspaceMode = enable;
 
             lstWorkspaces.Enabled = !enable;
 
-            var hasNotNoneFlag = !editValues.HasFlag(MovableValueType.None);
+            var hasNotNoneFlag = !editValues.HasFlag(MovableValueTypes.None);
 
-            setMaxValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueType.Max));
-            setMinValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueType.Min));
-            setZeroValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueType.Zero));
-            removeZeroValueMI.Visible(editValues.HasFlag(MovableValueType.Zero));
+            setMaxValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueTypes.Max));
+            setMinValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueTypes.Min));
+            setZeroValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueTypes.Zero));
+            removeZeroValueMI.Visible(editValues.HasFlag(MovableValueTypes.Zero));
             editValuesSeparatorMI.Visible = hasNotNoneFlag;
 
             setAsActiveWorkspaceMI.Visible(!enable);
@@ -374,7 +374,7 @@ namespace ManipulatorControl
 
             tlpManualControl.CreateGraphics().FillRectangle(Brushes.DarkGray, width * index, rb.Location.Y + rb.Height, width, tlpManualControl.Height);
 
-            OnActiveEditingLeverChanged(this, new EditWorkspaceEventArgs(GetEditWorkspaceModeActiveLever(), MovableValueType.None));
+            OnActiveEditingLeverChanged(this, new EditWorkspaceEventArgs(GetEditWorkspaceModeActiveLever(), MovableValueTypes.None));
         }
          
         private void lstWorkspaces_SelectedIndexChanged(object sender, EventArgs e)
@@ -419,7 +419,7 @@ namespace ManipulatorControl
             if (mi == null)
                 return;
 
-            var valueType = mi == setMaxValueMI ? MovableValueType.Max : (mi == setMinValueMI ? MovableValueType.Min : MovableValueType.Zero);
+            var valueType = mi == setMaxValueMI ? MovableValueTypes.Max : (mi == setMinValueMI ? MovableValueTypes.Min : MovableValueTypes.Zero);
 
             InvokeWorkspaceValueChange(this, new EditWorkspaceEventArgs(GetEditWorkspaceModeActiveLever(), valueType));
         }
@@ -466,7 +466,7 @@ namespace ManipulatorControl
 
         private void removeZeroValueMI_Click(object sender, EventArgs e)
         {
-            InvokeRemoveZeroPosition(this, new EditWorkspaceEventArgs(GetEditWorkspaceModeActiveLever(), MovableValueType.Zero));
+            InvokeRemoveZeroPosition(this, new EditWorkspaceEventArgs(GetEditWorkspaceModeActiveLever(), MovableValueTypes.Zero));
         }
 
         #endregion

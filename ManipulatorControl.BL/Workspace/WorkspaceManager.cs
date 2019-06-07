@@ -121,19 +121,19 @@ namespace ManipulatorControl.BL.Workspace
             Remove(robotWorkspaces.IndexOf(workspace));
         }
 
-        public void SetValue(IWorkspace workspace, MovableValueType valueType, double ab)
+        public void SetValue(IWorkspace workspace, MovableValueTypes valueType, double ab)
         {
             switch (valueType)
             {
-                case MovableValueType.Max:
+                case MovableValueTypes.Max:
                     workspace.ABmax = ab;
                     break;
 
-                case MovableValueType.Min:
+                case MovableValueTypes.Min:
                     workspace.ABmin = ab;
                     break;
 
-                case MovableValueType.Zero:
+                case MovableValueTypes.Zero:
                     workspace.ABzero = ab;
                     break;
 

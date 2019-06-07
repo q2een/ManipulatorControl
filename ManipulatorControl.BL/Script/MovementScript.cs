@@ -64,6 +64,10 @@ namespace ManipulatorControl.BL.Script
             End = end;
         }
 
+        /// <summary>
+        /// Переопределение класса. Возвращает строку с наименованием сценария.
+        /// </summary>
+        /// <returns>Строка с наименованием сценария</returns>
         public override string ToString()
         {
             return Name;

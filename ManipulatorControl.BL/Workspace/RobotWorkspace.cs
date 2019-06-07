@@ -51,21 +51,21 @@ namespace ManipulatorControl.BL.Workspace
             }
         }
 
-        public void SetValue(LeverType type, MovableValueType valueType, double ab)
+        public void SetValue(LeverType type, MovableValueTypes valueType, double ab)
         {
             var lever = GetLeverByType(type);
 
             switch(valueType)
             {
-                case MovableValueType.Max:
+                case MovableValueTypes.Max:
                     lever.ABmax = ab;
                     break;
 
-                case MovableValueType.Min:
+                case MovableValueTypes.Min:
                     lever.ABmin = ab;
                     break;
 
-                case MovableValueType.Zero:
+                case MovableValueTypes.Zero:
                     lever.ABzero = ab;
                     break;
 

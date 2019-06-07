@@ -35,21 +35,45 @@ namespace UM160CalculationLib
             return validPairs;
         }
 
+        /// <summary>
+        /// Возвращает положение центра схвата по оси X при заданных положениях плеч робота.
+        /// </summary>
+        /// <param name="dp">Конструктивные параметры робота-манипулятора</param>
+        /// <param name="phi1">Угол поворота плеча (φ1)</param>
+        /// <param name="phi2">Угол поворота плеча (φ2)</param>
+        /// <returns>Положение центра схвата по оси X</returns>
         public static double GetX(DesignParameters dp, double phi1, double phi2)
         {
             return (dp.L2 * Math.Cos(phi2 * deg)) + (dp.L1 * Math.Cos(phi1 * deg));
         }
 
+        /// <summary>
+        /// Возвращает положение центра схвата по оси Y при заданных положениях плеч робота.
+        /// </summary>
+        /// <param name="dp">Конструктивные параметры робота-манипулятора</param>
+        /// <param name="phi1">Угол поворота плеча (φ1)</param>
+        /// <param name="phi2">Угол поворота плеча (φ2)</param>
+        /// <returns>Положение центра схвата по оси Y</returns>
         public static double GetY(DesignParameters dp, double phi1, double phi2)
         {
             return dp.Lc + (dp.L2 * Math.Sin(phi2 * deg)) + (dp.L1 * Math.Sin(phi1 * deg));
         }
 
+        /// <summary>
+        /// Возвращает положение центра схвата по оси X при текущих положениях плеч робота.
+        /// </summary>
+        /// <param name="dp">Конструктивные параметры робота-манипулятора</param>
+        /// <returns>Положение центра схвата по оси X</returns>
         public static double GetCurrentX(DesignParameters dp)
         {
             return GetX(dp, dp.Lever1.Phi, dp.Lever2.Phi);
         }
 
+        /// <summary>
+        /// Возвращает положение центра схвата по оси Y при текущих положениях плеч робота.
+        /// </summary>
+        /// <param name="dp">Конструктивные параметры робота-манипулятора</param>
+        /// <returns>Положение центра схвата по оси Y</returns>
         public static double GetCurrentY(DesignParameters dp)
         {
             return GetY(dp, dp.Lever1.Phi, dp.Lever2.Phi);
@@ -67,11 +91,6 @@ namespace UM160CalculationLib
 
             return (phi1 >= Round(dp.Lever1.PhiMin) && phi1 <= Round(dp.Lever1.PhiMax)) &&
                 (phi2 >= Round(dp.Lever2.PhiMin) && phi2 <= Round(dp.Lever2.PhiMax));
-        }
-
-        private static double Round(double angle)
-        {
-            return Math.Round(angle, digits);
         }
 
         // Множитель для перевода градусов в радианы.     
@@ -176,6 +195,15 @@ namespace UM160CalculationLib
 
             // Проверка полученных значений с исходными (с точностью до тысячных).
             return Round(x) == Round(x0) && Round(y) == Round(y0);
+        }
+
+        /// <summary>
+        /// Округляет значение угла <paramref name="angle"/> до <see cref="digits"/> знаков после запятой.
+        /// </summary>
+        /// <returns>Округленное значение угла</returns>
+        private static double Round(double angle)
+        {
+            return Math.Round(angle, digits);
         }
 
         // Поле необходимо в случае задания координат без десятичной части. 

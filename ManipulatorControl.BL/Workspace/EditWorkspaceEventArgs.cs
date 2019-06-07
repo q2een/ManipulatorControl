@@ -6,9 +6,9 @@ namespace ManipulatorControl.BL.Workspace
     {
         public LeverType LeverType { get; set; }
 
-        public MovableValueType ValueType { get; set; }
+        public MovableValueTypes ValueType { get; set; }
 
-        public EditWorkspaceEventArgs(LeverType leverType, MovableValueType valueType)
+        public EditWorkspaceEventArgs(LeverType leverType, MovableValueTypes valueType)
         {
             LeverType = leverType;
             ValueType = valueType;

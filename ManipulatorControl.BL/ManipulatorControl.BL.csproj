@@ -50,7 +50,7 @@
     <Compile Include="Lever\LeverMovement.cs" />
     <Compile Include="Lever\LeverPosition.cs" />
     <Compile Include="Lever\LeverType.cs" />
-    <Compile Include="Lever\RobotLever.cs" />
+    <Compile Include="Lever\LeverStepper.cs" />
     <Compile Include="Lever\StepLever.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="LocationEventHandler.cs" />

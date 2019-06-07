@@ -776,7 +776,7 @@ namespace ManipulatorControl
         // Отменить изменения.
         private void View_InvokeCloseEditWorkspaceMode(object sender, WorkspaceEventArgs e)
         {
-            view.SetEditWorkspaceMode(false, null, MovableValueType.None);
+            view.SetEditWorkspaceMode(false, null, MovableValueTypes.None);
             view.SetWorkspaces(workspaceManager.RobotWorkspaces, editingWorkspaceIndex);
             editingWorkspace = null;
             editingWorkspaceIndex = -1;
@@ -800,7 +800,7 @@ namespace ManipulatorControl
 
                 if (errors.Count() == 0)
                 {
-                    view.SetEditWorkspaceMode(false, null, MovableValueType.None);
+                    view.SetEditWorkspaceMode(false, null, MovableValueTypes.None);
 
                     workspaceManager.SetWorkspace(editingWorkspaceIndex, editingWorkspace);
 
@@ -835,10 +835,10 @@ namespace ManipulatorControl
 
                 editingWorkspace = workspaceManager.GetClone(e.Index);
 
-                var editValues = MovableValueType.Zero;
+                var editValues = MovableValueTypes.Zero;
 
                 if (e.Index != 0)
-                    editValues |= MovableValueType.Max | MovableValueType.Min;
+                    editValues |= MovableValueTypes.Max | MovableValueTypes.Min;
 
                 editingWorkspaceIndex = e.Index;
 
@@ -853,7 +853,7 @@ namespace ManipulatorControl
         //  Изменение ограничений и задание нулевой точки для плеч робота.
         private void View_InvokeWorkspaceValueChange(object sender, EditWorkspaceEventArgs e)
         {
-            if (editingWorkspace == null || e.ValueType == MovableValueType.None)
+            if (editingWorkspace == null || e.ValueType == MovableValueTypes.None)
                 return;
 
             editingWorkspace.SetValue(e.LeverType, e.ValueType, movement.GetLeverPosition(e.LeverType));
