@@ -35,6 +35,7 @@ namespace ManipulatorControl
 
         event EventHandler<EditWorkspaceEventArgs> OnActiveEditingLeverChanged;
         event EventHandler<EditWorkspaceEventArgs> InvokeWorkspaceValueChange;
+        event EventHandler<EditWorkspaceEventArgs> InvokeRemoveZeroPosition;
         event EventHandler<WorkspaceEventArgs> InvokeSetActiveWorkspace;          
         event EventHandler<WorkspaceEventArgs> InvokeSetEditWorkspaceMode;  
         event EventHandler<WorkspaceEventArgs> InvokeCloseEditWorkspaceMode;
@@ -47,10 +48,10 @@ namespace ManipulatorControl
 
         void SetScriptsList(IEnumerable<MovementScript> movementScripts);
         void SetScriptQueue(IEnumerable<LeverScriptPosition> scriptPositions, int activeIndex, bool isQueueExecuting);
-        void SetScriptExecuting(bool isExecuting);
+        void SetScriptExecuting(bool isExecuting, MovementScript movementScript);
 
         void SetScriptCreatingMode(bool isCreating);
-
+        void SetScriptCreatingPoint(IEnumerable<LeverPosition> point, bool isStartPoint);
 
         event EventHandler<MovementScript> InvokeRunScript;
         event EventHandler<MovementScript> InvokeRunScriptReverse;

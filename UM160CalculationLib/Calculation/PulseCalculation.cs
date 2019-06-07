@@ -56,6 +56,43 @@ namespace UM160CalculationLib
             return Convert.ToInt64(stepsCount) * (lever.IsABIncreasesOnStepperCW ? 1 : -1);
         }
         
+        public static long GetPulsesCount(IRobotLever lever, double abFrom, double abTo)
+        {
+            if (lever is LeverDesignParameters)
+                return GetPulsesCount(lever as LeverDesignParameters, abFrom, abTo);
+
+            if (lever is HorizontalLeverDesignParameters)
+                return GetPulsesCount(lever as HorizontalLeverDesignParameters, abFrom, abTo);
+
+            throw new Exception("Расчеты для данного экземпляра не реализованы");
+        }
+
+        public static long GetPulsesCount(LeverDesignParameters ldp, double abFrom, double abTo)
+        {
+            if (!ldp.Workspace.IsBetweenMinAndMax(abFrom))
+                throw new DesignParametersException("Значение расстояния от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта не удовлетворяет конструктивным параметрам робота или рабочей зоны");
+
+            var phi = ldp.GetAngleByABValue(abTo);
+            phi *= ldp.IsABIncreasesOnStepperCW ? -deg : deg;
+            double pulsesCount = ldp.IsABIncreasesOnStepperCW ? -1 : 1;
+            pulsesCount *= (1.0 / ldp.I) * ((abFrom - Math.Sqrt(Math.Pow(ldp.AO, 2) + Math.Pow(ldp.BO, 2) - (2 * ldp.AO * ldp.BO * Math.Cos(ldp.AlphaRad + ldp.BetaRad + phi)))) / (ldp.P * ldp.RoRad));
+
+            return Convert.ToInt64(pulsesCount);
+        }
+
+        public static long GetPulsesCount(HorizontalLeverDesignParameters lever, double abFrom, double abTo)
+        {
+            if (!lever.Workspace.IsBetweenMinAndMax(abFrom))
+                throw new DesignParametersException("Значение координаты Z не удовлетворяет конструктивным параметрам робота или рабочей зоны");
+
+            if (!lever.Workspace.IsBetweenMinAndMax(abTo))
+                throw new DesignParametersException("Новое значение координаты Z не удовлетворяет конструктивным параметрам робота или рабочей зоны");
+
+            var stepsCount = ((abTo - abFrom) * lever.Coefficient);
+
+            return Convert.ToInt64(stepsCount) * (lever.IsABIncreasesOnStepperCW ? 1 : -1);
+        }
+
         public static double GetNewAB(IRobotLever lever, long pulsesCount)
         {
             if (lever is LeverDesignParameters)

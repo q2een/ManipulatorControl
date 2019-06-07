@@ -16,10 +16,18 @@ namespace ManipulatorControl
 
         internal static void InvokeEx(this Control control, Action action)
         {
-            if (control.InvokeRequired)
-                control.Invoke(action);
-            else
-                action();
+            try
+            {
+                if (control.InvokeRequired)
+                    control.Invoke(action);
+                else
+                    action();
+            }
+            catch(ObjectDisposedException)
+            {
+
+            }
         }
     }
 }
+

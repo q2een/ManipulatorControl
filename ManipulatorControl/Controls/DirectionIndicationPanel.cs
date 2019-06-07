@@ -84,8 +84,6 @@ namespace ManipulatorControl
 
             var isPositiveDirection = IsPositiveDirection(position, newPosition);
 
-            System.Diagnostics.Debug.WriteLine(isPositiveDirection);
-
             SetIndicatorState(positive, isPositiveDirection);
             SetIndicatorState(negative, !isPositiveDirection);
         }

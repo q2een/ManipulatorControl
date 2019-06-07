@@ -73,6 +73,11 @@ namespace ManipulatorControl.BL.Workspace
             }
         }
 
+        public void RemoveZero(LeverType type)
+        {
+            GetLeverByType(type).ABzero = null;
+        }
+
         public object Clone()
         {
             var workspace = new RobotWorkspace(this.Name);

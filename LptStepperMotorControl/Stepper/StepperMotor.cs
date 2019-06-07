@@ -124,7 +124,7 @@ namespace LptStepperMotorControl.Stepper
             {
                 return targetStepsCount;
             }
-            set
+            private set
             {
                 if (targetStepsCount == value)
                     return;
@@ -270,13 +270,11 @@ namespace LptStepperMotorControl.Stepper
             TargetStepsCount = CurrentStepsCount + (stepsToStop * (speed > 0 ? 1 : -1));
         }
 
-        public void ResetSteps()
+        public void SetStepsCount(long targetStepsCount)
         {
-            if (!Enabled && !IsRunning)
-            {
-                CurrentStepsCount = 0;
-                ComputeNewSpeed();
-            }
+            CurrentStepsCount = 0;
+            TargetStepsCount = targetStepsCount;
+            ComputeNewSpeed();
         }
 
         // Реализует шаги в соответствии с текущим интервалом.
@@ -430,7 +428,7 @@ namespace LptStepperMotorControl.Stepper
         private float cmin = 2;
 
         // Экземпляр секундомера (измерения в микросекундах). 
-        MicroStopwatch stopwatch;
+        private readonly MicroStopwatch stopwatch;
 
         #endregion
 

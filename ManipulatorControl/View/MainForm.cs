@@ -159,6 +159,8 @@ namespace ManipulatorControl
         public event EventHandler<WorkspaceEventArgs> InvokeRenameWorkspace = delegate { };
         public event EventHandler<WorkspaceEventArgs> InvokeSetActiveWorkspace = delegate { };
         public event EventHandler<EditWorkspaceEventArgs> OnActiveEditingLeverChanged = delegate { };
+        public event EventHandler<EditWorkspaceEventArgs> InvokeRemoveZeroPosition = delegate { };
+
 
         #endregion
 
@@ -319,6 +321,7 @@ namespace ManipulatorControl
             setMaxValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueType.Max));
             setMinValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueType.Min));
             setZeroValueMI.Visible(hasNotNoneFlag && editValues.HasFlag(MovableValueType.Zero));
+            removeZeroValueMI.Visible(editValues.HasFlag(MovableValueType.Zero));
             editValuesSeparatorMI.Visible = hasNotNoneFlag;
 
             setAsActiveWorkspaceMI.Visible(!enable);
@@ -461,6 +464,11 @@ namespace ManipulatorControl
             InvokeSetActiveWorkspace(this, new WorkspaceEventArgs(lstWorkspaces.SelectedIndex));
         }
 
+        private void removeZeroValueMI_Click(object sender, EventArgs e)
+        {
+            InvokeRemoveZeroPosition(this, new EditWorkspaceEventArgs(GetEditWorkspaceModeActiveLever(), MovableValueType.Zero));
+        }
+
         #endregion
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -470,16 +478,11 @@ namespace ManipulatorControl
 
         public void SetCurrentLocation(bool isRunning, double x, double y, double z)
         {
-            var action = new Action(() =>
+            this.InvokeEx(new Action(() =>
             {
                 statusLblCurrentPosition.Text = string.Format("X: {0:f2}  Y: {1:f2}  Z: {2:f2}", x, y, z);
                 directionPanel.SetLocation(isRunning, x, y, z);
-            });
-
-            if (InvokeRequired)
-                Invoke(action);
-            else
-                action();
+            }));
         }
 
         public void SetZeroPositionState(bool isXYZero, bool isZZero)
@@ -510,10 +513,13 @@ namespace ManipulatorControl
 
         public void SetStatusMessage(string message, bool append)
         {
-            statusLblState.Text = IsEditWorkspaceMode ? "Редактирование рабочей зоны. " : "";
+            this.InvokeEx(new Action(() =>
+            {
+                statusLblState.Text = IsEditWorkspaceMode ? "Редактирование рабочей зоны. " : "";
 
-            statusLblSeparator.Visible = !string.IsNullOrEmpty(message);
-            statusLblState.Text += message;
+                statusLblSeparator.Visible = !string.IsNullOrEmpty(message);
+                statusLblState.Text += message;
+            }));
         }
 
         public void SetCurrentWorkspace(RobotWorkspace workspace)
@@ -523,7 +529,7 @@ namespace ManipulatorControl
 
         public void SetScriptQueue(IEnumerable<LeverScriptPosition> scriptPositions, int activeIndex, bool isQueueExecuting)
         {
-            var action = new Action(() =>
+            this.InvokeEx(new Action(() =>
             {
                 lstScriptQueue.Enabled = !isQueueExecuting;
 
@@ -532,25 +538,21 @@ namespace ManipulatorControl
 
                 lstScriptQueue.SelectedIndex = activeIndex;
 
-            });
+                if(activeIndex >= 0)
+                    lstScriptQueue.SelectedItem = scriptPositions.ElementAt(activeIndex);
 
-            if (this.InvokeRequired)
-                this.Invoke(action);
-            else
-                action();
+            }));
         }
 
         public void SetScriptsList(IEnumerable<MovementScript> movementScripts)
         {
-            var action = new Action(() =>
+            this.InvokeEx(new Action(() =>
             {
                 lstMovementScripts.Items.Clear();
                 lstMovementScripts.Items.AddRange(movementScripts.ToArray());
 
                 lstMovementScripts.SelectedIndex = lstMovementScripts.Items.Count > 0 ? 0 : -1;
-            });
-
-            this.InvokeEx(action);
+            }));
         }
 
         public void SetActiveMovementScript(MovementScript movementScript)
@@ -558,7 +560,7 @@ namespace ManipulatorControl
             if (movementScript == null)
                 movementScript = new MovementScript(null, null, null);
 
-            SetScriptQueue(movementScript.MovementPath, movementScript.MovementPath.Count - 1, false);
+            SetScriptQueue(movementScript.MovementPath, - 1, false);
 
             lblScriptStartPosition.Text = GetScriptPositionString(movementScript.Start);
             lblScriptEndPosition.Text = GetScriptPositionString(movementScript.End);
@@ -572,14 +574,17 @@ namespace ManipulatorControl
             return string.Join("\n", leverPositions.Select(lp => string.Format("{0}: {1} мм", lp.LeverType.ToRuString(), lp.Position)));
         }
 
-        public void SetScriptExecuting(bool isExecuting)
+        public void SetScriptExecuting(bool isExecuting, MovementScript movementScript)
         {
             this.InvokeEx(new Action(() =>
             {
                 SetStatusMessage(isExecuting ? "Выполнение сценария" : "", false);
+                lblScriptState.Text = isExecuting ? ("Выполнение сценария «" + movementScript.Name + "»") : "Сохраненные сценарии:";
                 scriptTSMI.Visible = !isExecuting;
                 scriptTSMI.Enabled = !isExecuting;
                 tabControlType.Enabled = !isExecuting;
+                lstMovementScripts.Visible = !isExecuting;
+                SetActiveMovementScript(movementScript);
             }));
         }
 
@@ -705,7 +710,10 @@ namespace ManipulatorControl
             var script = lstMovementScripts.SelectedItem as MovementScript;
 
             if (script == null)
+            {
+                SetActiveMovementScript(null);
                 return;
+            }
 
             SetActiveMovementScript(script);
         }
@@ -715,11 +723,19 @@ namespace ManipulatorControl
             InvokeSaveScript(this, EventArgs.Empty);
         }
 
+
+
         private void scriptCancelEditingMI_Click(object sender, EventArgs e)
         {
             InvokeCancelCreatingScript(this, EventArgs.Empty);
         }
 
-
+        public void SetScriptCreatingPoint(IEnumerable<LeverPosition> point, bool isStartPoint)
+        {
+            if(isStartPoint)
+                lblScriptStartPosition.Text = GetScriptPositionString(point);
+            else
+                lblScriptEndPosition.Text = GetScriptPositionString(point);
+        }
     }
 }

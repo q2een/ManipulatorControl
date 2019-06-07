@@ -6,24 +6,9 @@ namespace ManipulatorControl.BL.Script
 {
     public class ScriptExecutor
     {
+        #region Свойства.
+
         public MovementScript MovementScript { get; private set; }
-        private readonly RobotMovement movement;
-
-        private Queue<LeverScriptPosition> path;
-
-        private LeverScriptPosition active;
-        private LeverPosition ActiveLeverPosition
-        {
-            get
-            {
-                if (active == null)
-                    return null;
-
-                return new LeverPosition(active.LeverType, active.To);
-            }
-        }
-
-        private bool isExecuting, isRunningToPoint;
 
         public bool IsExecuting
         {
@@ -58,27 +43,26 @@ namespace ManipulatorControl.BL.Script
             }
         }
 
-        private void Movement_OnMovingEnd(object sender, LeverMovingEndEventArgs e)
-        {
-            if (isExecuting && (e.StopReason == LptStepperMotorControl.Stepper.StepperStopReason.Aborted
-                || e.StopReason == LptStepperMotorControl.Stepper.StepperStopReason.Stoped))
-            {
-                Exception = new Exception("Выполнение сценария остановлено");
-                IsExecuting = false;
-            }
-
-        }
-
         public Exception Exception { get; private set; }
+
+        #endregion
+
+        #region События.
 
         public event EventHandler<LeverScriptPosition> StepPassed = delegate { };
         public event EventHandler OnExecutingStart = delegate { };
         public event EventHandler OnExecutingEnd = delegate { };
 
+        #endregion
+
+        #region Конструкторы.
+
         public ScriptExecutor(RobotMovement movement)
         {
             this.movement = movement;
         }
+
+        #endregion
 
         public void Execute(MovementScript movementScript, bool isReversed)
         {
@@ -123,13 +107,21 @@ namespace ManipulatorControl.BL.Script
                 if (movement.GetLeverPosition(active.LeverType) != active.From)
                     throw new Exception("Ошибка при перемещении робота по сценарию");
 
-                movement.MoveLever(ActiveLeverPosition);
+                movement.MoveLever(GetActiveLeverPosition());
             }
             catch (Exception ex)
             {
                 Exception = ex;
                 IsExecuting = false;
             }
+        }
+
+        private LeverPosition GetActiveLeverPosition()
+        {
+            if (active == null)
+                return null;
+
+            return new LeverPosition(active.LeverType, active.To);
         }
 
         private void Movement_LeverPositionChanged(object sender, LeverPosition e)
@@ -144,7 +136,7 @@ namespace ManipulatorControl.BL.Script
                     return;
                 }
 
-                if (!e.Equals(ActiveLeverPosition))
+                if (!e.Equals(GetActiveLeverPosition()))
                     throw new Exception("Ошибка при перемещении робота по сценарию");
 
                 StepPassed(this, active);
@@ -161,16 +153,37 @@ namespace ManipulatorControl.BL.Script
                 {
                     movement.MoveRobotByPath(MovementScript.End, new Action(() => isRunningToPoint = false));
                     return;
-                }
+                }   
 
                 IsExecuting = false;
-
             }
             catch (Exception ex)
             {
+                Exception = ex;
                 IsExecuting = false;
-                throw ex;
             }
         }
+
+        private void Movement_OnMovingEnd(object sender, LeverMovingEndEventArgs e)
+        {
+            if (isExecuting && (e.StopReason == LptStepperMotorControl.Stepper.StepperStopReason.Aborted
+                || e.StopReason == LptStepperMotorControl.Stepper.StepperStopReason.Stoped))
+            {
+                Exception = new Exception("Выполнение сценария остановлено");
+                IsExecuting = false;
+            }
+        }
+
+        #region Поля.
+
+        private readonly RobotMovement movement;
+
+        private Queue<LeverScriptPosition> path;
+
+        private LeverScriptPosition active;
+
+        private bool isExecuting, isRunningToPoint;
+
+        #endregion
     }
 }

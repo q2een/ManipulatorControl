@@ -16,8 +16,10 @@ namespace UM160CalculationLib
         /// <param name="x">Координата х центра схвата в базовой системе координат</param>
         /// <param name="y">Координата y центра схвата в базовой системе координат</param>
         /// <returns>Коллекция структур AnglesOfRotation - Значения углов поворота плеча (φ1 и φ2)</returns>
-        public static List<AnglesOfRotation> GetAngles(DesignParameters designParams, double x, double y)
+        public static List<AnglesOfRotation> GetAngles(DesignParameters designParams, double x, double y, int digits)
         {
+            AnglesCalculation.digits = digits;
+
             var instance = new AnglesCalculation(designParams);
 
             var validPairs = new List<AnglesOfRotation>();
@@ -27,6 +29,8 @@ namespace UM160CalculationLib
 
             if (validPairs.Count() == 0)
                 throw new DesignParametersException(string.Format("Невозможно достичь заданные координаты X={0:f3} Y{1:f3}",x,y));
+
+            AnglesCalculation.digits = 2;
 
             return validPairs;
         }
@@ -58,16 +62,16 @@ namespace UM160CalculationLib
         /// <returns>Истина, если пара углов соответствует конструктивным параметрам робота</returns>
         public static bool IsAnglesAreValid(DesignParameters dp, AnglesOfRotation angles)
         {
-            var phi1 = RoundAngle(angles.Phi1);
-            var phi2 = RoundAngle(angles.Phi2);
+            var phi1 = Round(angles.Phi1);
+            var phi2 = Round(angles.Phi2);
 
-            return (phi1 >= RoundAngle(dp.Lever1.PhiMin) && phi1 <= RoundAngle(dp.Lever1.PhiMax)) &&
-                (phi2 >= RoundAngle(dp.Lever2.PhiMin) && phi2 <= RoundAngle(dp.Lever2.PhiMax));
+            return (phi1 >= Round(dp.Lever1.PhiMin) && phi1 <= Round(dp.Lever1.PhiMax)) &&
+                (phi2 >= Round(dp.Lever2.PhiMin) && phi2 <= Round(dp.Lever2.PhiMax));
         }
 
-        private static double RoundAngle(double angle)
+        private static double Round(double angle)
         {
-            return Math.Round(angle, 2);
+            return Math.Round(angle, digits);
         }
 
         // Множитель для перевода градусов в радианы.     
@@ -147,7 +151,7 @@ namespace UM160CalculationLib
             foreach(double anglef1 in f1)
             {
                 foreach (double anglef2 in f2)
-                    pairs.Add( new AnglesOfRotation(anglef1, anglef2));
+                    pairs.Add(new AnglesOfRotation(anglef1, anglef2));
             }
 
             return pairs;
@@ -171,7 +175,11 @@ namespace UM160CalculationLib
             double y0 = dp.Lc + (dp.L2 * Math.Sin(f2)) + (dp.L1 * Math.Sin(f1));
 
             // Проверка полученных значений с исходными (с точностью до тысячных).
-            return Math.Round(x, 2) == Math.Round(x0, 2) && Math.Round(y, 2) == Math.Round(y0, 2);
+            return Round(x) == Round(x0) && Round(y) == Round(y0);
         }
+
+        // Поле необходимо в случае задания координат без десятичной части. 
+        // В таком случае корректным будет сравнение углов 180 и 180,17.
+        private static int digits = 2;
     }
 }

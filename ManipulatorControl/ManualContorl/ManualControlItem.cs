@@ -135,6 +135,9 @@ namespace ManipulatorControl
 
         private void MarkAsActive()
         {
+            if (Active == null)
+                return;
+
             var btn = Active.Button;
             btn.CreateGraphics().DrawRectangle(new Pen(Color.Blue, 3), 3, 3, btn.Width - 6, btn.Height - 6);
         }

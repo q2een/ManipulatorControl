@@ -13,13 +13,17 @@ namespace ManipulatorControl.BL.Script
 
         private bool IsMoving = false;
 
-        private IEnumerable<LeverPosition> startPosition, endPosition;
-
         private List<LeverScriptPosition> leverPositions = new List<LeverScriptPosition>();
 
         private LeverScriptPosition scriptPosition;
 
         public event EventHandler OnPathChanged = delegate { };
+        public event EventHandler OnNewStartPoint = delegate { };
+        public event EventHandler OnNewEndPoint = delegate { };
+
+        public IEnumerable<LeverPosition> StartPoint { get; private set; }
+        public IEnumerable<LeverPosition> EndPoint { get; private set; }
+
 
         public ReadOnlyCollection<LeverScriptPosition> Path
         {
@@ -33,7 +37,6 @@ namespace ManipulatorControl.BL.Script
         {
             this.movement = movement;
             this.scriptName = scriptName;
-            SetCurrentPositionAsStart();
         }
 
         public MovementScript GetScript()
@@ -41,13 +44,13 @@ namespace ManipulatorControl.BL.Script
             if (scriptPosition != null || IsMoving)
                 throw new Exception("Дождидесь окончания перемещения робота");
 
-            if(endPosition == null || endPosition.Count() == 0)
+            if(EndPoint == null || EndPoint.Count() == 0)
                 SetCurrentPositionAsEnd();
 
-            if (startPosition.SequenceEqual(endPosition) && leverPositions.Count == 0)
+            if (StartPoint.SequenceEqual(EndPoint) && leverPositions.Count == 0)
                 throw new Exception("Невозможно создать пустой сценарий");
 
-            return new MovementScript(new Queue<LeverScriptPosition>(leverPositions), startPosition, endPosition) { Name = scriptName };
+            return new MovementScript(new Queue<LeverScriptPosition>(leverPositions), StartPoint, EndPoint) { Name = scriptName };
         }
 
         public void Cancel()
@@ -58,15 +61,16 @@ namespace ManipulatorControl.BL.Script
 
         public void SetCurrentPositionAsStart()
         {
-            if(startPosition != null && startPosition.Count() != 0)
+            if(StartPoint != null && StartPoint.Count() != 0)
             {
                 this.movement.OnMovingStart -= Movement_OnMovingStart;
                 this.movement.OnMovingEnd -= Movement_OnMovingEnd;
             }
 
-            startPosition = movement.GetCurrentLeversPosition();
+            StartPoint = movement.GetCurrentLeversPosition();
+            OnNewStartPoint(this, EventArgs.Empty);
 
-            endPosition = null;
+            EndPoint = null;
             leverPositions = new List<LeverScriptPosition>();
             OnPathChanged(this, EventArgs.Empty);
 
@@ -76,7 +80,8 @@ namespace ManipulatorControl.BL.Script
 
         public void SetCurrentPositionAsEnd()
         {
-            endPosition = movement.GetCurrentLeversPosition();
+            EndPoint = movement.GetCurrentLeversPosition();
+            OnNewEndPoint(this, EventArgs.Empty);
 
             this.movement.OnMovingStart -= Movement_OnMovingStart;
             this.movement.OnMovingEnd -= Movement_OnMovingEnd;
@@ -114,7 +119,7 @@ namespace ManipulatorControl.BL.Script
         {
             var currentPosition = movement.GetCurrentLeversPosition().OrderBy(i => i.LeverType);
 
-            if (!startPosition.OrderBy(i => i.LeverType).SequenceEqual(currentPosition))
+            if (!StartPoint.OrderBy(i => i.LeverType).SequenceEqual(currentPosition))
                 throw new Exception("Необходимо переместить робот в начальное положение");
 
             var startIndex = Path.IndexOf(scriptPosition);

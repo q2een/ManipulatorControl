@@ -43,7 +43,18 @@ namespace ManipulatorControl.BL.Workspace
                 return RobotWorkspaces.IndexOf(ActiveWorkspace);
             }
         }
-        
+
+        public RobotWorkspace DesignParametersWorkspace
+        {
+            get
+            {
+                return robotWorkspaces != null && robotWorkspaces.Count > 0 ? robotWorkspaces[0] : null;
+            }
+            set
+            {
+                robotWorkspaces[0] = GetDesignParametersWorkspace("Конструктивные параметры");
+            }
+        }
 
         public WorkspaceManager(DesignParameters parameters, List<RobotWorkspace> robotWorkspaces, int activeWorkspaceIndex = 0)
         {
@@ -56,8 +67,6 @@ namespace ManipulatorControl.BL.Workspace
 
             ActiveWorkspace = this.robotWorkspaces[activeWorkspaceIndex];
         }
-
-
 
         public void Add(string name)
         {
@@ -192,7 +201,7 @@ namespace ManipulatorControl.BL.Workspace
 
             if (outOfRange.Count() != 0)
                 throw new ArgumentException("Текущее положение плеч робота находится вне рабочей зоны. " + 
-                                            "Необходимо переместить следующие механизмы робота:\n" + string.Join("\n", outOfRange).Trim());
+                                            "Необходимо переместить следующие механизмы робота:\n" + string.Join("\n", outOfRange).Trim()); 
 
             if (!robotWorkspaces.Contains(workspace))
                 robotWorkspaces.Add(workspace);

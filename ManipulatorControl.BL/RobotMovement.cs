@@ -95,11 +95,17 @@ namespace ManipulatorControl.BL
 
         public void MoveRobotByPath(IEnumerable<LeverPosition> leverPositions, Action doAfter)
         {
-            var queue = new Queue<StepLever>();
+            var queue = new Queue<StepLever>();   
+            var currentPositions = GetCurrentLeversPosition().ToList();
 
             foreach (var leverPosition in leverPositions)
             {
-                queue.Enqueue(Calculation.GetStepLeverToPosition(leverPosition));
+                var nowAt = currentPositions.Single(position => position.LeverType == leverPosition.LeverType);
+
+                var stepLever = new StepLever(leverPosition.LeverType, Calculation.CalculateSteps(leverPosition.LeverType, nowAt.Position, leverPosition.Position));
+                queue.Enqueue(stepLever);
+
+                nowAt.Position = leverPosition.Position;
             }
              
             leverMovement.Move(queue, doAfter);
@@ -140,21 +146,22 @@ namespace ManipulatorControl.BL
 
         public double GetLeverPosition(LeverType type)
         {
-            return Calculation.GetPartMovableByLeverType(type).AB;
+            return Calculation.GetRobotLeverByType(type).AB;
+        }
+
+        public LeverPosition GetCurrentLeverPosition(LeverType type)
+        {
+            return new LeverPosition(type, GetLeverPosition(type));
         }
 
         public IEnumerable<LeverPosition> GetCurrentLeversPosition()
         {
-            //yield return new LeverPosition(LeverType.Horizontal, GetLeverPosition(LeverType.Horizontal));
-            //yield return new LeverPosition(LeverType.Lever1, GetLeverPosition(LeverType.Lever1));
-            //yield return new LeverPosition(LeverType.Lever2, GetLeverPosition(LeverType.Lever2));
             return new[]
             {
-                new LeverPosition(LeverType.Horizontal, GetLeverPosition(LeverType.Horizontal)),
-                new LeverPosition(LeverType.Lever1, GetLeverPosition(LeverType.Lever1)),
-                new LeverPosition(LeverType.Lever2, GetLeverPosition(LeverType.Lever2))
+                GetCurrentLeverPosition(LeverType.Horizontal),
+                GetCurrentLeverPosition(LeverType.Lever1),
+                GetCurrentLeverPosition(LeverType.Lever2)
             };
-
         }
 
         public bool IsNowAtPosition(IEnumerable<LeverPosition> position)
@@ -167,14 +174,14 @@ namespace ManipulatorControl.BL
 
         public bool IsOnZeroPosition(LeverType type)
         {
-            var lever = Calculation.GetPartMovableByLeverType(type);
+            var lever = Calculation.GetRobotLeverByType(type);
 
             return lever.Workspace.ABzero == lever.AB;
         }
 
         private void ChangeLeverPosition(LeverType type, long stepsCount)
         {
-            var lever = Calculation.GetPartMovableByLeverType(type);
+            var lever = Calculation.GetRobotLeverByType(type);
 
             var oldValue = lever.AB;
 

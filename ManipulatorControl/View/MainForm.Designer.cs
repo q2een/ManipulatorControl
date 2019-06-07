@@ -111,9 +111,17 @@
             this.lblWorkspaceAB = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.tpGCodes = new System.Windows.Forms.TabPage();
+            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.tpScripts = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lstScriptQueue = new System.Windows.Forms.ListBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblScriptEndPosition = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblScriptStartPosition = new System.Windows.Forms.Label();
             this.lstMovementScripts = new System.Windows.Forms.ListBox();
+            this.lblScriptState = new System.Windows.Forms.Label();
             this.tpWorkspaces = new System.Windows.Forms.TabPage();
             this.tlpWorkspaceInfo = new System.Windows.Forms.TableLayoutPanel();
             this.label9 = new System.Windows.Forms.Label();
@@ -140,15 +148,8 @@
             this.rbLever1 = new System.Windows.Forms.RadioButton();
             this.rbLever2 = new System.Windows.Forms.RadioButton();
             this.rightSidePanel = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.lblScriptState = new System.Windows.Forms.Label();
-            this.lblScriptStartPosition = new System.Windows.Forms.Label();
-            this.lblScriptEndPosition = new System.Windows.Forms.Label();
-            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.directionPanel = new ManipulatorControl.DirectionIndicationPanel();
+            this.removeZeroValueMI = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -161,13 +162,13 @@
             this.panel2.SuspendLayout();
             this.tpGCodes.SuspendLayout();
             this.tpScripts.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.tpWorkspaces.SuspendLayout();
             this.tlpWorkspaceInfo.SuspendLayout();
             this.rightSidePanel.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -265,6 +266,7 @@
             this.removeWorkspaceMI,
             this.setMaxValueMI,
             this.setMinValueMI,
+            this.removeZeroValueMI,
             this.setZeroValueMI,
             this.editValuesSeparatorMI,
             this.saveWorkspaceValuesMI,
@@ -772,6 +774,7 @@
             this.lstErrors.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstErrors.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstErrors.FormattingEnabled = true;
+            this.lstErrors.HorizontalScrollbar = true;
             this.lstErrors.ItemHeight = 18;
             this.lstErrors.Location = new System.Drawing.Point(1, 18);
             this.lstErrors.Name = "lstErrors";
@@ -976,6 +979,23 @@
             this.tpGCodes.Text = "Выполнение G-кодов";
             this.tpGCodes.UseVisualStyleBackColor = true;
             // 
+            // gCodesBox
+            // 
+            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gCodesBox.Enable = true;
+            this.gCodesBox.EnableLineNumbering = false;
+            this.gCodesBox.FontSize = ((byte)(14));
+            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
+            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
+            this.gCodesBox.Lines = new string[0];
+            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
+            this.gCodesBox.Name = "gCodesBox";
+            this.gCodesBox.ReadOnly = false;
+            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
+            this.gCodesBox.Size = new System.Drawing.Size(533, 302);
+            this.gCodesBox.TabIndex = 1;
+            this.gCodesBox.WordWrap = false;
+            // 
             // tpScripts
             // 
             this.tpScripts.Controls.Add(this.groupBox1);
@@ -990,6 +1010,18 @@
             this.tpScripts.Text = "Сценарии";
             this.tpScripts.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.lstScriptQueue);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBox1.Location = new System.Drawing.Point(3, 188);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(300, 262);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Траектория движения";
+            // 
             // lstScriptQueue
             // 
             this.lstScriptQueue.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -1001,6 +1033,58 @@
             this.lstScriptQueue.Name = "lstScriptQueue";
             this.lstScriptQueue.Size = new System.Drawing.Size(294, 237);
             this.lstScriptQueue.TabIndex = 0;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.groupBox3);
+            this.panel3.Controls.Add(this.groupBox2);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel3.Location = new System.Drawing.Point(303, 188);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(233, 262);
+            this.panel3.TabIndex = 4;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.lblScriptEndPosition);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBox3.Location = new System.Drawing.Point(0, 128);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(233, 131);
+            this.groupBox3.TabIndex = 5;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Конечное положение";
+            // 
+            // lblScriptEndPosition
+            // 
+            this.lblScriptEndPosition.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblScriptEndPosition.Location = new System.Drawing.Point(3, 22);
+            this.lblScriptEndPosition.Name = "lblScriptEndPosition";
+            this.lblScriptEndPosition.Size = new System.Drawing.Size(227, 106);
+            this.lblScriptEndPosition.TabIndex = 1;
+            this.lblScriptEndPosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.lblScriptStartPosition);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(233, 128);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Начальное положение";
+            // 
+            // lblScriptStartPosition
+            // 
+            this.lblScriptStartPosition.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblScriptStartPosition.Location = new System.Drawing.Point(3, 22);
+            this.lblScriptStartPosition.Name = "lblScriptStartPosition";
+            this.lblScriptStartPosition.Size = new System.Drawing.Size(227, 103);
+            this.lblScriptStartPosition.TabIndex = 0;
+            this.lblScriptStartPosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lstMovementScripts
             // 
@@ -1014,6 +1098,17 @@
             this.lstMovementScripts.Size = new System.Drawing.Size(533, 160);
             this.lstMovementScripts.TabIndex = 1;
             this.lstMovementScripts.SelectedIndexChanged += new System.EventHandler(this.lstMovementScripts_SelectedIndexChanged);
+            // 
+            // lblScriptState
+            // 
+            this.lblScriptState.BackColor = System.Drawing.Color.AliceBlue;
+            this.lblScriptState.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblScriptState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblScriptState.Location = new System.Drawing.Point(3, 3);
+            this.lblScriptState.Name = "lblScriptState";
+            this.lblScriptState.Size = new System.Drawing.Size(533, 25);
+            this.lblScriptState.TabIndex = 5;
+            this.lblScriptState.Text = "Сохраненные сценарии:";
             // 
             // tpWorkspaces
             // 
@@ -1345,100 +1440,17 @@
             this.rightSidePanel.Size = new System.Drawing.Size(382, 491);
             this.rightSidePanel.TabIndex = 7;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.lstScriptQueue);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.groupBox1.Location = new System.Drawing.Point(3, 188);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(300, 262);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Траектория движения";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.lblScriptStartPosition);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.groupBox2.Location = new System.Drawing.Point(0, 0);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(233, 128);
-            this.groupBox2.TabIndex = 4;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Начальное положение";
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.groupBox3);
-            this.panel3.Controls.Add(this.groupBox2);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(303, 188);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(233, 262);
-            this.panel3.TabIndex = 4;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.lblScriptEndPosition);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.groupBox3.Location = new System.Drawing.Point(0, 128);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(233, 131);
-            this.groupBox3.TabIndex = 5;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Конечное положение";
-            // 
-            // lblScriptState
-            // 
-            this.lblScriptState.BackColor = System.Drawing.Color.AliceBlue;
-            this.lblScriptState.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblScriptState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblScriptState.Location = new System.Drawing.Point(3, 3);
-            this.lblScriptState.Name = "lblScriptState";
-            this.lblScriptState.Size = new System.Drawing.Size(533, 25);
-            this.lblScriptState.TabIndex = 5;
-            this.lblScriptState.Text = "Сохраненные сценарии:";
-            // 
-            // lblScriptStartPosition
-            // 
-            this.lblScriptStartPosition.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblScriptStartPosition.Location = new System.Drawing.Point(3, 22);
-            this.lblScriptStartPosition.Name = "lblScriptStartPosition";
-            this.lblScriptStartPosition.Size = new System.Drawing.Size(227, 103);
-            this.lblScriptStartPosition.TabIndex = 0;
-            this.lblScriptStartPosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblScriptEndPosition
-            // 
-            this.lblScriptEndPosition.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblScriptEndPosition.Location = new System.Drawing.Point(3, 22);
-            this.lblScriptEndPosition.Name = "lblScriptEndPosition";
-            this.lblScriptEndPosition.Size = new System.Drawing.Size(227, 106);
-            this.lblScriptEndPosition.TabIndex = 1;
-            this.lblScriptEndPosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // gCodesBox
-            // 
-            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gCodesBox.Enable = true;
-            this.gCodesBox.FontSize = ((byte)(14));
-            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
-            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
-            this.gCodesBox.Lines = new string[0];
-            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
-            this.gCodesBox.Name = "gCodesBox";
-            this.gCodesBox.ReadOnly = false;
-            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
-            this.gCodesBox.Size = new System.Drawing.Size(533, 302);
-            this.gCodesBox.TabIndex = 1;
-            this.gCodesBox.WordWrap = false;
-            // 
             // directionPanel
             // 
             this.directionPanel.ColumnCount = 4;
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.directionPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -1828,12 +1840,27 @@
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
+            this.directionPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.64706F));
             this.directionPanel.Size = new System.Drawing.Size(362, 198);
             this.directionPanel.TabIndex = 0;
             this.directionPanel.TabStop = true;
             this.directionPanel.X = 0D;
             this.directionPanel.Y = 0D;
             this.directionPanel.Z = 0D;
+            // 
+            // removeZeroValueMI
+            // 
+            this.removeZeroValueMI.Name = "removeZeroValueMI";
+            this.removeZeroValueMI.Size = new System.Drawing.Size(266, 22);
+            this.removeZeroValueMI.Text = "Удалить ноль";
+            this.removeZeroValueMI.Click += new System.EventHandler(this.removeZeroValueMI_Click);
             // 
             // MainForm
             // 
@@ -1866,14 +1893,14 @@
             this.panel2.ResumeLayout(false);
             this.tpGCodes.ResumeLayout(false);
             this.tpScripts.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.tpWorkspaces.ResumeLayout(false);
             this.tlpWorkspaceInfo.ResumeLayout(false);
             this.tlpWorkspaceInfo.PerformLayout();
             this.rightSidePanel.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2001,6 +2028,7 @@
         private System.Windows.Forms.Label lblScriptState;
         private System.Windows.Forms.Label lblScriptStartPosition;
         private System.Windows.Forms.Label lblScriptEndPosition;
+        private System.Windows.Forms.ToolStripMenuItem removeZeroValueMI;
     }
 }
 

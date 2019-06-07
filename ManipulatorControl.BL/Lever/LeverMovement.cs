@@ -9,7 +9,7 @@ namespace ManipulatorControl.BL
 {
     public class LeverMovement
     {
-        private readonly StepperWorker worker = new StepperWorker(50);
+        private readonly StepperWorker worker = new StepperWorker(80);
         private LPTPort port;
 
         private readonly LeverStepper[] levers;
@@ -107,7 +107,7 @@ namespace ManipulatorControl.BL
             movingLever = levers.Single(lever => lever.Type == stepLever.Lever);
 
             worker.Stepper = movingLever.Stepper;
-            worker.Stepper.TargetStepsCount = stepLever.StepsCount;
+            worker.Stepper.SetStepsCount(stepLever.StepsCount);
 
             new Task(worker.Start).Start();
         }
