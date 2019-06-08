@@ -2,7 +2,7 @@
 using System;
 using UM160CalculationLib;
 
-namespace ManipulatorControl.Settings
+namespace ManipulatorControl.BL.Settings
 {
     public class WorkspaceConverter : CustomCreationConverter<IWorkspace>
     {

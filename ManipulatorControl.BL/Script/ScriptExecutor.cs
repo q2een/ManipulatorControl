@@ -71,6 +71,24 @@ namespace ManipulatorControl.BL.Script
 
             this.MovementScript = isReversed ? movementScript.GetReversed() : movementScript;
 
+            var startPosExceptions = movement.ValidateLeverPositions(MovementScript.Start);
+
+            if (startPosExceptions.Count() > 0)
+                throw new Exception("Невозможно достичь начальное положение сценария\n" +
+                    string.Join("\n", startPosExceptions.Select(ex => ex.Message)));
+
+            var endPosExceptions = movement.ValidateLeverPositions(MovementScript.End);
+
+            if (endPosExceptions.Count() > 0)
+                throw new Exception("Невозможно достичь конечное положение сценария\n" +
+                    string.Join("\n", endPosExceptions.Select(ex => ex.Message)));
+
+            var pathExceptions = movement.ValidateLeverPositions(MovementScript.MovementPath.SelectMany(path => GetLeverPositions(path)));
+
+            if (pathExceptions.Count() > 0)
+                throw new Exception("Невозможно достичь одно или несколько положения из сценария\n" +
+                    string.Join("\n", pathExceptions.Select(ex => ex.Message)));
+
             Execute();
         }
 
@@ -123,6 +141,13 @@ namespace ManipulatorControl.BL.Script
 
             return new LeverPosition(active.LeverType, active.To);
         }
+
+        private IEnumerable<LeverPosition> GetLeverPositions(LeverScriptPosition leverScriptPosition)
+        {
+            yield return new LeverPosition(leverScriptPosition.LeverType, leverScriptPosition.From);
+            yield return new LeverPosition(leverScriptPosition.LeverType, leverScriptPosition.To);
+        }
+
 
         private void Movement_LeverPositionChanged(object sender, LeverPosition e)
         {

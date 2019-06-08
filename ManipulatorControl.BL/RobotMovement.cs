@@ -179,6 +179,16 @@ namespace ManipulatorControl.BL
             return lever.Workspace.ABzero == lever.AB;
         }
 
+        public IEnumerable<DesignParametersException> ValidateLeverPositions(IEnumerable<LeverPosition> positions)
+        {
+            foreach (var position in positions)
+            {
+                if (!Calculation.GetRobotLeverByType(position.LeverType).Workspace.IsBetweenMinAndMax(position.Position))
+                    yield return new DesignParametersException(position.LeverType.ToRuString() + ": Положение " + position.Position + 
+                        " не удовлетворяет конструктивным параметрам робота-манипулятора или рабочей зоне");
+            }            
+        }
+
         private void ChangeLeverPosition(LeverType type, long stepsCount)
         {
             var lever = Calculation.GetRobotLeverByType(type);

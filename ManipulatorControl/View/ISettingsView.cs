@@ -1,9 +1,6 @@
-﻿using LptStepperMotorControl.Stepper;
-using ManipulatorControl.Settings;
+﻿using ManipulatorControl.BL.Settings;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UM160CalculationLib;
 
 namespace ManipulatorControl.View
@@ -12,7 +9,7 @@ namespace ManipulatorControl.View
     {
         List<StepDirName> StepDirNames { get; set; }
 
-        List<LeverStepper> LeverSteppers { get; set; }
+        List<LeverStepperSettings> LeverSteppers { get; set; }
 
         DesignParameters DesignParameters { get; set; }
 

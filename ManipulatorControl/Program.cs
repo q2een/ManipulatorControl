@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ManipulatorControl.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -18,7 +19,7 @@ namespace ManipulatorControl
 
             var view = new MainForm();
 
-            var presenter = new ManipulatorPresenter(view, new MessageService.MessageBoxMessageService());
+            var presenter = new ManipulatorPresenter(view,new ApplicationPropertiesCurrentPositionLoader(), new MessageService.MessageBoxMessageService());
              
             // Для тестирования.
             if (args.Length == 1)

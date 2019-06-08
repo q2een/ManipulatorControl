@@ -1,8 +1,8 @@
 ﻿using ManipulatorControl.BL;
 
-namespace ManipulatorControl.Settings
+namespace ManipulatorControl.BL.Settings
 {
-    public class LeverStepper
+    public class LeverStepperSettings
     {
         public LeverType LeverType { get; set; }
 
@@ -10,7 +10,7 @@ namespace ManipulatorControl.Settings
 
         public LptStepperMotorControl.Stepper.StepperMotor Stepper { get; set; }
 
-        public LeverStepper(LeverType type, StepDirPinType pinType, LptStepperMotorControl.Stepper.StepperMotor stepper)
+        public LeverStepperSettings(LeverType type, StepDirPinType pinType, LptStepperMotorControl.Stepper.StepperMotor stepper)
         {
             LeverType = type;
             PinType = pinType;

@@ -16,16 +16,16 @@ using ManipulatorControl.Settings;
 using ManipulatorControl.BL;
 using ManipulatorControl.BL.Workspace;
 using ManipulatorControl.BL.Script;
+using ManipulatorControl.BL.Settings;
 
 namespace ManipulatorControl
 {
     // TODO: 
     // * рабочие зоны робота: проверка текущего положения при задании новой рабочей зоны, переезд к нулевому значению или к ближайшему в границах.
-    // * добавить уведомления об успешных действиях, ошибках и тд.
-    // * Переработать сохранение параметров.
     public class ManipulatorPresenter
     {
         private readonly IMessageService messageService;
+        private readonly ICurrentPositionLoader currentPositionLoader;
         private readonly IManipulatorControlView view;
         private readonly ISettingsView settings;
 
@@ -37,8 +37,8 @@ namespace ManipulatorControl
         private readonly RobotMovement movement;
         private readonly WorkspaceManager workspaceManager;
 
-        private List<Settings.LeverStepper> leverSteppers = new List<Settings.LeverStepper>();
-        private readonly BL.LeverStepper[] levers;
+        private List<LeverStepperSettings> leverSteppers = new List<LeverStepperSettings>();
+        private readonly LeverStepper[] levers;
 
         private int editingWorkspaceIndex = -1;
         private RobotWorkspace editingWorkspace;
@@ -46,9 +46,10 @@ namespace ManipulatorControl
         private ScriptExecutor scriptExecutor;
         private List<MovementScript> scripts = new List<MovementScript>();
 
-        public ManipulatorPresenter(IManipulatorControlView view, IMessageService messageService)
+        public ManipulatorPresenter(IManipulatorControlView view, ICurrentPositionLoader currentPositionLoader,  IMessageService messageService)
         {
             this.view = view;
+            this.currentPositionLoader = currentPositionLoader;
             this.settings = new SettingsForm();
             this.messageService = messageService;
 
@@ -161,15 +162,17 @@ namespace ManipulatorControl
             if (this.parameters == null)
                 throw new NullReferenceException();
 
-            LoadStepDirNames();
-            LoadScripts();
+            this.settings.StepDirNames = Load<List<StepDirName>>(Properties.Resources.StepDirNamesSettingsFileName);
+
+            var savedScripts = Load<List<MovementScript>>(Properties.Resources.ScriptsSettingsFileName);
+            scripts = savedScripts == null ? new List<MovementScript>() : savedScripts;
 
             view.SetScriptsList(scripts);
         }
 
         private DesignParameters LoadDesignParameters()
         {
-            var parameters = JsonConvert.DeserializeObject<DesignParameters>(File.ReadAllText("design.settings"));
+            var parameters = Load<DesignParameters>(Properties.Resources.DesignSettingsFileName);
 
             WorkspaceManager.RemoveWorkspacesFromDesignParameters(parameters);
             SetSavedCurrentPositionToDesignParameters(parameters);
@@ -187,30 +190,16 @@ namespace ManipulatorControl
 
         private void SetSavedCurrentPositionToDesignParameters(DesignParameters parameters)
         {
-            parameters.HorizontalLever.AB = Properties.Settings.Default.HorizontalLeverAB;
-            parameters.Lever1.AB = Properties.Settings.Default.Lever1AB;
-            parameters.Lever2.AB = Properties.Settings.Default.Lever2AB;
+            parameters.HorizontalLever.AB = currentPositionLoader.GetCurrentPosition(LeverType.Horizontal);
+            parameters.Lever1.AB = currentPositionLoader.GetCurrentPosition(LeverType.Lever1);
+            parameters.Lever2.AB = currentPositionLoader.GetCurrentPosition(LeverType.Lever2);
         }
 
         private void GetSavedCurrentPositionFromDesignParameters(DesignParameters parameters)
         {
-            Properties.Settings.Default.HorizontalLeverAB = parameters.HorizontalLever.AB;
-            Properties.Settings.Default.Lever1AB = parameters.Lever1.AB;
-            Properties.Settings.Default.Lever2AB = parameters.Lever2.AB;
-
-            Properties.Settings.Default.Save();
-        }
-
-        private void SaveLeverCurrentPosition(LeverType type, double currentPosition)
-        {
-            if (type == LeverType.Horizontal)
-                Properties.Settings.Default.HorizontalLeverAB = currentPosition;
-            if (type == LeverType.Lever1)
-                Properties.Settings.Default.Lever1AB = currentPosition;
-            if (type == LeverType.Lever2)
-                Properties.Settings.Default.Lever2AB = currentPosition;
-
-            Properties.Settings.Default.Save();
+            currentPositionLoader.SaveCurrentPosition(LeverType.Horizontal, parameters.HorizontalLever.AB);
+            currentPositionLoader.SaveCurrentPosition(LeverType.Lever1, parameters.Lever1.AB);
+            currentPositionLoader.SaveCurrentPosition(LeverType.Lever2, parameters.Lever2.AB);
         }
 
         #endregion
@@ -237,85 +226,49 @@ namespace ManipulatorControl
             view.SetWorkspaces(workspaceManager.RobotWorkspaces, workspaceManager.ActiveWorkspace != null ? workspaceManager.RobotWorkspaces.IndexOf(workspaceManager.ActiveWorkspace) : 0);
             SetCurrentPositionOnView();
 
-
-
+            view.SetZeroPositionState(movement.IsOnZeroPosition(LeverType.Horizontal), movement.IsOnZeroPosition(LeverType.Lever1) && movement.IsOnZeroPosition(LeverType.Lever2));
 
             Movement_LocationChanged(false, movement.Calculation.GetCurrentLocation());
         }
 
+        public T Load<T>(string path, params JsonConverter[] converters)
+        {
+            try
+            {
+                return JSONSettingsSaver.Load<T>(path, converters);
+            }
+            catch(Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
+
+            return default(T);
+        }
+
+        private void Save<T>(string path, T obj, params JsonConverter[] converters)
+        {
+            try
+            {
+                obj.SaveAsJSONFile(path, converters);
+            }
+            catch (Exception ex)
+            {
+                messageService.ShowError(ex.Message);
+            }
+        }
+        
         private List<RobotWorkspace> LoadWorkspaces()
         {
-            try
-            {
-                return JsonConvert.DeserializeObject<List<RobotWorkspace>>(File.ReadAllText("workspaces.settings"), new WorkspaceConverter());
-            }
-            catch (Exception e)
-            {
-                messageService.ShowError(e.Message);
-            }
+            var workspaces = Load<List<RobotWorkspace>>(Properties.Resources.WorkspacesSettingsFileName, new WorkspaceConverter());
 
-            return new List<RobotWorkspace>();
+            return workspaces ?? new List<RobotWorkspace>();
         }
-
-        private void SaveWorkspaces()
-        {
-            try
-            {
-                var settings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-                settings.Converters.Add(new WorkspaceConverter());
-                settings.Formatting = Formatting.Indented;
-
-                File.WriteAllText("workspaces.settings", JsonConvert.SerializeObject(workspaceManager.RobotWorkspaces.Skip(1), settings));
-            }
-            catch (Exception e)
-            {
-                messageService.ShowError(e.Message);
-            }
-        }
-
-        private void LoadStepDirNames()
-        {
-            try
-            {
-                var stepDirNames = JsonConvert.DeserializeObject<List<StepDirName>>(File.ReadAllText("stepDirNames.settings"));
-                this.settings.StepDirNames = stepDirNames;
-            }
-            catch (Exception e)
-            {
-                messageService.ShowError(e.Message);
-            }
-        }
-
-        private void SaveStepDirNames()
-        {
-            try
-            {
-                File.WriteAllText("stepDirNames.settings", JsonConvert.SerializeObject(settings.StepDirNames));
-            }
-            catch (Exception e)
-            {
-                messageService.ShowError(e.Message);
-            }
-        }
-
-        private void LoadLeverSteppers()
-        {
-            try
-            {
-                leverSteppers = JsonConvert.DeserializeObject<List<Settings.LeverStepper>>(File.ReadAllText("leverSteppers.settings"));
-                this.settings.LeverSteppers = leverSteppers;
-            }
-            catch (Exception e)
-            {
-                messageService.ShowError(e.Message);
-            }
-        }
-
+        
         private void SaveLeverSteppers()
         {
             try
             {
-                File.WriteAllText("leverSteppers.settings", JsonConvert.SerializeObject(settings.LeverSteppers));
+                settings.LeverSteppers.SaveAsJSONFile(Properties.Resources.LeverSteppersSettingsFileName);
 
                 foreach (var lever in levers)
                 {
@@ -331,35 +284,10 @@ namespace ManipulatorControl
             }
         }
 
-        private void SaveScripts()
+        private IEnumerable<LeverStepper> GetRobotLever()
         {
-            try
-            {
-                File.WriteAllText("scripts.settings", JsonConvert.SerializeObject(scripts));
-            }
-            catch (Exception e)
-            {
-                messageService.ShowError(e.Message);
-            }
-        }
-
-        private void LoadScripts()
-        {
-            try
-            {
-                var savedScripts = JsonConvert.DeserializeObject<List<MovementScript>>(File.ReadAllText("scripts.settings"));
-
-                scripts = savedScripts == null ? new List<MovementScript>() : savedScripts;
-            }
-            catch (Exception e)
-            {
-                messageService.ShowError(e.Message);
-            }
-        }
-
-        private IEnumerable<BL.LeverStepper> GetRobotLever()
-        {
-            LoadLeverSteppers();
+            leverSteppers = Load<List<LeverStepperSettings>>(Properties.Resources.LeverSteppersSettingsFileName);
+            this.settings.LeverSteppers = leverSteppers;
 
             foreach (var stepper in leverSteppers)
             {
@@ -367,11 +295,11 @@ namespace ManipulatorControl
                 stepper.Stepper.Pins = this.settings.StepDirNames.Single(s => s.Type == stepper.PinType).StepDir;
             }
 
-            yield return new BL.LeverStepper(LeverType.Horizontal, leverSteppers.Single(lever => lever.LeverType == LeverType.Horizontal).Stepper);
+            yield return new LeverStepper(LeverType.Horizontal, leverSteppers.Single(lever => lever.LeverType == LeverType.Horizontal).Stepper);
 
-            yield return new BL.LeverStepper(LeverType.Lever1, leverSteppers.Single(lever => lever.LeverType == LeverType.Lever1).Stepper);
+            yield return new LeverStepper(LeverType.Lever1, leverSteppers.Single(lever => lever.LeverType == LeverType.Lever1).Stepper);
 
-            yield return new BL.LeverStepper(LeverType.Lever2, leverSteppers.Single(lever => lever.LeverType == LeverType.Lever2).Stepper);    
+            yield return new LeverStepper(LeverType.Lever2, leverSteppers.Single(lever => lever.LeverType == LeverType.Lever2).Stepper);    
         }
 
         #endregion
@@ -382,7 +310,7 @@ namespace ManipulatorControl
             {
                 UpdateDesignParameters(this.settings.DesignParameters);
 
-                SaveStepDirNames();
+                settings.StepDirNames.SaveAsJSONFile(Properties.Resources.StepDirNamesSettingsFileName);
                 SaveLeverSteppers();
 
                 this.settings.Close();
@@ -405,8 +333,8 @@ namespace ManipulatorControl
         // Cохранение параметров перед закрытием.
         private void View_OnViewClosing(object sender, EventArgs e)
         {
-            SaveWorkspaces();
-            SaveScripts();
+            workspaceManager.RobotWorkspaces.Skip(1).SaveAsJSONFile(Properties.Resources.WorkspacesSettingsFileName, new WorkspaceConverter());
+            scripts.SaveAsJSONFile(Properties.Resources.ScriptsSettingsFileName);
 
             movement.Stop();
         }
@@ -573,8 +501,6 @@ namespace ManipulatorControl
                 if (!isAtPosition && messageService.ShowExclamation("Перед началом выполнения сценария робот будет перемещен в начальное положение") != UserResponse.OK)
                     return;
 
-                view.SetScriptExecuting(true, e);
-
                 scriptExecutor.Execute(e, true);
             }
             catch (Exception ex)
@@ -591,8 +517,6 @@ namespace ManipulatorControl
 
                 if (!isAtPosition && messageService.ShowExclamation("Перед началом выполнения сценария робот будет перемещен в начальное положение") != UserResponse.OK)
                     return;
-
-                view.SetScriptExecuting(true, e);
 
                 scriptExecutor.Execute(e, false);
             }
@@ -707,9 +631,9 @@ namespace ManipulatorControl
                     return;
                 }
 
-                if(messageService.ShowExclamation("Робот находится вне выбранной рабочей зоны. Переместить плечи робота в нулевую точку ?") == UserResponse.OK)
+                if(messageService.ShowExclamation("Робот находится вне выбранной рабочей зоны. Переместить плечи робота в рабочую зону ?") == UserResponse.OK)
                 {
-                    movement.MoveRobotByPath(workspaceManager.GetLeverPositionsToWorkspaceZero(workspace), action);
+                    movement.MoveRobotByPath(workspaceManager.GetLeversPositionToWorkspaceRange(workspace), action);
                 }
                 
             }
@@ -878,7 +802,7 @@ namespace ManipulatorControl
 
         #endregion
 
-        #region Перемещение плечей робота-манипулятора. Ручное управление. Управление G кодами.  
+        #region Перемещение плеч робота-манипулятора. Ручное управление. Управление G кодами.  
 
         private void Movement_OnMovingEnd(object sender, StepLever e)
         {
@@ -901,7 +825,7 @@ namespace ManipulatorControl
 
         private void Movement_LeverPositionChanged(object sender, LeverPosition e)
         {
-            SaveLeverCurrentPosition(e.LeverType, e.Position);
+            currentPositionLoader.SaveCurrentPosition(e.LeverType, e.Position);
 
             if (view.IsEditWorkspaceMode)
                 view.SetCurrentEditWorkspaceModeLeverPosition(e.LeverType, e.Position);

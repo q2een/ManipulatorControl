@@ -1,4 +1,4 @@
-﻿namespace ManipulatorControl
+﻿namespace ManipulatorControl.BL.Settings
 {
     public enum StepDirPinType
     {

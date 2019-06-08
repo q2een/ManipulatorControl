@@ -99,5 +99,50 @@ namespace ManipulatorControl.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на design.settings.
+        /// </summary>
+        internal static string DesignSettingsFileName {
+            get {
+                return ResourceManager.GetString("DesignSettingsFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на leverSteppers.settings.
+        /// </summary>
+        internal static string LeverSteppersSettingsFileName {
+            get {
+                return ResourceManager.GetString("LeverSteppersSettingsFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на scripts.settings.
+        /// </summary>
+        internal static string ScriptsSettingsFileName {
+            get {
+                return ResourceManager.GetString("ScriptsSettingsFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на stepDirNames.settings.
+        /// </summary>
+        internal static string StepDirNamesSettingsFileName {
+            get {
+                return ResourceManager.GetString("StepDirNamesSettingsFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на workspaces.settings.
+        /// </summary>
+        internal static string WorkspacesSettingsFileName {
+            get {
+                return ResourceManager.GetString("WorkspacesSettingsFileName", resourceCulture);
+            }
+        }
     }
 }

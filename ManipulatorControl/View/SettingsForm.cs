@@ -1,4 +1,5 @@
 ﻿using LptStepperMotorControl.Stepper;
+using ManipulatorControl.BL.Settings;
 using ManipulatorControl.Controls;
 using ManipulatorControl.Settings;
 using ManipulatorControl.View;
@@ -73,16 +74,16 @@ namespace ManipulatorControl
             }
         }
 
-        public List<LeverStepper> LeverSteppers
+        public List<LeverStepperSettings> LeverSteppers
         {
             get
             {
-                var leverSteppers = new List<LeverStepper>();
+                var leverSteppers = new List<LeverStepperSettings>();
                 
                 for (int i = 0; i < steppersPanels.Length; i++)
                 {
                     var panel = steppersPanels[i];
-                    leverSteppers.Add(new LeverStepper(panel.LeverType, StepDirNames.Single(pin=> pin.StepDir == panel.StepDirPin).Type, panel.Stepper)); 
+                    leverSteppers.Add(new LeverStepperSettings(panel.LeverType, StepDirNames.Single(pin=> pin.StepDir == panel.StepDirPin).Type, panel.Stepper)); 
                 }
 
                 return leverSteppers;

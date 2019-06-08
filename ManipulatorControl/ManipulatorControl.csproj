@@ -90,16 +90,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Settings\LeverStepper.cs" />
-    <Compile Include="Settings\WorkspaceConverter.cs" />
+    <Compile Include="Settings\ApplicationPropertiesCurrentPositionLoader.cs" />
+    <Compile Include="Settings\ICurrentPositionLoader.cs" />
     <Compile Include="View\InputMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View\InputMessageBox.Designer.cs">
       <DependentUpon>InputMessageBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Settings\StepDirName.cs" />
-    <Compile Include="Settings\StepDirPinType.cs" />
     <Compile Include="View\IManipulatorControlView.cs" />
     <Compile Include="View\ISettingsView.cs" />
     <Compile Include="View\MainForm.cs">

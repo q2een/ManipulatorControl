@@ -1,6 +1,6 @@
 ﻿using LptStepperMotorControl.Stepper;
 
-namespace ManipulatorControl
+namespace ManipulatorControl.BL.Settings
 {
     public class StepDirName
     {

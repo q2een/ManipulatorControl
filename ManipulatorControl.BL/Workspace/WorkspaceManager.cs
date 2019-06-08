@@ -31,7 +31,7 @@ namespace ManipulatorControl.BL.Workspace
                 return activeWorkspace ?? robotWorkspaces[0];
             }
             set
-            {                   
+            {
                 SetActiveWorkspace(value ?? robotWorkspaces[0]);
             }
         }
@@ -58,7 +58,7 @@ namespace ManipulatorControl.BL.Workspace
 
         public WorkspaceManager(DesignParameters parameters, List<RobotWorkspace> robotWorkspaces, int activeWorkspaceIndex = 0)
         {
-            this.parameters = parameters;                              
+            this.parameters = parameters;
 
             Add(GetDesignParametersWorkspace("Конструктивные параметры"));
 
@@ -81,7 +81,7 @@ namespace ManipulatorControl.BL.Workspace
 
         public void Add(RobotWorkspace robotWorkspace)
         {
-            if(!robotWorkspaces.Contains(robotWorkspace))
+            if (!robotWorkspaces.Contains(robotWorkspace))
                 robotWorkspaces.Add(robotWorkspace);
         }
 
@@ -140,11 +140,11 @@ namespace ManipulatorControl.BL.Workspace
                 default: throw new ArgumentException("Тип значения не корректен");
             }
         }
-        
+
         public bool IsRobotInWorkspace(RobotWorkspace workspace)
         {
             var horizontal = workspace.HorizontalLever.IsBetweenMinAndMax(parameters.HorizontalLever.AB);
-            var lever1 = workspace.Lever1.IsBetweenMinAndMax(parameters.Lever1.AB);                     
+            var lever1 = workspace.Lever1.IsBetweenMinAndMax(parameters.Lever1.AB);
             var lever2 = workspace.Lever2.IsBetweenMinAndMax(parameters.Lever2.AB);
 
             return horizontal && lever1 && lever2;
@@ -169,19 +169,42 @@ namespace ManipulatorControl.BL.Workspace
                 yield return LeverType.Lever2;
         }
 
+        public IEnumerable<LeverPosition> GetLeversPositionToWorkspaceRange(RobotWorkspace workspace)
+        {
+            if (!workspace.HorizontalLever.IsBetweenMinAndMax(parameters.HorizontalLever.AB))
+                yield return new LeverPosition(LeverType.Horizontal, GetNearestPositionInWorkspace(workspace.HorizontalLever,parameters.HorizontalLever.AB));
+
+            if (!workspace.Lever1.IsBetweenMinAndMax(parameters.Lever1.AB))
+                yield return new LeverPosition(LeverType.Lever1, GetNearestPositionInWorkspace(workspace.Lever1, parameters.Lever1.AB));
+
+            if (!workspace.Lever2.IsBetweenMinAndMax(parameters.Lever2.AB))
+                yield return new LeverPosition(LeverType.Lever2, GetNearestPositionInWorkspace(workspace.Lever2, parameters.Lever2.AB));
+        }
+
+        public double GetNearestPositionInWorkspace(IWorkspace workspace, double position)
+        {
+            var a = Math.Abs(position - workspace.ABmax);
+            var b = Math.Abs(position - workspace.ABmin);
+
+            return a < b ? workspace.ABmax : workspace.ABmin;
+        }
+
         public IEnumerable<LeverPosition> GetLeverPositionsToWorkspaceZero(RobotWorkspace workspace)
         {
             if (workspace.HorizontalLever.ABzero == null)
                 throw new DesignParametersException(LeverType.Horizontal.ToRuString() + ": не задана нулевая точка. Перемещение невозможно");
-            else yield return new LeverPosition(LeverType.Horizontal, (double)workspace.HorizontalLever.ABzero);
+            else
+                yield return new LeverPosition(LeverType.Horizontal, (double)workspace.HorizontalLever.ABzero);
 
             if (workspace.Lever1.ABzero == null)
                 throw new DesignParametersException(LeverType.Lever1.ToRuString() + ": не задана нулевая точка. Перемещение невозможно");
-            else yield return new LeverPosition(LeverType.Lever1, (double)workspace.Lever1.ABzero);
+            else
+                yield return new LeverPosition(LeverType.Lever1, (double)workspace.Lever1.ABzero);
 
             if (workspace.Lever2.ABzero == null)
                 throw new DesignParametersException(LeverType.Lever2.ToRuString() + ": не задана нулевая точка. Перемещение невозможно");
-            else yield return new LeverPosition(LeverType.Lever2, (double)workspace.Lever2.ABzero);
+            else
+                yield return new LeverPosition(LeverType.Lever2, (double)workspace.Lever2.ABzero);
         }
 
         public void SetActiveWorkspace(int index)
