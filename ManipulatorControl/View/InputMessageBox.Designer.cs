@@ -1,4 +1,4 @@
-﻿namespace ManipulatorControl
+﻿namespace ManipulatorControl.View
 {
     partial class InputMessageBox
     {

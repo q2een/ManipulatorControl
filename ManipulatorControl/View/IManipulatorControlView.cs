@@ -5,7 +5,7 @@ using ManipulatorControl.BL.Workspace;
 using System;
 using System.Collections.Generic;
 
-namespace ManipulatorControl
+namespace ManipulatorControl.View
 {
     public interface IManipulatorControlView
     {

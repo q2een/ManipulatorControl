@@ -57,6 +57,12 @@
     <Compile Include="Controls\DesignParametersTabControl.Designer.cs">
       <DependentUpon>DesignParametersTabControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DirectionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DirectionPanel.Designer.cs">
+      <DependentUpon>DirectionPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\EditorCodeBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -79,12 +85,6 @@
     <Compile Include="MessageService\IMessageService.cs" />
     <Compile Include="MessageService\MessageBoxMessageService.cs" />
     <Compile Include="MessageService\UserResponse.cs" />
-    <Compile Include="Controls\DirectionIndicationPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\DirectionIndicationPanel.Designer.cs">
-      <DependentUpon>DirectionIndicationPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -92,6 +92,12 @@
     </Compile>
     <Compile Include="Settings\ApplicationPropertiesCurrentPositionLoader.cs" />
     <Compile Include="Settings\ICurrentPositionLoader.cs" />
+    <Compile Include="View\AboutFrom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\AboutFrom.Designer.cs">
+      <DependentUpon>AboutFrom.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\InputMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,9 +111,6 @@
     </Compile>
     <Compile Include="View\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Indicator.cs">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Presenter\ManipulatorPresenter.cs" />
     <Compile Include="ManualContorl\ManualControlItem.cs" />
@@ -123,20 +126,20 @@
     <EmbeddedResource Include="Controls\DesignParametersTabControl.resx">
       <DependentUpon>DesignParametersTabControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\DirectionIndicationPanel.resx">
-      <DependentUpon>DirectionIndicationPanel.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\DirectionPanel.resx">
+      <DependentUpon>DirectionPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\EditorCodeBox.resx">
       <DependentUpon>EditorCodeBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Indicator.resx">
-      <DependentUpon>Indicator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\LeverDesignParameters.resx">
       <DependentUpon>LeverDesignParameters.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\StepperSettingsPanel.resx">
       <DependentUpon>StepperSettingsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\AboutFrom.resx">
+      <DependentUpon>AboutFrom.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\InputMessageBox.resx">
       <DependentUpon>InputMessageBox.cs</DependentUpon>
@@ -184,8 +187,22 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <None Include="Resources\edit.png" />
+    <None Include="Resources\move_reverse.png" />
+    <None Include="Resources\move.png" />
+    <None Include="Resources\to_start.png" />
+    <None Include="Resources\to_end.png" />
+    <None Include="Resources\build.png" />
+    <None Include="Resources\params.png" />
+    <None Include="Resources\help.png" />
+    <None Include="Resources\remove.png" />
+    <None Include="Resources\save.png" />
+    <None Include="Resources\exit.png" />
+    <None Include="Resources\information.png" />
+    <None Include="Resources\robotic-arm.png" />
     <None Include="Resources\arrow_left.png" />
     <None Include="Resources\arrow_right.png" />
+    <None Include="Resources\add.png" />
     <Content Include="Resources\arrow_down.png" />
     <Content Include="Resources\arrow_up.png" />
   </ItemGroup>

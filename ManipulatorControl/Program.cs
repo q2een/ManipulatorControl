@@ -17,7 +17,7 @@ namespace ManipulatorControl
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var view = new MainForm();
+            var view = new View.MainForm();
 
             var presenter = new ManipulatorPresenter(view,new ApplicationPropertiesCurrentPositionLoader(), new MessageService.MessageBoxMessageService());
              

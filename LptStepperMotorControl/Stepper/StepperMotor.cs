@@ -307,7 +307,7 @@ namespace LptStepperMotorControl.Stepper
 
             CurrentStepsCount += (Direction == Direction.CW ? 1 : -1);
 
-            Step();
+            DoStep();
 
             this.lastStepTime = time;
 
@@ -389,7 +389,7 @@ namespace LptStepperMotorControl.Stepper
         }
 
         // Подает 2 импульса на пин шагового двигателя, делая меандр.
-        private void Step()
+        private void DoStep()
         {
             Port.SetPin(Pins.Step, true);
 

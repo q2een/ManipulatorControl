@@ -13,7 +13,7 @@ using System.Text;
 using System.Windows.Forms;
 using UM160CalculationLib;
 
-namespace ManipulatorControl
+namespace ManipulatorControl.View
 {
     public partial class SettingsForm : Form, ISettingsView
     {

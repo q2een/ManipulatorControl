@@ -231,7 +231,7 @@ namespace ManipulatorControl
             Movement_LocationChanged(false, movement.Calculation.GetCurrentLocation());
         }
 
-        public T Load<T>(string path, params JsonConverter[] converters)
+        private T Load<T>(string path, params JsonConverter[] converters)
         {
             try
             {

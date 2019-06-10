@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ManipulatorControl
+namespace ManipulatorControl.View
 {
     public partial class MainForm : Form, IManipulatorControlView
     {
@@ -723,7 +723,10 @@ namespace ManipulatorControl
             InvokeSaveScript(this, EventArgs.Empty);
         }
 
-
+        private void aboutMI_Click(object sender, EventArgs e)
+        {
+            new AboutFrom().ShowDialog();
+        }
 
         private void scriptCancelEditingMI_Click(object sender, EventArgs e)
         {

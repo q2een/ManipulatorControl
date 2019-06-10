@@ -203,7 +203,7 @@ namespace ManipulatorControl.BL
 
             LeverPositionChanged(this, new LeverPosition(type, newValue));
 
-            if (lever.ABzero == null)
+            if (lever.Workspace.ABzero == null)
                 return;
 
             if(oldValue == lever.Workspace.ABzero || newValue == lever.Workspace.ABzero)

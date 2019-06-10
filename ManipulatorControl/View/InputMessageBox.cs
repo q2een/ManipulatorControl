@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace ManipulatorControl
+namespace ManipulatorControl.View
 {
     public partial class InputMessageBox : Form
     {
