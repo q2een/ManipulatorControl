@@ -531,7 +531,7 @@
             // 
             this.aboutMI.Image = global::ManipulatorControl.Properties.Resources.information;
             this.aboutMI.Name = "aboutMI";
-            this.aboutMI.Size = new System.Drawing.Size(180, 22);
+            this.aboutMI.Size = new System.Drawing.Size(149, 22);
             this.aboutMI.Text = "О программе";
             this.aboutMI.Click += new System.EventHandler(this.aboutMI_Click);
             // 
@@ -600,16 +600,16 @@
             this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.panel1.Location = new System.Drawing.Point(10, 198);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(362, 95);
+            this.panel1.Size = new System.Drawing.Size(362, 83);
             this.panel1.TabIndex = 2;
             // 
             // btnStop
             // 
-            this.btnStop.BackColor = System.Drawing.Color.Coral;
+            this.btnStop.BackColor = System.Drawing.Color.SeaShell;
             this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStop.Location = new System.Drawing.Point(34, 20);
+            this.btnStop.Location = new System.Drawing.Point(3, 20);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(120, 54);
+            this.btnStop.Size = new System.Drawing.Size(137, 54);
             this.btnStop.TabIndex = 3;
             this.btnStop.Text = "СТОП";
             this.btnStop.UseVisualStyleBackColor = false;
@@ -618,9 +618,9 @@
             // 
             this.btnAbort.BackColor = System.Drawing.Color.Red;
             this.btnAbort.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAbort.Location = new System.Drawing.Point(237, 20);
+            this.btnAbort.Location = new System.Drawing.Point(156, 20);
             this.btnAbort.Name = "btnAbort";
-            this.btnAbort.Size = new System.Drawing.Size(120, 54);
+            this.btnAbort.Size = new System.Drawing.Size(201, 54);
             this.btnAbort.TabIndex = 3;
             this.btnAbort.Text = "ПРЕРВАТЬ";
             this.btnAbort.UseVisualStyleBackColor = false;
