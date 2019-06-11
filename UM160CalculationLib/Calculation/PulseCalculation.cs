@@ -219,9 +219,22 @@ namespace UM160CalculationLib
             return GetPulsesCountToAB(lever, lever.Workspace.ABmin);
         }
 
+        /// <summary>
+        /// Рассчитывает значение AB в зависимости от угла поворота плеча.
+        /// </summary>
+        /// <param name="ldp">Конструктивные параметры плеча робота-манипулятора</param>
+        /// <param name="phi">Угол поворота плеча, градусы</param>
+        /// <returns></returns>
+        public static double CalculateAB(LeverDesignParameters ldp, double phi)
+        {
+            phi *= ldp.IsABIncreasesOnStepperCW ? -deg : deg;
+            return Math.Round(Math.Sqrt(Math.Pow(ldp.AO, 2) + Math.Pow(ldp.BO, 2) - (2 * ldp.AO * ldp.BO * Math.Cos(ldp.AlphaRad + ldp.BetaRad + phi))), 0);
+        }
         #endregion
 
         #region Private методы.
+
+
 
         /// <summary>
         /// Рассичтывает число импульсов, необходимых для достижения угла phi.

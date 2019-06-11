@@ -132,7 +132,7 @@ namespace ManipulatorControl.BL
         {
             x = AnglesCalculation.GetCurrentX(DesignParameters);
             y = AnglesCalculation.GetCurrentY(DesignParameters);
-            z = DesignParameters.HorizontalLever.AB;
+            z = GetCurrentZ();
         }
 
         #region Парсер и интерпретатор G-кодов.
@@ -141,22 +141,55 @@ namespace ManipulatorControl.BL
         public void CheckValues(double x, double y, double z)
         {
             // В случае некорректных данных выбросит исключение.
-            var a = AnglesCalculation.GetAngles(DesignParameters, x, y, 0);
-            var bv = PulseCalculation.GetPulsesCount(DesignParameters.HorizontalLever, z);  
+            AnglesCalculation.GetAngles(DesignParameters, x, y, 0);
+            PulseCalculation.GetPulsesCount(DesignParameters.HorizontalLever, z);  
         }
 
         /// <summary>
         /// Возвращает коллекцию экземпляров класса <see cref="StepLever"/>, указывающий какое количество 
         /// импульсов необходимо подать на каждое из плеч робота-манипулятора для достижения координат
-        /// <paramref name="x"/>, <paramref name="y"/> и <paramref name="z"/>.
+        /// <paramref name="toX"/>, <paramref name="toY"/> и <paramref name="toZ"/>, учитывая что текущее 
+        /// положение <paramref name="fromX"/>, <paramref name="fromY"/> и <paramref name="fromZ"/>.
         /// </summary>
-        public IEnumerable<StepLever> CalculateStepLever(double x, double y, double z)
+        public IEnumerable<StepLever> CalculateStepLever(double fromX, double toX, double fromY, double toY, double fromZ, double toZ)
         {
-            var angles = AnglesCalculation.GetAngles(DesignParameters, x, y, 0)[0];
 
-            yield return new StepLever(LeverType.Lever1, PulseCalculation.GetPulsesCount(DesignParameters.Lever1, angles.Phi1));
-            yield return new StepLever(LeverType.Lever2, PulseCalculation.GetPulsesCount(DesignParameters.Lever2, angles.Phi2));
-            yield return new StepLever(LeverType.Horizontal, PulseCalculation.GetPulsesCount(DesignParameters.HorizontalLever, z));
+            foreach (var steplever in CalculateStepLeverToXY(fromX, toX, fromY, toY))
+                yield return steplever;
+
+            yield return CalculateStepLeverToZ(fromZ, toZ);
+        }
+
+        /// <summary>
+        /// Возвращает коллекцию экземпляров класса <see cref="StepLever"/>, указывающий какое количество 
+        /// импульсов необходимо подать на каждое из плеч робота-манипулятора для достижения координат
+        /// <paramref name="toX"/> и <paramref name="toY"/>, учитывая что текущее 
+        /// положение <paramref name="fromX"/> и <paramref name="fromY"/>.
+        /// </summary>
+        public IEnumerable<StepLever> CalculateStepLeverToXY(double fromX, double toX, double fromY, double toY)
+        {
+            var anglesOld = AnglesCalculation.GetAngles(DesignParameters, fromX, fromY, 0).First();
+            var anglesNew = AnglesCalculation.GetAngles(DesignParameters, toX, toY, 0).First();
+
+            var lever1from = PulseCalculation.CalculateAB(DesignParameters.Lever1, anglesOld.Phi1);
+            var lever1to = PulseCalculation.CalculateAB(DesignParameters.Lever1, anglesNew.Phi1);
+
+            var lever2from = PulseCalculation.CalculateAB(DesignParameters.Lever2, anglesOld.Phi2);
+            var lever2to = PulseCalculation.CalculateAB(DesignParameters.Lever2, anglesNew.Phi2);
+
+            yield return new StepLever(LeverType.Lever1, PulseCalculation.GetPulsesCount(DesignParameters.Lever1, lever1from, lever1to));
+            yield return new StepLever(LeverType.Lever2, PulseCalculation.GetPulsesCount(DesignParameters.Lever2, lever2from, lever2to));
+
+        }
+
+        /// <summary>
+        /// Возвращает экземпляр класса <see cref="StepLever"/>, указывающий какое количество 
+        /// импульсов необходимо подать на каретку робота-манипулятора для достижения координаты
+        /// <paramref name="toZ"/>, учитывая что текущее <paramref name="fromZ"/>.
+        /// </summary>
+        public StepLever CalculateStepLeverToZ (double fromZ, double toZ)
+        {
+            return new StepLever(LeverType.Horizontal, PulseCalculation.GetPulsesCount(DesignParameters.HorizontalLever, fromZ, toZ));
         }
 
         #endregion

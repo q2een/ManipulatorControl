@@ -141,6 +141,7 @@ namespace ManipulatorControl
             //}
 
             //File.WriteAllText("3.txt", sb.ToString());
+    
         }
 
         public void SetWorkerInterval(int interval)

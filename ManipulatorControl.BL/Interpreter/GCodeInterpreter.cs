@@ -80,9 +80,11 @@ namespace ManipulatorControl.BL.Interpreter
                     case "G01":
                         var correctCoordinates = GetCorrectCoordinates(command.Value);
 
-                        UpdateXYZ(correctCoordinates);
+                        double x, y, z;
 
-                        var stepLevers = calculation.CalculateStepLever(X, Y, Z).Where(sl => sl.StepsCount != 0);
+                        GetXYZFromLexemes(correctCoordinates, out x, out y, out z);
+
+                        var stepLevers = calculation.CalculateStepLever(X, x, Y, y, Z, z).Where(sl => sl.StepsCount != 0);
 
                         // Если в списке аргументов G кода координа Z идет на первом месте
                         // то сначала выполнять ее. Порядок X и Y не важен, так как они изменяются вместе.
@@ -90,6 +92,8 @@ namespace ManipulatorControl.BL.Interpreter
                             stepLevers = stepLevers.OrderByDescending(lever => lever.Lever);
 
                         Enqueue(steppersQueue, stepLevers);
+
+                        UpdateXYZ(correctCoordinates);
                         break;
 
                     case "G91":
@@ -121,18 +125,33 @@ namespace ManipulatorControl.BL.Interpreter
         /// </summary>
         private void UpdateXYZ(Lexeme[] args)
         {
-            var x = args.SingleOrDefault(lexeme => lexeme == "X");
-            var y = args.SingleOrDefault(lexeme => lexeme == "Y");
-            var z = args.SingleOrDefault(lexeme => lexeme == "Z");
+            double x, y, z;
 
-            if (!string.IsNullOrEmpty(x.Name))
-                X = x.Value;
+            GetXYZFromLexemes(args, out x, out y, out z);
 
-            if (!string.IsNullOrEmpty(y.Name))
-                Y = y.Value;
+            X = x;
+            Y = y;
+            Z = z;
+        }
 
-            if (!string.IsNullOrEmpty(z.Name))
-                Z = z.Value;
+        private void GetXYZFromLexemes(Lexeme[] args, out double x, out double y, out double z)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+            
+            var xValue = args.SingleOrDefault(lexeme => lexeme == "X");
+            var yValue = args.SingleOrDefault(lexeme => lexeme == "Y");
+            var zValue = args.SingleOrDefault(lexeme => lexeme == "Z");
+
+            if (!string.IsNullOrEmpty(xValue.Name))
+                x = xValue.Value;
+
+            if (!string.IsNullOrEmpty(yValue.Name))
+                y = yValue.Value;
+
+            if (!string.IsNullOrEmpty(zValue.Name))
+                z = zValue.Value;
         }
 
         // Возвращает корректные аргументы команды учитывая текущую плоскость и систему координат.
