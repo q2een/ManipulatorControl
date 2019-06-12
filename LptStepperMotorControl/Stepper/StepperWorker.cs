@@ -23,7 +23,7 @@ namespace LptStepperMotorControl.Stepper
         public StepperStopReason StopReason { get; private set; }
 
         /// <summary>
-        /// Возвращает или задает интревал (в шагах) через который будет вызываться событие <see cref="Elapsed"/>.
+        /// Возвращает или задает интервал (в шагах) через который будет вызываться событие <see cref="Elapsed"/>.
         /// </summary>
         public int Interval { get; set; }
 

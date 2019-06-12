@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace ManipulatorControl.BL.Script
 {
+    /// <summary>
+    /// Предоставляет класс для выполнения сценария.
+    /// </summary>
     public class ScriptExecutor
     {
         #region Свойства.
@@ -64,6 +67,11 @@ namespace ManipulatorControl.BL.Script
 
         #endregion
 
+        /// <summary>
+        /// Выполняет сценарий в прямой или обратной последовательности.
+        /// </summary>
+        /// <param name="movementScript">Объект класса сценария</param>
+        /// <param name="isReversed">Флаг, указывающий на выполнение в обратной последовательности</param>
         public void Execute(MovementScript movementScript, bool isReversed)
         {
             if (IsExecuting)
@@ -147,8 +155,7 @@ namespace ManipulatorControl.BL.Script
             yield return new LeverPosition(leverScriptPosition.LeverType, leverScriptPosition.From);
             yield return new LeverPosition(leverScriptPosition.LeverType, leverScriptPosition.To);
         }
-
-
+         
         private void Movement_LeverPositionChanged(object sender, LeverPosition e)
         {
             try

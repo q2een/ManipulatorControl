@@ -8,6 +8,9 @@ using UM160CalculationLib;
 
 namespace ManipulatorControl.BL
 {
+    /// <summary>
+    /// Предоставляет класс, содержащий  методы для перемещения робота-манипулятора.
+    /// </summary>
     public class RobotMovement
     {
         private readonly LeverMovement leverMovement;
@@ -46,10 +49,24 @@ namespace ManipulatorControl.BL
         }
 
 
+        /// <summary>
+        /// Происходит при изменении положения центра схвата робота-манипулятора.
+        /// </summary>
         public event LocationEventHandler LocationChanged = delegate { };
+
+        /// <summary>
+        /// Происходит при изменении положения плеча робота-манипулятора.
+        /// </summary>
         public event EventHandler<LeverPosition> LeverPositionChanged = delegate { };
 
+        /// <summary>
+        /// Происходит перед началом перемещения плеча робота-манипулятора.
+        /// </summary>
         public event EventHandler<StepLever> OnMovingStart = delegate { };
+
+        /// <summary>
+        /// Происходит после завершения перемещения плеча робота-манипулятора.
+        /// </summary>
         public event EventHandler<LeverMovingEndEventArgs> OnMovingEnd = delegate { };
 
 
@@ -71,6 +88,12 @@ namespace ManipulatorControl.BL
 
         }
 
+        /// <summary>
+        /// Выполняет интерпретацию G-кода. В случае, если интерпретация невозможна,
+        /// возвращает коллекцию ошибок - экземпляров класса <see cref="GCodeException"/>.
+        /// </summary>
+        /// <param name="lines">G-код</param>
+        /// <returns>Eсли интерпретация невозможна - коллекция ошибок, в обратном случае - пустая коллекция</returns>
         public List<GCodeException> RunGCode(string[] lines)
         {
             var interpreter = new GCodeInterpreter(Calculation);
@@ -88,11 +111,20 @@ namespace ManipulatorControl.BL
             return new List<GCodeException>();
         }
 
+        /// <summary>
+        /// Перемещает указанное плечо в заданное положение.
+        /// </summary>
+        /// <param name="leverPosition">Экземпляр класса, содержащий тип плеча и его положение</param>
         public void MoveLever(LeverPosition leverPosition)
         {
             leverMovement.Move(Calculation.GetStepLeverToPosition(leverPosition));
         }
 
+        /// <summary>
+        /// Последовательно выполняет перемещения плеч из коллекции. После завершения перемещения выполняет <paramref name="doAfter"/>.
+        /// </summary>
+        /// <param name="leverPositions">Коллекция экземпляров класса, который содержит тип плеча и его положение</param>
+        /// <param name="doAfter">Метод, который будет выполнен после завершения перемещения</param>
         public void MoveRobotByPath(IEnumerable<LeverPosition> leverPositions, Action doAfter)
         {
             var queue = new Queue<StepLever>();   
@@ -111,6 +143,10 @@ namespace ManipulatorControl.BL
             leverMovement.Move(queue, doAfter);
         }
 
+        /// <summary>
+        /// Запускает перемещение плеча робота в ручном режиме управления.
+        /// </summary>
+        /// <param name="stepLever">Тип перемещаемого плеча и количество импульсов</param>
         public void ManulControlRun(StepLever stepLever)
         {
             if (leverMovement.IsRunning)
@@ -124,6 +160,10 @@ namespace ManipulatorControl.BL
             leverMovement.Move(stepLever);
         }
 
+        /// <summary>
+        /// Прекращает перемещение плеча робота в ручном режиме управления.
+        /// </summary>
+        /// <param name="type">Тип перемещаемого плеча</param>
         public void ManualControlStop(LeverType type)
         {
             leverMovement.Stop(type);
@@ -144,6 +184,11 @@ namespace ManipulatorControl.BL
             leverMovement.StepsInterval = interval;
         }
 
+        /// <summary>
+        /// Возвращает положение плеча робота-манипулятора заданного типа <paramref name="type"/>.
+        /// </summary>
+        /// <param name="type">Тип плеча робота</param>
+        /// <returns>Положение плеча</returns>
         public double GetLeverPosition(LeverType type)
         {
             return Calculation.GetRobotLeverByType(type).AB;
@@ -164,6 +209,12 @@ namespace ManipulatorControl.BL
             };
         }
 
+        /// <summary>
+        /// Возвращает истину, если текущее положение робота-манипулятора соответствует 
+        /// положению <paramref name="position"/>.
+        /// </summary>
+        /// <param name="position">Положение каждого плеча робота</param>
+        /// <returns>Истина, если текущее положение соответствует положению <paramref name="position"/></returns>
         public bool IsNowAtPosition(IEnumerable<LeverPosition> position)
         {
             var current = GetCurrentLeversPosition().OrderBy(i => i.LeverType);
@@ -172,6 +223,12 @@ namespace ManipulatorControl.BL
             return current.SequenceEqual(position);
         }
 
+        /// <summary>
+        /// Возвращает истину если плечо робота типа <paramref name="type"/> 
+        /// находится в нулевой точке рабочей зоны плеча.
+        /// </summary>
+        /// <param name="type">Тип плеча</param>
+        /// <returns>Истина, если плечо в нулевой точке</returns>
         public bool IsOnZeroPosition(LeverType type)
         {
             var lever = Calculation.GetRobotLeverByType(type);

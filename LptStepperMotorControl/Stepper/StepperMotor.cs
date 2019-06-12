@@ -15,7 +15,7 @@ namespace LptStepperMotorControl.Stepper
         private float speed = 0;
 
         /// <summary>
-        /// Возвращает или задает текущую скорость скорость вращаения ротора шагового двигателя. 
+        /// Возвращает или задает текущую скорость вращения ротора шагового двигателя. 
         /// </summary>
         /// <remarks>
         /// Ед. измерения: шагов в секунду.
@@ -49,7 +49,7 @@ namespace LptStepperMotorControl.Stepper
         private float maxSpeed = 1;
 
         /// <summary>
-        /// Возвращает или задает максимально возможную скорость вращаения ротора шагового двигателя.
+        /// Возвращает или задает максимально возможную скорость вращения ротора шагового двигателя.
         /// </summary>
         /// Ед. измерения: шагов в секунду.
         /// Значение должно быть больше нуля.
@@ -292,8 +292,10 @@ namespace LptStepperMotorControl.Stepper
             ComputeNewSpeed();
         }
 
-        // Реализует шаги в соответствии с текущим интервалом.
-        // Возвращает истину, если шаг осуществлен.
+        /// <summary>
+        /// Реализует шаги в соответствии с текущим интервалом.
+        /// </summary>
+        /// <returns>Возвращает истину, если шаг осуществлен</returns>
         private bool RunSpeed()
         {
             // Ничего не делать пока не рассчитан интервал шага.
@@ -314,7 +316,9 @@ namespace LptStepperMotorControl.Stepper
             return true;
         }
 
-        // Рассчитывает новую скорость для следующего шага в соответствии с заданными параметрами.
+        /// <summary>
+        /// Рассчитывает новую скорость для следующего шага в соответствии с заданными параметрами.
+        /// </summary>
         private void ComputeNewSpeed()
         {
             long stepsToStop = (long)((Speed * Speed) / (2.0 * Acceleration));
@@ -388,7 +392,9 @@ namespace LptStepperMotorControl.Stepper
             speed = Direction == Direction.CCW ? -speed : speed;
         }
 
-        // Подает 2 импульса на пин шагового двигателя, делая меандр.
+        /// <summary>
+        /// Формирует меандр - импульс для осуществления шага шаговым двигателем.
+        /// </summary>
         private void DoStep()
         {
             Port.SetPin(Pins.Step, true);

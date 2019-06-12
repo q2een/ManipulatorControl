@@ -30,6 +30,10 @@ namespace UM160CalculationLib
         /// <summary>
         /// Возвращает характеристику шагового электродвигателя, градусы.
         /// </summary>
+        /// <remarks>
+        /// Характеристика шагового электродвигателя - угол поворота ротора ШД
+        /// за один шаг.
+        /// </remarks>
         public double Ro { get; private set; }
 
         /// <summary>
@@ -130,6 +134,18 @@ namespace UM160CalculationLib
             var angle = IsABIncreasesOnStepperCW ? designAngles + acos : (2 * Math.PI) - designAngles - acos;
 
             return angle * (1.0 / deg);
+        }
+
+        /// <summary>
+        /// Рассчитывает расстояние от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта 
+        /// в зависимости от угла поворота плеча относительно основания манипулятора.
+        /// </summary>
+        /// <param name="phi">Угол поворота плеча относительно основания манипулятора (угол φ), градусы</param>
+        /// <returns>Расстояние от оси подвеса ходового винта до точки крепления плеча к гайке ходового винта, мм</returns>
+        public double GetABValueByAngle(double phi)
+        {
+            phi *= IsABIncreasesOnStepperCW ? -deg : deg;
+            return Math.Round(Math.Sqrt(Math.Pow(AO, 2) + Math.Pow(BO, 2) - (2 * AO * BO * Math.Cos(AlphaRad + BetaRad + phi))), 0);
         }
 
         #endregion

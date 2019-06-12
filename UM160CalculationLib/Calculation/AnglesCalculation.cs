@@ -182,7 +182,7 @@ namespace UM160CalculationLib
         /// <param name="angles">Структура. Пара углов φ1 и φ2</param>
         /// <param name="x">Координата х центра схвата в базовой системе координат</param>
         /// <param name="y">Координата y центра схвата в базовой системе координат</param>
-        /// <returns>true, если пара углов angles - верна</returns>
+        /// <returns>Истина, если пара углов angles - верна</returns>
         private bool IsRootsAreValid(AnglesOfRotation angles, double x, double y)
         {
             // Переводим углы в радианы.

@@ -66,6 +66,10 @@ namespace UM160CalculationLib
         /// Возвращает количество импульсов для достижения положения <paramref name="to"/> из положения <paramref name="from"/>
         /// плеча <paramref name="lever"/>. 
         /// </summary>
+        /// <param name="lever">Конструктивные параметры плеча робота-манипулятора</param>
+        /// <param name="abFrom">Начальное положение плеча</param>
+        /// <param name="abTo">Конечное положение плеча</param>
+        /// <returns>Количество импульсов для перемещения плеча от начального положения в конечное</returns>
         public static long GetPulsesCount(IRobotLever lever, double abFrom, double abTo)
         {
             if (lever is LeverDesignParameters)
@@ -160,10 +164,14 @@ namespace UM160CalculationLib
             return newValue;
         }
 
+
         /// <summary>
         /// Возвращает количество импульсов для достижения значения <paramref name="ab"/> 
         /// исходя из текущего положения плеча <paramref name="lever"/>.
         /// </summary>
+        /// <param name="lever">Конструктивные параметры плеча робота-манипулятора</param>
+        /// <param name="ab">Новое положение плеча робота-манипулятора</param>
+        /// <returns>Количество импульсов для достижения нового положения плеча</returns>
         public static long GetPulsesCountToAB(IRobotLever lever, double ab)
         {
             if (lever is HorizontalLeverDesignParameters)
@@ -177,11 +185,14 @@ namespace UM160CalculationLib
 
             throw new Exception("Расчеты для данного экземпляра не реализованы");
         }
-         
+
         /// <summary>
         /// Возвращает количество импульсов для достижения крайнего положения плеча <paramref name="lever"/>
-        /// в зависимости от направления движения <paramref name="isCWDirection"/> ротора шагового двигателя.
+        /// в зависимости от направления движения <paramref name="isCWDirection"/> ротора шагового двигателя. 
         /// </summary>
+        /// <param name="lever">Конструктивные параметры плеча робота-манипулятора</param>
+        /// <param name="isCWDirection">Направление движения ротора шагового двигателя</param>
+        /// <returns>Количество импульсов для достижения крайнего положения плеча</returns>
         public static long GetPulsesCountByDirection(IRobotLever lever, bool isCWDirection)
         {
             var target = lever.IsABIncreasesOnStepperCW && isCWDirection ? lever.Workspace.ABmax : lever.Workspace.ABmin;
@@ -193,16 +204,20 @@ namespace UM160CalculationLib
         }
 
         /// <summary>
-        /// Возвращает количество импульсов для достижения максимального положения плеча <paramref name="lever"/>. 
+        /// Возвращает количество импульсов для достижения максимального положения плеча.
         /// </summary>
+        /// <param name="lever">Конструктивные параметры плеча робота-манипулятора</param>
+        /// <returns>Количество импульсов для достижения максимального положения плеча</returns>
         public static long GetPulsesCountToMaxValue(IRobotLever lever)
         {
             return GetPulsesCountToAB(lever, lever.Workspace.ABmax);
         }
 
         /// <summary>
-        /// Возвращает количество импульсов для достижения нулевого положения плеча <paramref name="lever"/>. 
+        /// Возвращает количество импульсов для достижения нулевого положения плеча.
         /// </summary>
+        /// <param name="lever">Конструктивные параметры плеча робота-манипулятора</param>
+        /// <returns>Количество импульсов для достижения нулевого положения плеча</returns>
         public static long GetPulsesCountToZeroValue(IRobotLever lever)
         {
             if (lever.Workspace.ABzero == null)
@@ -212,30 +227,19 @@ namespace UM160CalculationLib
         }
 
         /// <summary>
-        /// Возвращает количество импульсов для достижения минимального положения плеча <paramref name="lever"/>. 
+        /// Возвращает количество импульсов для достижения минимального положения плеча.
         /// </summary>
+        /// <param name="lever">Конструктивные параметры плеча робота-манипулятора</param>
+        /// <returns>Количество импульсов для достижения минимального положения плеча</returns>
         public static long GetPulsesCountToMinValue(IRobotLever lever)
         {
             return GetPulsesCountToAB(lever, lever.Workspace.ABmin);
         }
 
-        /// <summary>
-        /// Рассчитывает значение AB в зависимости от угла поворота плеча.
-        /// </summary>
-        /// <param name="ldp">Конструктивные параметры плеча робота-манипулятора</param>
-        /// <param name="phi">Угол поворота плеча, градусы</param>
-        /// <returns></returns>
-        public static double CalculateAB(LeverDesignParameters ldp, double phi)
-        {
-            phi *= ldp.IsABIncreasesOnStepperCW ? -deg : deg;
-            return Math.Round(Math.Sqrt(Math.Pow(ldp.AO, 2) + Math.Pow(ldp.BO, 2) - (2 * ldp.AO * ldp.BO * Math.Cos(ldp.AlphaRad + ldp.BetaRad + phi))), 0);
-        }
         #endregion
 
         #region Private методы.
-
-
-
+                 
         /// <summary>
         /// Рассичтывает число импульсов, необходимых для достижения угла phi.
         /// </summary>

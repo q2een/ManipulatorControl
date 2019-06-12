@@ -6,6 +6,9 @@ using System.Text;
 
 namespace ManipulatorControl.BL.Script
 {
+    /// <summary>
+    /// Предоставляет класс для создания сценария.
+    /// </summary>
     public class ScriptBuilder
     {
         private readonly RobotMovement movement;
@@ -21,10 +24,20 @@ namespace ManipulatorControl.BL.Script
         public event EventHandler OnNewStartPoint = delegate { };
         public event EventHandler OnNewEndPoint = delegate { };
 
+        /// <summary>
+        /// Возвращает начальную точку сценария.
+        /// </summary>
         public IEnumerable<LeverPosition> StartPoint { get; private set; }
+
+        /// <summary>
+        /// Возвращает конечную точку сценария.
+        /// </summary>
         public IEnumerable<LeverPosition> EndPoint { get; private set; }
 
 
+        /// <summary>
+        /// Возвращает траекторию перемещения робота.
+        /// </summary>
         public ReadOnlyCollection<LeverScriptPosition> Path
         {
             get
@@ -39,6 +52,10 @@ namespace ManipulatorControl.BL.Script
             this.scriptName = scriptName;
         }
 
+        /// <summary>
+        /// Возвращает экземпляр созданного сценария.
+        /// </summary>
+        /// <returns>Экземпляр класса созданного сценария</returns>
         public MovementScript GetScript()
         {
             if (scriptPosition != null || IsMoving)
@@ -53,12 +70,18 @@ namespace ManipulatorControl.BL.Script
             return new MovementScript(new Queue<LeverScriptPosition>(leverPositions), StartPoint, EndPoint) { Name = scriptName };
         }
 
+        /// <summary>
+        /// Отменяет создание сценария. 
+        /// </summary>
         public void Cancel()
         {
             this.movement.OnMovingStart -= Movement_OnMovingStart;
             this.movement.OnMovingEnd -= Movement_OnMovingEnd;
         }
 
+        /// <summary>
+        /// Задает текущее положения робота в качестве начальной точки сценария.
+        /// </summary>
         public void SetCurrentPositionAsStart()
         {
             if(StartPoint != null && StartPoint.Count() != 0)
@@ -78,6 +101,9 @@ namespace ManipulatorControl.BL.Script
             this.movement.OnMovingEnd += Movement_OnMovingEnd;
         }
 
+        /// <summary>
+        /// Задает текущее положения робота в качестве конечной точки сценария.
+        /// </summary>
         public void SetCurrentPositionAsEnd()
         {
             EndPoint = movement.GetCurrentLeversPosition();
@@ -87,6 +113,10 @@ namespace ManipulatorControl.BL.Script
             this.movement.OnMovingEnd -= Movement_OnMovingEnd;
         }
 
+        /// <summary>
+        /// Выполняет шаги в обратном порядке для перемещения к заданной точке из траектории.
+        /// </summary>
+        /// <param name="scriptPosition">Точка в траектории движения к которой необходимо вернуться</param>
         public void BackTo(LeverScriptPosition scriptPosition)
         {
             if (!leverPositions.Contains(scriptPosition))
@@ -114,7 +144,11 @@ namespace ManipulatorControl.BL.Script
 
             movement.MoveRobotByPath(movePositions, new Action(Continue));
         }
-        
+
+        /// <summary>
+        /// Выполняет шаги в прямом порядке для перемещения к заданной точке из траектории.
+        /// </summary>
+        /// <param name="scriptPosition">Точка в траектории движения к которой необходимо переместиться</param>
         public void MoveTo(LeverScriptPosition scriptPosition)
         {
             var currentPosition = movement.GetCurrentLeversPosition().OrderBy(i => i.LeverType);
@@ -137,6 +171,11 @@ namespace ManipulatorControl.BL.Script
             movement.MoveRobotByPath(movePositions, new Action(Continue));
         }
 
+        /// <summary>
+        /// Объединяет повторные перемещения одного плеча и возвращает новую очередь перемещения.
+        /// </summary>
+        /// <param name="movementPath">Очередь перемещения плеч робота</param>
+        /// <returns>Оптимизированная очередь перемещения робота</returns>
         public static Queue<LeverScriptPosition> Optimize(Queue<LeverScriptPosition> movementPath)
         {
             Queue<LeverScriptPosition> path = new Queue<LeverScriptPosition>();

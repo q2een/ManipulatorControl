@@ -76,10 +76,10 @@ namespace LptStepperMotorControl.PortControl
 #else
 
         /// <summary>
-        /// Устанавливает заданное значение <c>value</c> на LPT порт <c>address</c>.
+        /// Устанавливает заданное значение <paramref name="value"/> на LPT порт <paramref name="address"/>.
         /// </summary>
         /// <param name="address">Адрес порта</param>
-        /// <param name="value">Значние</param>
+        /// <param name="value">Значение</param>
         [DllImport("inpout32.dll", EntryPoint = "Out32")]
         private static extern void Output(int address, int value);
 #endif
@@ -98,7 +98,7 @@ namespace LptStepperMotorControl.PortControl
         }
 
         /// <summary>
-        /// Устанавливает для <c>pin</c> значение <c>state</c>.
+        /// Устанавливает для <paramref name="pin"/> значение <paramref name="state"/>.
         /// </summary>
         /// <param name="pin">Номер Pin</param>
         /// <param name="state">Состояние, которое необходимо установить. True = 1, False = 0</param>
@@ -117,7 +117,7 @@ namespace LptStepperMotorControl.PortControl
         /// </summary>
         /// <param name="port">Тип порта</param>
         /// <param name="decimalValue">Десятичное представление установленных данных</param>
-        /// <param name="saveOtherPinsValues">Если ложь - устанавливает на порт значение <c>decimalValue</c>, 
+        /// <param name="saveOtherPinsValues">Если ложь - устанавливает на порт значение <paramref name="decimalValue"/>, 
         /// в обратном случае сохраняет предыдущее значение, установленное на порту и добавляет к нему новое значение.</param>
         public void SetLptValue(PortType port, int decimalValue, bool saveOtherPinsValues = true)
         {
@@ -130,7 +130,7 @@ namespace LptStepperMotorControl.PortControl
         }
 
         /// <summary>
-        /// Устанавливает для <c>pin</c> значение <c>state</c> для Data Ports.
+        /// Устанавливает для <paramref name="pin"/> значение <paramref name="state"/> для Data Ports.
         /// </summary>
         /// <param name="pin">Номер Pin</param>
         /// <param name="state">Состояние, которое необходимо установить. True = 1, False = 0</param>
@@ -147,7 +147,7 @@ namespace LptStepperMotorControl.PortControl
         }
 
         /// <summary>
-        /// Устанавливает для <c>pin</c> значение <c>state</c> для Control Ports.
+        /// Устанавливает для <paramref name="pin"/> значение <paramref name="state"/> для Control Ports.
         /// </summary>
         /// <param name="pin">Номер Pin</param>
         /// <param name="state">Состояние, которое необходимо установить. True = 1, False = 0</param>
@@ -168,7 +168,7 @@ namespace LptStepperMotorControl.PortControl
         }
 
         /// <summary>
-        /// Возвращает истину если число <c>number</c> содержит бит числа <c>bit</c>.
+        /// Возвращает истину если число <paramref name="number"/> содержит бит числа <paramref name="bit"/>.
         /// </summary>
         /// <remarks>
         /// Например: 
@@ -176,8 +176,8 @@ namespace LptStepperMotorControl.PortControl
         /// IsBitSet(126, 1) - Ложь.
         /// </remarks>
         /// <param name="number">Число для проверки на содержание бита</param>
-        /// <param name="bit">Число, бит которого содержится в <c>number</c></param>
-        /// <returns>Истина если число <c>number</c> содержит бит числа <c>bit</c>.</returns>
+        /// <param name="bit">Число, бит которого содержится в <paramref name="number"/></param>
+        /// <returns>Истина если число <paramref name="number"/> содержит бит числа <paramref name="bit"/></returns>
         private bool IsBitSet(int number, int bit)
         {
             return (number & bit) != 0;
@@ -229,17 +229,17 @@ namespace LptStepperMotorControl.PortControl
         #region Получение типа и номера порта.
 
         /// <summary>
-        /// Возвращает номер порта для заданного PIN. 
+        /// Возвращает адрес порта для заданного PIN. 
         /// </summary>
-        /// <param name="pin">PIN</param>
-        /// <returns>Номер порта</returns>
+        /// <param name="pin">Номер PIN</param>
+        /// <returns>Адрес порта</returns>
         public int GetPortByPinNumber(int pin)
         {
             return pin == 1 || pin == 14 || pin == 16 || pin == 17 ? controlPortNumber : dataPortNumber;
         }
 
         /// <summary>
-        /// Возвращает номер порта в зависимости от типа.
+        /// Возвращает адрес порта в зависимости от типа.
         /// </summary>
         /// <param name="Type">Тип порта</param>
         /// <returns>Номер порта</returns>
@@ -251,7 +251,7 @@ namespace LptStepperMotorControl.PortControl
         /// <summary>
         /// Возвращает тип порта для заданного PIN. 
         /// </summary>
-        /// <param name="pin">PIN</param>
+        /// <param name="pin">Номер PIN</param>
         /// <returns>Тип порта</returns>
         public static PortType GetPortTypeByPinNumber(int pin)
         {

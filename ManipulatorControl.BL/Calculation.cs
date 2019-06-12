@@ -171,11 +171,11 @@ namespace ManipulatorControl.BL
             var anglesOld = AnglesCalculation.GetAngles(DesignParameters, fromX, fromY, 0).First();
             var anglesNew = AnglesCalculation.GetAngles(DesignParameters, toX, toY, 0).First();
 
-            var lever1from = PulseCalculation.CalculateAB(DesignParameters.Lever1, anglesOld.Phi1);
-            var lever1to = PulseCalculation.CalculateAB(DesignParameters.Lever1, anglesNew.Phi1);
+            var lever1from = DesignParameters.Lever1.GetABValueByAngle(anglesOld.Phi1);
+            var lever1to = DesignParameters.Lever1.GetABValueByAngle(anglesNew.Phi1);
 
-            var lever2from = PulseCalculation.CalculateAB(DesignParameters.Lever2, anglesOld.Phi2);
-            var lever2to = PulseCalculation.CalculateAB(DesignParameters.Lever2, anglesNew.Phi2);
+            var lever2from = DesignParameters.Lever2.GetABValueByAngle(anglesOld.Phi2);
+            var lever2to = DesignParameters.Lever2.GetABValueByAngle(anglesNew.Phi2);
 
             yield return new StepLever(LeverType.Lever1, PulseCalculation.GetPulsesCount(DesignParameters.Lever1, lever1from, lever1to));
             yield return new StepLever(LeverType.Lever2, PulseCalculation.GetPulsesCount(DesignParameters.Lever2, lever2from, lever2to));

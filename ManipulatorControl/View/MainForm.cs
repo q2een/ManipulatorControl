@@ -511,7 +511,7 @@ namespace ManipulatorControl.View
 
         }
 
-        public void SetStatusMessage(string message, bool append)
+        public void SetStatusMessage(string message)
         {
             this.InvokeEx(new Action(() =>
             {
@@ -578,7 +578,7 @@ namespace ManipulatorControl.View
         {
             this.InvokeEx(new Action(() =>
             {
-                SetStatusMessage(isExecuting ? "Выполнение сценария" : "", false);
+                SetStatusMessage(isExecuting ? "Выполнение сценария" : "");
                 lblScriptState.Text = isExecuting ? ("Выполнение сценария «" + movementScript.Name + "»") : "Сохраненные сценарии:";
                 scriptTSMI.Visible = !isExecuting;
                 scriptTSMI.Enabled = !isExecuting;

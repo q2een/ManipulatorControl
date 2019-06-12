@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ManipulatorControl.BL
 {
+    /// <summary>
+    /// Предоставляет класс, отвечающий за перемещение плеча робота-манипулятора.
+    /// </summary>
     public class LeverMovement
     {
         private readonly StepperWorker worker = new StepperWorker(80);
@@ -55,6 +58,10 @@ namespace ManipulatorControl.BL
             this.worker.Elapsed += Worker_Elapsed;
         }
 
+        /// <summary>
+        /// Подает на шаговый двигатель плеча указанное количество импульсов.
+        /// </summary>
+        /// <param name="stepLever">Тип перемещаемого плеча и количество импульсов</param>
         public void Move(StepLever stepLever)
         {
             if (IsRunning || worker.Enabled)
@@ -68,11 +75,20 @@ namespace ManipulatorControl.BL
             Run(stepLever);
         }
 
+        /// <summary>
+        /// Последовательно выполняет перемещение плеч из очереди.
+        /// </summary>
+        /// <param name="steppersQueue">Очередь экземпляров класса, содержащего тип перемещаемого плеча и количество импульсов</param>
         public void Move(Queue<StepLever> steppersQueue)
         {
             Move(steppersQueue, null);
         }
 
+        /// <summary>
+        /// Последовательно выполняет перемещения плеч из очереди. После завершения перемещения выполняет <paramref name="doAfterWorkEnd"/>.
+        /// </summary>
+        /// <param name="steppersQueue">Очередь экземпляров класса, содержащего тип перемещаемого плеча и количество импульсов</param>
+        /// <param name="doAfterWorkEnd">Метод, который будет выполнен после завершения перемещения</param>
         public void Move(Queue<StepLever> steppersQueue, Action doAfterWorkEnd)
         {
             if (IsRunning || worker.Enabled)
@@ -92,11 +108,17 @@ namespace ManipulatorControl.BL
                 worker.Stop();
         }
 
+        /// <summary>
+        /// Останавливает шаговый двигатель с заданным торможением.
+        /// </summary>
         public void Stop()
         {
             worker.Stop();
         }
 
+        /// <summary>
+        /// Вызывает аварийную остановку шагового двигателя.
+        /// </summary>
         public void Abort()
         {
             worker.Abort();

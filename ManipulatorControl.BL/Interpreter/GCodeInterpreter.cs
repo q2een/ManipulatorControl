@@ -61,6 +61,7 @@ namespace ManipulatorControl.BL.Interpreter
         /// <summary>
         /// Интерпретирует очередь команд <paramref name="commands"/>.
         /// </summary>
+        /// <param name="commands">Очередь команд G-кода</param>
         /// <returns>Возвращает очередь указывающую количество шагов которое необходимо выполнить ШД плеча</returns>
         public Queue<StepLever> Interprete(Queue<KeyValuePair<string, Lexeme[]>> commands)
         {

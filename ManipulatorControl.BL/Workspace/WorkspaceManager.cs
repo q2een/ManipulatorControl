@@ -7,6 +7,9 @@ using UM160CalculationLib;
 
 namespace ManipulatorControl.BL.Workspace
 {
+    /// <summary>
+    /// Предоставляет класс для управления рабочими зонами робота-манипулятора. 
+    /// </summary>
     public class WorkspaceManager
     {
         private readonly DesignParameters parameters;
@@ -22,6 +25,9 @@ namespace ManipulatorControl.BL.Workspace
             }
         }
 
+        /// <summary>
+        /// Происходит при изменени активной рабочей зоны робота-манипулятора.
+        /// </summary>
         public event EventHandler OnActiveWorkspaceChanged = delegate { };
 
         public RobotWorkspace ActiveWorkspace
@@ -141,6 +147,11 @@ namespace ManipulatorControl.BL.Workspace
             }
         }
 
+        /// <summary>
+        /// Возвращает истину, если текущее положение плеч робота-манипулятора соответствует рабочей зоне <paramref name="workspace"/>.
+        /// </summary>
+        /// <param name="workspace">Рабочая зона</param>
+        /// <returns>Истина, если текущее положение плеч робота-манипулятора соответствует рабочей зоне</returns>
         public bool IsRobotInWorkspace(RobotWorkspace workspace)
         {
             var horizontal = workspace.HorizontalLever.IsBetweenMinAndMax(parameters.HorizontalLever.AB);
@@ -150,13 +161,11 @@ namespace ManipulatorControl.BL.Workspace
             return horizontal && lever1 && lever2;
         }
 
-        public static void RemoveWorkspacesFromDesignParameters(DesignParameters parameters)
-        {
-            parameters.Lever1.Workspace = null;
-            parameters.Lever2.Workspace = null;
-            parameters.HorizontalLever.Workspace = null;
-        }
-
+        /// <summary>
+        /// Возвращает тип плеч, которые не расположены в пределах рабочей зоны <paramref name="workspace"/>.
+        /// </summary>
+        /// <param name="workspace">Рабочая зона</param>
+        /// <returns>Коллекция типов плеч, которые не расположены в рабочей зоне</returns>
         public IEnumerable<LeverType> GetLeversOutOfWorkspaceRange(RobotWorkspace workspace)
         {
             if (!workspace.HorizontalLever.IsBetweenMinAndMax(parameters.HorizontalLever.AB))
@@ -169,6 +178,12 @@ namespace ManipulatorControl.BL.Workspace
                 yield return LeverType.Lever2;
         }
 
+        /// <summary>
+        /// Возвращает коллекцию положений плеч, которых необходимо достичь плечу чтобы оказаться
+        /// в пределах рабочей зоны <paramref name="workspace"/>.
+        /// </summary>
+        /// <param name="workspace">Рабочая зона</param>
+        /// <returns>Коллекция положений плеч, которых необходимо достичь плечу чтобы оказаться в пределах рабочей зоны</returns>
         public IEnumerable<LeverPosition> GetLeversPositionToWorkspaceRange(RobotWorkspace workspace)
         {
             if (!workspace.HorizontalLever.IsBetweenMinAndMax(parameters.HorizontalLever.AB))
@@ -181,14 +196,12 @@ namespace ManipulatorControl.BL.Workspace
                 yield return new LeverPosition(LeverType.Lever2, GetNearestPositionInWorkspace(workspace.Lever2, parameters.Lever2.AB));
         }
 
-        public double GetNearestPositionInWorkspace(IWorkspace workspace, double position)
-        {
-            var a = Math.Abs(position - workspace.ABmax);
-            var b = Math.Abs(position - workspace.ABmin);
-
-            return a < b ? workspace.ABmax : workspace.ABmin;
-        }
-
+        /// <summary>
+        /// Возвращает коллекцию положений плеч, которых необходимо достичь плечу чтобы оказаться
+        /// в нулевой точке рабочей зоны <paramref name="workspace"/>.
+        /// </summary>
+        /// <param name="workspace">Рабочая зона</param>
+        /// <returns>Коллекция положений плеч, которых необходимо достичь плечу чтобы оказаться в нулевой точке рабочей зоны</returns>
         public IEnumerable<LeverPosition> GetLeverPositionsToWorkspaceZero(RobotWorkspace workspace)
         {
             if (workspace.HorizontalLever.ABzero == null)
@@ -207,6 +220,24 @@ namespace ManipulatorControl.BL.Workspace
                 yield return new LeverPosition(LeverType.Lever2, (double)workspace.Lever2.ABzero);
         }
 
+        /// <summary>
+        /// Возвращает ближайшую к положению <paramref name="position"/> точку рабочей зоны <paramref name="workspace"/>.
+        /// </summary>
+        /// <param name="workspace">Рабочая зона плеча</param>
+        /// <param name="position">Положения плеча</param>
+        /// <returns>Ближайшая к положению <paramref name="position"/> точка рабочей зоны</returns>
+        public double GetNearestPositionInWorkspace(IWorkspace workspace, double position)
+        {
+            var a = Math.Abs(position - workspace.ABmax);
+            var b = Math.Abs(position - workspace.ABmin);
+
+            return a < b ? workspace.ABmax : workspace.ABmin;
+        }
+
+        /// <summary>
+        /// Устанавливает рабочую зону с заданным индексом в качестве активной.
+        /// </summary>
+        /// <param name="index">Индекс рабочей зоны</param>
         public void SetActiveWorkspace(int index)
         {
             SetActiveWorkspace(robotWorkspaces[index]);
@@ -282,5 +313,13 @@ namespace ManipulatorControl.BL.Workspace
         {
             return workspace.ABmin >= lever.ABmin && workspace.ABmax <= lever.ABmax;
         }
+
+        public static void RemoveWorkspacesFromDesignParameters(DesignParameters parameters)
+        {
+            parameters.Lever1.Workspace = null;
+            parameters.Lever2.Workspace = null;
+            parameters.HorizontalLever.Workspace = null;
+        }
+
     }
 }
