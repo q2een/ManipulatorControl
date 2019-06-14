@@ -388,12 +388,15 @@ namespace ManipulatorControl.View
 
             lblHorizontalMax.Text = workspace.HorizontalLever.ABmax.ToString();
             lblHorizontalMin.Text = workspace.HorizontalLever.ABmin.ToString();
+            lblHorizontalZero.BackColor = workspace.HorizontalLever.ABzero == null ? Color.DarkGray : Color.Transparent;
             lblHorizontalZero.Text = workspace.HorizontalLever.ABzero.ToString();
             lblLever1Max.Text = workspace.Lever1.ABmax.ToString();
             lblLever1Min.Text = workspace.Lever1.ABmin.ToString();
+            lblLever1Zero.BackColor = workspace.Lever1.ABzero == null ? Color.DarkGray : Color.Transparent;
             lblLever1Zero.Text = workspace.Lever1.ABzero.ToString();
             lblLever2Max.Text = workspace.Lever2.ABmax.ToString();
             lblLever2Min.Text = workspace.Lever2.ABmin.ToString();
+            lblLever2Zero.BackColor = workspace.Lever2.ABzero == null ? Color.DarkGray : Color.Transparent;
             lblLever2Zero.Text = workspace.Lever2.ABzero.ToString();
         }
 

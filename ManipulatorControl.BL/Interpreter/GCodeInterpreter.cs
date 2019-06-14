@@ -126,13 +126,18 @@ namespace ManipulatorControl.BL.Interpreter
         /// </summary>
         private void UpdateXYZ(Lexeme[] args)
         {
-            double x, y, z;
+            var xValue = args.SingleOrDefault(lexeme => lexeme == "X");
+            var yValue = args.SingleOrDefault(lexeme => lexeme == "Y");
+            var zValue = args.SingleOrDefault(lexeme => lexeme == "Z");
 
-            GetXYZFromLexemes(args, out x, out y, out z);
+            if (!string.IsNullOrEmpty(xValue.Name))
+                X = xValue.Value;
 
-            X = x;
-            Y = y;
-            Z = z;
+            if (!string.IsNullOrEmpty(yValue.Name))
+                Y = yValue.Value;
+
+            if (!string.IsNullOrEmpty(zValue.Name))
+                Z = zValue.Value;
         }
 
         private void GetXYZFromLexemes(Lexeme[] args, out double x, out double y, out double z)

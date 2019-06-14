@@ -114,7 +114,6 @@
             this.lblWorkspaceAB = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.tpGCodes = new System.Windows.Forms.TabPage();
-            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.tpScripts = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lstScriptQueue = new System.Windows.Forms.ListBox();
@@ -151,6 +150,7 @@
             this.rbLever1 = new System.Windows.Forms.RadioButton();
             this.rbLever2 = new System.Windows.Forms.RadioButton();
             this.rightSidePanel = new System.Windows.Forms.Panel();
+            this.gCodesBox = new ManipulatorControl.EditorCodeBox();
             this.directionPanel = new ManipulatorControl.DirectionPanel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -1017,23 +1017,6 @@
             this.tpGCodes.Text = "Выполнение G-кодов";
             this.tpGCodes.UseVisualStyleBackColor = true;
             // 
-            // gCodesBox
-            // 
-            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gCodesBox.Enable = true;
-            this.gCodesBox.EnableLineNumbering = false;
-            this.gCodesBox.FontSize = ((byte)(14));
-            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
-            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
-            this.gCodesBox.Lines = new string[0];
-            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
-            this.gCodesBox.Name = "gCodesBox";
-            this.gCodesBox.ReadOnly = false;
-            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
-            this.gCodesBox.Size = new System.Drawing.Size(533, 302);
-            this.gCodesBox.TabIndex = 1;
-            this.gCodesBox.WordWrap = false;
-            // 
             // tpScripts
             // 
             this.tpScripts.Controls.Add(this.groupBox1);
@@ -1478,6 +1461,22 @@
             this.rightSidePanel.Size = new System.Drawing.Size(382, 491);
             this.rightSidePanel.TabIndex = 7;
             // 
+            // gCodesBox
+            // 
+            this.gCodesBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gCodesBox.Enable = true;
+            this.gCodesBox.FontSize = ((byte)(14));
+            this.gCodesBox.LineNumbersBackColor = System.Drawing.Color.White;
+            this.gCodesBox.LineNumbersForeColor = System.Drawing.Color.Black;
+            this.gCodesBox.Lines = new string[0];
+            this.gCodesBox.Location = new System.Drawing.Point(3, 3);
+            this.gCodesBox.Name = "gCodesBox";
+            this.gCodesBox.ReadOnly = false;
+            this.gCodesBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
+            this.gCodesBox.Size = new System.Drawing.Size(533, 302);
+            this.gCodesBox.TabIndex = 1;
+            this.gCodesBox.WordWrap = false;
+            // 
             // directionPanel
             // 
             this.directionPanel.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1503,7 +1502,7 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
-            this.Text = "Управление роботом-манипулятором УМ-160";
+            this.Text = "Управление роботом-манипулятором";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);

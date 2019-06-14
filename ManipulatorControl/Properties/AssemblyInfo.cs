@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("Управление роботом-манипулятором УМ-160")]
-[assembly: AssemblyDescription("Программа для управления роботом-манипулятором УМ-160.")]
+[assembly: AssemblyTitle("Управление роботом-манипулятором")]
+[assembly: AssemblyDescription("Программа для управления промышленным роботом-манипулятором.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ДонГТУ")]
-[assembly: AssemblyProduct("Управление роботом-манипулятором УМ-160")]
+[assembly: AssemblyProduct("Управление роботом-манипулятором")]
 [assembly: AssemblyCopyright("Кузин Егор ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
