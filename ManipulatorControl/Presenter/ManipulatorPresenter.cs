@@ -808,6 +808,7 @@ namespace ManipulatorControl
         private void Movement_OnMovingEnd(object sender, StepLever e)
         {
             view.SetStatusMessage("");
+            messageService.ShowMessage(e.StepsCount.ToString());
         }
 
         private void Movement_OnMovingStart(object sender, StepLever e)

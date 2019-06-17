@@ -81,11 +81,11 @@ namespace ManipulatorControl.BL.Interpreter
                     case "G01":
                         var correctCoordinates = GetCorrectCoordinates(command.Value);
 
-                        double x, y, z;
+                        double x = X, y = Y, z = Z;
 
-                        GetXYZFromLexemes(correctCoordinates, out x, out y, out z);
+                        UpdateXYZ(correctCoordinates);
 
-                        var stepLevers = calculation.CalculateStepLever(X, x, Y, y, Z, z).Where(sl => sl.StepsCount != 0);
+                        var stepLevers = calculation.CalculateStepLever(x, X, y, Y, z, Z).Where(sl => sl.StepsCount != 0);
 
                         // Если в списке аргументов G кода координа Z идет на первом месте
                         // то сначала выполнять ее. Порядок X и Y не важен, так как они изменяются вместе.
@@ -94,7 +94,6 @@ namespace ManipulatorControl.BL.Interpreter
 
                         Enqueue(steppersQueue, stepLevers);
 
-                        UpdateXYZ(correctCoordinates);
                         break;
 
                     case "G91":
@@ -139,7 +138,7 @@ namespace ManipulatorControl.BL.Interpreter
             if (!string.IsNullOrEmpty(zValue.Name))
                 Z = zValue.Value;
         }
-
+        /*
         private void GetXYZFromLexemes(Lexeme[] args, out double x, out double y, out double z)
         {
             x = X;
@@ -158,7 +157,7 @@ namespace ManipulatorControl.BL.Interpreter
 
             if (!string.IsNullOrEmpty(zValue.Name))
                 z = zValue.Value;
-        }
+        }    */
 
         // Возвращает корректные аргументы команды учитывая текущую плоскость и систему координат.
         private Lexeme[] GetCorrectCoordinates(Lexeme[] args)

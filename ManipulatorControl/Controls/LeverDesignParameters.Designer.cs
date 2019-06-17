@@ -356,7 +356,7 @@
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(514, 42);
             this.label12.TabIndex = 30;
-            this.label12.Text = "Конструктивные параметры плеча роботаб, грудусы";
+            this.label12.Text = "Конструктивные параметры плеча робота, грудусы";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label13
