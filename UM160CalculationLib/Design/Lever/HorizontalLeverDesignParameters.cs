@@ -7,7 +7,7 @@
     {
         /// <summary>
         /// Возвращает или задает коэффициент, указывающий количество шагов шагового двигателя необходимых для изменения значения 
-        /// <see cref="this.AB"/> на 1 мм.
+        /// <see cref="RobotLever.AB"/> на 1 мм.
         /// </summary>
         public double Coefficient { get; set; }
 

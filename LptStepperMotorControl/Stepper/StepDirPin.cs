@@ -45,12 +45,24 @@ namespace LptStepperMotorControl.Stepper
             this.Enable = enable;
         }
 
+        /// <summary>
+        /// Сравнивает два экземпляра структур <see cref="StepDirPin"/> и возвращает результат сравнения. 
+        /// </summary>
+        /// <param name="pin1">Экземпляр структуры которую сравнивают</param>
+        /// <param name="pin2">Экземпляр структуры с которой сравнивают</param>
+        /// <returns>Результат сравнения</returns>
         public static bool operator==(StepDirPin pin1, StepDirPin pin2)
         {
             return pin1.Step == pin2.Step && pin1.Dir == pin2.Dir && pin1.Enable == pin2.Enable;
         }
 
-        public static bool operator !=(StepDirPin pin1, StepDirPin pin2)
+        /// <summary>
+        /// Сравнивает два экземпляра структур <see cref="StepDirPin"/> и возвращает результат сравнения. 
+        /// </summary>
+        /// <param name="pin1">Экземпляр структуры которую сравнивают</param>
+        /// <param name="pin2">Экземпляр структуры с которой сравнивают</param>
+        /// <returns>Результат сравнения</returns>
+        public static bool operator!=(StepDirPin pin1, StepDirPin pin2)
         {
             return !(pin1==pin2);
         }

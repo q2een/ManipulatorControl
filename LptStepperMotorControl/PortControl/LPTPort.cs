@@ -65,7 +65,6 @@ namespace LptStepperMotorControl.PortControl
 
         #region Импорт функций из библиотеки. 
 
-        int counter;
 
 #if (DEBUG)
 

@@ -63,7 +63,7 @@ namespace UM160CalculationLib
         }
 
         /// <summary>
-        /// Возвращает количество импульсов для достижения положения <paramref name="to"/> из положения <paramref name="from"/>
+        /// Возвращает количество импульсов для достижения положения <paramref name="abTo"/> из положения <paramref name="abFrom"/>
         /// плеча <paramref name="lever"/>. 
         /// </summary>
         /// <param name="lever">Конструктивные параметры плеча робота-манипулятора</param>
@@ -82,7 +82,7 @@ namespace UM160CalculationLib
         }
 
         /// <summary>
-        /// Возвращает количество импульсов для достижения положения <paramref name="to"/> из положения <paramref name="from"/>
+        /// Возвращает количество импульсов для достижения положения <paramref name="abTo"/> из положения <paramref name="abFrom"/>
         /// плеча <paramref name="ldp"/>. 
         /// </summary>
         public static long GetPulsesCount(LeverDesignParameters ldp, double abFrom, double abTo)
@@ -99,7 +99,7 @@ namespace UM160CalculationLib
         }
 
         /// <summary>
-        /// Возвращает количество импульсов для достижения положения <paramref name="to"/> из положения <paramref name="from"/>
+        /// Возвращает количество импульсов для достижения положения <paramref name="abTo"/> из положения <paramref name="abFrom"/>
         /// плеча <paramref name="lever"/>. 
         /// </summary>
         public static long GetPulsesCount(HorizontalLeverDesignParameters lever, double abFrom, double abTo)

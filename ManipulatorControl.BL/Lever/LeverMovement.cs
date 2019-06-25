@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ManipulatorControl.BL
 {
     /// <summary>
-    /// Предоставляет класс, отвечающий за перемещение плеча робота-манипулятора.
+    /// Предоставляет класс, отвечающий за перемещение плеч робота-манипулятора.
     /// </summary>
     public class LeverMovement
     {
@@ -22,6 +22,9 @@ namespace ManipulatorControl.BL
 
         private Action doAfterWorkEnd = null;
 
+        /// <summary>
+        /// Возвращает флаг, указывающий на выполнение перемещения плеча робота.
+        /// </summary>
         public bool IsRunning
         {
             get
@@ -30,8 +33,15 @@ namespace ManipulatorControl.BL
             }
         }
 
+        /// <summary>
+        /// Возвращает флаг, указывающий на выполнение перемещения очереди.
+        /// </summary>
         public bool IsQueueMoving { get; private set; }
 
+        /// <summary>
+        /// Возвращает или задает число импульсов, после подачи на порт которого будет 
+        /// происходить событие <see cref="OnStepsIntervalElapsed"/>.
+        /// </summary>
         public int StepsInterval
         {
             get
@@ -44,10 +54,26 @@ namespace ManipulatorControl.BL
             }
         }
 
+        /// <summary>
+        /// Происходит перед началом перемещения плеча робота. 
+        /// </summary>
         public event EventHandler<StepLever> OnMovingStart = delegate { };
+
+        /// <summary>
+        /// Происходит после завершения перемещения плеча робота.
+        /// </summary>
         public event EventHandler<LeverMovingEndEventArgs> OnMovingEnd = delegate { };
+
+        /// <summary>
+        /// Происходит каждый раз как на порт подано <see cref="StepsInterval"/> импульсов.
+        /// </summary>
         public event EventHandler<StepLever> OnStepsIntervalElapsed = delegate { };
 
+        /// <summary>
+        /// Предоставляет класс, отвечающий за перемещение плеч робота-манипулятора.
+        /// </summary>
+        /// <param name="port">Экземпляр класса дляработы с портом</param>
+        /// <param name="levers">Коллекция экземпляров класса <see cref="LeverStepper"/>, содержащий тип плеча и ШД, отвечающий за его перемещение</param>
         public LeverMovement(LPTPort port, LeverStepper[] levers)
         {
             this.port = port;
@@ -102,6 +128,9 @@ namespace ManipulatorControl.BL
             Continue();
         }
 
+        /// <summary>
+        /// Останавливает шаговый двигатель, перемещающий плечо <paramref name="type"/>, с заданным торможением.
+        /// </summary>
         public void Stop(LeverType type)
         {
             if (movingLever != null && movingLever.Type == type)

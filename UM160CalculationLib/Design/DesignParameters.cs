@@ -52,8 +52,8 @@
         /// <param name="l2">Длина плеча 2, мм.</param>
         /// <param name="lc">Расстояние от центра схвата до точки его подвеса на плече 2, мм.</param>
         /// <param name="horizontalLever">Конструктивные параметры для расчета горизонтального перемещения.</param>
-        /// <param name="dpPhi1">Конструктивные параметры для расчета угла φ1 (плечо 1).</param>
-        /// <param name="dpPhi2">Конструктивные параметры для расчета угла φ1 (плечо 2).</param>
+        /// <param name="lever1">Конструктивные параметры для расчета угла φ1 (плечо 1).</param>
+        /// <param name="lever2">Конструктивные параметры для расчета угла φ1 (плечо 2).</param>
         public DesignParameters(double l1, double l2, double lc, HorizontalLeverDesignParameters horizontalLever, LeverDesignParameters lever1, LeverDesignParameters lever2)
         {
             this.L1 = l1;

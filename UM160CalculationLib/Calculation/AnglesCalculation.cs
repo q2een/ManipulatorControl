@@ -8,13 +8,14 @@ namespace UM160CalculationLib
     /// Предоставляет класс для вычисления значений углов поворота плеча (φ1 и φ2) по координатам центра схвата.
     /// </summary>
     public sealed class AnglesCalculation
-    {   
+    {
         /// <summary>
         /// Возвращает корректные пары углов поворота плеча (φ1 и φ2) по координатам центра схвата.
         /// </summary>
         /// <param name="designParams">Конструктивные параметры манипулятора</param>
         /// <param name="x">Координата х центра схвата в базовой системе координат</param>
         /// <param name="y">Координата y центра схвата в базовой системе координат</param>
+        /// <param name="digits">Количество знаков после запятой для сравнения координат</param>
         /// <returns>Коллекция структур AnglesOfRotation - Значения углов поворота плеча (φ1 и φ2)</returns>
         public static List<AnglesOfRotation> GetAngles(DesignParameters designParams, double x, double y, int digits)
         {
@@ -82,6 +83,7 @@ namespace UM160CalculationLib
         /// <summary>
         /// Проверяет пару углов на соответствие конструктивным параметрам робота.
         /// </summary>
+        /// <param name="dp">Конструктивные параметры робота</param>
         /// <param name="angles">Структура. Пара углов φ1 и φ2</param>
         /// <returns>Истина, если пара углов соответствует конструктивным параметрам робота</returns>
         public static bool IsAnglesAreValid(DesignParameters dp, AnglesOfRotation angles)

@@ -17,6 +17,9 @@ namespace ManipulatorControl.BL
 
         private Location location;
 
+        /// <summary>
+        /// Возвращает экземпляр структуры, описывающей текущее положение центра схвата в системе координат.
+        /// </summary>
         public Location Location
         {
             get
@@ -30,8 +33,14 @@ namespace ManipulatorControl.BL
             }
         }
 
+        /// <summary>
+        /// Возвращает или задает экземпляр класса для рассчетов значений перемещения плеч робота.
+        /// </summary>
         public Calculation Calculation { get; set; }
 
+        /// <summary>
+        /// Возвращает конструктивные параметры робота.
+        /// </summary>
         public DesignParameters DesignParameters
         {
             get
@@ -40,6 +49,9 @@ namespace ManipulatorControl.BL
             }
         }
 
+        /// <summary>
+        /// Возвращает флаг, указывающий на выполнение перемещения робота.
+        /// </summary>
         public bool IsRunning
         {
             get
@@ -47,7 +59,6 @@ namespace ManipulatorControl.BL
                 return leverMovement.IsRunning;
             }
         }
-
 
         /// <summary>
         /// Происходит при изменении положения центра схвата робота-манипулятора.
@@ -69,10 +80,16 @@ namespace ManipulatorControl.BL
         /// </summary>
         public event EventHandler<LeverMovingEndEventArgs> OnMovingEnd = delegate { };
 
-
+        /// <summary>
+        /// Происходит при смене значения положения плеча робота в нулевой точке 
+        /// </summary>
         public event EventHandler<LeverZeroPositionEventArgs> OnZeroPositionChanged = delegate { };
 
-
+        /// <summary>
+        /// Предоставляет класс, содержащий  методы для перемещения робота-манипулятора.
+        /// </summary>
+        /// <param name="сalculation">Экземпляр класса для рассчета значений параметров перемещения</param>
+        /// <param name="leverMovement">Экземпляр класса, отвечающий за перемещение плеч</param>
         public RobotMovement(Calculation сalculation, LeverMovement leverMovement)
         {
             Calculation = сalculation;
@@ -169,16 +186,26 @@ namespace ManipulatorControl.BL
             leverMovement.Stop(type);
         }
 
+        /// <summary>
+        /// Прекращает перемещение плеча. Останавливает его с заданным торможением.
+        /// </summary>
         public void Stop()
         {
             leverMovement.Stop();
         }
 
+        /// <summary>
+        /// Прерывает перемещение плеча.
+        /// </summary>
         public void Abort()
         {
             leverMovement.Abort();
         }
 
+        /// <summary>
+        /// Задает интервал импульсов, после подачи которых происходит событие <see cref="LeverMovement.OnStepsIntervalElapsed"/>.
+        /// </summary>
+        /// <param name="interval">Число импульсов</param>
         public void SetStepsInterval(int interval)
         {
             leverMovement.StepsInterval = interval;
@@ -194,11 +221,20 @@ namespace ManipulatorControl.BL
             return Calculation.GetRobotLeverByType(type).AB;
         }
 
+        /// <summary>
+        /// Возвращает положение плеча.
+        /// </summary>
+        /// <param name="type">Тип плеча</param>
+        /// <returns>Положение плеча</returns>
         public LeverPosition GetCurrentLeverPosition(LeverType type)
         {
             return new LeverPosition(type, GetLeverPosition(type));
         }
 
+        /// <summary>
+        /// Возвращает коллекцию положений каждого плеча робота.
+        /// </summary>
+        /// <returns>Коллекция положений плеч робота</returns>
         public IEnumerable<LeverPosition> GetCurrentLeversPosition()
         {
             return new[]
@@ -236,6 +272,10 @@ namespace ManipulatorControl.BL
             return lever.Workspace.ABzero == lever.AB;
         }
 
+        /// <summary>
+        /// Проверяет, соответствует ли положения <paramref name="positions"/> плеч конструктивным параметрам или рабочей зоне. 
+        /// </summary>
+        /// <returns>Коллекция ошибок</returns>
         public IEnumerable<DesignParametersException> ValidateLeverPositions(IEnumerable<LeverPosition> positions)
         {
             foreach (var position in positions)

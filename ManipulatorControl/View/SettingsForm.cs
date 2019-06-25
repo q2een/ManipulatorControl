@@ -32,6 +32,8 @@ namespace ManipulatorControl.View
             stepDirCmbs = comboBoxes.Except(new ComboBox[] { cmbXEnable, cmbYEnable, cmbZEnable, cmbCEnable }).ToList();
             steppersPanels = new[] { stepperSettingsPanel1, stepperSettingsPanel2, stepperSettingsPanel3 };
             comboBoxes.ForEach(cmb => { cmb.Items.AddRange(cmbItems.ToArray()); cmb.SelectedIndex = 0; });
+
+
         }
 
         public List<StepDirName> StepDirNames
@@ -112,6 +114,12 @@ namespace ManipulatorControl.View
             set
             {
                 designParametersTabs.DesignParameters = value;
+
+                dataGridView1.Rows.Clear();
+                dataGridView1.Rows.Add();
+                dataGridView1.Rows[0].Cells[0].Value = "Расстояние между точкой подвеса плеча и ходового винта, поворачивающего плечо, мм";
+                //dataGridView1.Rows[0].Cells[1].ValueType = typeof(int);
+                dataGridView1.Rows[0].Cells[1].Value = value.Lever1.AB;
             }
         }
 

@@ -138,27 +138,7 @@ namespace ManipulatorControl.BL.Interpreter
             if (!string.IsNullOrEmpty(zValue.Name))
                 Z = zValue.Value;
         }
-        /*
-        private void GetXYZFromLexemes(Lexeme[] args, out double x, out double y, out double z)
-        {
-            x = X;
-            y = Y;
-            z = Z;
-            
-            var xValue = args.SingleOrDefault(lexeme => lexeme == "X");
-            var yValue = args.SingleOrDefault(lexeme => lexeme == "Y");
-            var zValue = args.SingleOrDefault(lexeme => lexeme == "Z");
-
-            if (!string.IsNullOrEmpty(xValue.Name))
-                x = xValue.Value;
-
-            if (!string.IsNullOrEmpty(yValue.Name))
-                y = yValue.Value;
-
-            if (!string.IsNullOrEmpty(zValue.Name))
-                z = zValue.Value;
-        }    */
-
+       
         // Возвращает корректные аргументы команды учитывая текущую плоскость и систему координат.
         private Lexeme[] GetCorrectCoordinates(Lexeme[] args)
         { 

@@ -720,6 +720,10 @@ namespace ManipulatorControl
 
                 if(editingWorkspaceIndex == 0)
                 {
+                    this.movement.DesignParameters.Lever1.ABzero = editingWorkspace.Lever1.ABzero;
+                    this.movement.DesignParameters.Lever2.ABzero = editingWorkspace.Lever2.ABzero;
+                    this.movement.DesignParameters.HorizontalLever.ABzero = editingWorkspace.HorizontalLever.ABzero;
+
                     UpdateDesignParameters(this.movement.DesignParameters);
                 }
 
@@ -739,7 +743,7 @@ namespace ManipulatorControl
 
                 foreach (var error in errors)
                 {
-                    errorMessage += String.Format("\n\n{0} : {1}", (error.Key), error.Value.Message);
+                    errorMessage += string.Format("\n\n{0} : {1}", (error.Key), error.Value.Message);
                 }
 
                 throw new Exception(errorMessage);

@@ -137,7 +137,9 @@ namespace ManipulatorControl.BL
 
         #region Парсер и интерпретатор G-кодов.
 
-        // валидация для парсера.
+        /// <summary>
+        /// Проверяет возможно ли переместить схват робота в заданные координаты <paramref name="x"/>, <paramref name="y"/>, <paramref name="z"/>.
+        /// </summary>
         public void CheckValues(double x, double y, double z)
         {
             // В случае некорректных данных выбросит исключение.

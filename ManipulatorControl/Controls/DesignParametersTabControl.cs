@@ -213,7 +213,5 @@ namespace ManipulatorControl
                 e.Handled = true;
             }
         }
-
-
     }
 }

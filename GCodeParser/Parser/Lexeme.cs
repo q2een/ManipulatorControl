@@ -44,12 +44,19 @@
             Type = LexemeType.Command;
         }
 
-
+        /// <summary>
+        /// Сравнивает лексему <paramref name="lexeme"/> по наименованию с <paramref name="name"/>.
+        /// </summary>
+        /// <returns>Результат сравнения</returns>
         public static bool operator==(Lexeme lexeme, string name)
         {
             return lexeme.Name == name;
         }
 
+        /// <summary>
+        /// Сравнивает лексему <paramref name="lexeme"/> по наименованию с <paramref name="name"/>.
+        /// </summary>
+        /// <returns>Результат сравнения</returns>
         public static bool operator !=(Lexeme lexeme, string name)
         {
             return lexeme.Name != name;

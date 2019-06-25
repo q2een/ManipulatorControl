@@ -68,8 +68,7 @@ namespace ManipulatorControl.BL.Workspace
 
             Add(GetDesignParametersWorkspace("Конструктивные параметры"));
 
-            if (robotWorkspaces != null)
-                this.robotWorkspaces.AddRange(robotWorkspaces);
+            this.robotWorkspaces.AddRange(robotWorkspaces);
 
             ActiveWorkspace = this.robotWorkspaces[activeWorkspaceIndex];
         }

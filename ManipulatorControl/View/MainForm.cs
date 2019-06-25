@@ -234,6 +234,8 @@ namespace ManipulatorControl.View
             interpreteGCodesMI.Click += RunGCodeInterpreter;
 
             settingsMI.Click += OpenSettings;
+
+            OpenSettings(this, EventArgs.Empty);
         }
 
         private void buttonsControlMI_Click(object sender, EventArgs e)

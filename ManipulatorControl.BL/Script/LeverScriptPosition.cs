@@ -45,6 +45,11 @@ namespace ManipulatorControl.BL.Script
             };
         }
 
+        /// <summary>
+        /// Определяет, равен ли заданный объект текущему объекту.
+        /// </summary>
+        /// <param name="other">Объект, который требуется сравнить с текущим объектом</param>
+        /// <returns>Значение true, если указанный объект равен текущему объекту; в противном случае - значение false</returns>
         public override bool Equals(object other)
         {
             if (other == null)
@@ -59,6 +64,11 @@ namespace ManipulatorControl.BL.Script
             return this.Equals(other as LeverScriptPosition);
         }
 
+        /// <summary>
+        /// Указывает, эквивалентен ли текущий объект другому объекту того же типа.
+        /// </summary>
+        /// <param name="other">Объект, который требуется сравнить с данным объектом</param>
+        /// <returns>true, если текущий объект эквивалентен параметру other, в противном случае — false</returns>
         public bool Equals(LeverScriptPosition other)
         {
             if (other == null)
@@ -73,11 +83,19 @@ namespace ManipulatorControl.BL.Script
             return this.LeverType == other.LeverType && this.From.Equals(other.From) && this.To.Equals(other.To);
         }
 
+        /// <summary>
+        /// Служит хэш-функцией по умолчанию
+        /// </summary>
+        /// <returns>Хэш-код для текущего объекта</returns>
         public override int GetHashCode()
         {
             return From.GetHashCode() ^ To.GetHashCode() ^ LeverType.GetHashCode();
         }
 
+        /// <summary>
+        /// Возвращает строку, представляющую текущий объект.
+        /// </summary>
+        /// <returns>Строка, представляющая текущий объект.</returns>
         public override string ToString()
         {
             return string.Format("{0}: {1} ---> {2}", LeverType.ToRuString(), From, To);
