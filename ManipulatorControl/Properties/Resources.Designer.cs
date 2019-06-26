@@ -239,6 +239,16 @@ namespace ManipulatorControl.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap scheme {
+            get {
+                object obj = ResourceManager.GetObject("scheme", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на scripts.settings.
         /// </summary>
         internal static string ScriptsSettingsFileName {

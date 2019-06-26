@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 namespace ManipulatorControl
 {
+#pragma warning disable 1591
     public partial class DirectionPanel : UserControl
     {
         public DirectionPanel()

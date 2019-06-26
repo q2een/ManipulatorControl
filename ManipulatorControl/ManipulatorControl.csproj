@@ -37,8 +37,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>4</LangVersion>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Debug\ManipulatorControl.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -68,11 +67,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\DesignParametersTabControl.cs">
+    <Compile Include="Controls\DesignParametersControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\DesignParametersTabControl.Designer.cs">
-      <DependentUpon>DesignParametersTabControl.cs</DependentUpon>
+    <Compile Include="Controls\DesignParametersControl.Designer.cs">
+      <DependentUpon>DesignParametersControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\DirectionPanel.cs">
       <SubType>UserControl</SubType>
@@ -85,12 +84,6 @@
     </Compile>
     <Compile Include="Controls\EditorCodeBox.Designer.cs">
       <DependentUpon>EditorCodeBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\LeverDesignParameters.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\LeverDesignParameters.Designer.cs">
-      <DependentUpon>LeverDesignParameters.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\StepperSettingsPanel.cs">
       <SubType>UserControl</SubType>
@@ -140,17 +133,14 @@
     <Compile Include="View\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Controls\DesignParametersTabControl.resx">
-      <DependentUpon>DesignParametersTabControl.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\DesignParametersControl.resx">
+      <DependentUpon>DesignParametersControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\DirectionPanel.resx">
       <DependentUpon>DirectionPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\EditorCodeBox.resx">
       <DependentUpon>EditorCodeBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\LeverDesignParameters.resx">
-      <DependentUpon>LeverDesignParameters.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\StepperSettingsPanel.resx">
       <DependentUpon>StepperSettingsPanel.cs</DependentUpon>
@@ -204,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <None Include="Resources\scheme.png" />
     <None Include="Resources\edit.png" />
     <None Include="Resources\move_reverse.png" />
     <None Include="Resources\move.png" />

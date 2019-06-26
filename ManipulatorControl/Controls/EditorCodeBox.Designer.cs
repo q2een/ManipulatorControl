@@ -1,5 +1,6 @@
 ﻿namespace ManipulatorControl
 {
+    #pragma warning disable 1591
     partial class EditorCodeBox
     {
         /// <summary>

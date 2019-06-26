@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using UM160CalculationLib;
 
 namespace ManipulatorControl.BL.Workspace
@@ -17,6 +16,9 @@ namespace ManipulatorControl.BL.Workspace
         private RobotWorkspace activeWorkspace;
         private List<RobotWorkspace> robotWorkspaces = new List<RobotWorkspace>();
 
+        /// <summary>
+        /// Возвращает коллекцию (только для чтения) рабочих зон манипулятора.
+        /// </summary>
         public ReadOnlyCollection<RobotWorkspace> RobotWorkspaces
         {
             get
@@ -30,6 +32,9 @@ namespace ManipulatorControl.BL.Workspace
         /// </summary>
         public event EventHandler OnActiveWorkspaceChanged = delegate { };
 
+        /// <summary>
+        /// Возвращает или задает активную рабочую зону.
+        /// </summary>
         public RobotWorkspace ActiveWorkspace
         {
             get
@@ -42,6 +47,9 @@ namespace ManipulatorControl.BL.Workspace
             }
         }
 
+        /// <summary>
+        /// Возвращает индект активной рабочей зоны.
+        /// </summary>
         public int ActiveWorkspaceIndex
         {
             get
@@ -50,6 +58,9 @@ namespace ManipulatorControl.BL.Workspace
             }
         }
 
+        /// <summary>
+        /// Возвращает рабочую зону конструктивных параметров робота.
+        /// </summary>
         public RobotWorkspace DesignParametersWorkspace
         {
             get
@@ -62,17 +73,26 @@ namespace ManipulatorControl.BL.Workspace
             }
         }
 
+        /// <summary>
+        /// Предоставляет класс для управления рабочими зонами робота-манипулятора.
+        /// </summary>
+        /// <param name="parameters">Конструкртивные параметры робота</param>
+        /// <param name="robotWorkspaces">Рабочие зоны робота</param>
+        /// <param name="activeWorkspaceIndex">Индекс активной рабочей зоны</param>
         public WorkspaceManager(DesignParameters parameters, List<RobotWorkspace> robotWorkspaces, int activeWorkspaceIndex = 0)
         {
             this.parameters = parameters;
 
             Add(GetDesignParametersWorkspace("Конструктивные параметры"));
-
             this.robotWorkspaces.AddRange(robotWorkspaces);
 
             ActiveWorkspace = this.robotWorkspaces[activeWorkspaceIndex];
         }
 
+        /// <summary>
+        /// Добавляет рабочую зону, основанную на конструктивных параметрах.
+        /// </summary>
+        /// <param name="name">Наименование рабочей зоны</param>
         public void Add(string name)
         {
             name = name.Replace("\n", " ").Trim();
@@ -84,12 +104,21 @@ namespace ManipulatorControl.BL.Workspace
             robotWorkspaces.Add(workspace);
         }
 
+        /// <summary>
+        /// Добавляет рабочую зону в коллекцию.
+        /// </summary>
+        /// <param name="robotWorkspace">Рабочая зона</param>
         public void Add(RobotWorkspace robotWorkspace)
         {
             if (!robotWorkspaces.Contains(robotWorkspace))
                 robotWorkspaces.Add(robotWorkspace);
         }
 
+        /// <summary>
+        /// Задает новое наименование рабочей зоны.
+        /// </summary>
+        /// <param name="index">Индекс рабочей зоны, которой необходимо сменить наименование</param>
+        /// <param name="name">Новое наименование</param>
         public void Rename(int index, string name)
         {
             if (index == -1)
@@ -105,6 +134,10 @@ namespace ManipulatorControl.BL.Workspace
             robotWorkspaces[index].Name = name;
         }
 
+        /// <summary>
+        /// Удаляет рабочую зону с заданным индексом.
+        /// </summary>
+        /// <param name="index">Индекс рабочей зоны для удаления</param>
         public void Remove(int index)
         {
             if (index < 0 || index > robotWorkspaces.Count - 1)
@@ -121,29 +154,13 @@ namespace ManipulatorControl.BL.Workspace
             robotWorkspaces.RemoveAt(index);
         }
 
+        /// <summary>
+        /// Удаляет рабочую зону из коллекции.
+        /// </summary>
+        /// <param name="workspace">Рабочая зона</param>
         public void Remove(RobotWorkspace workspace)
         {
             Remove(robotWorkspaces.IndexOf(workspace));
-        }
-
-        public void SetValue(IWorkspace workspace, MovableValueTypes valueType, double ab)
-        {
-            switch (valueType)
-            {
-                case MovableValueTypes.Max:
-                    workspace.ABmax = ab;
-                    break;
-
-                case MovableValueTypes.Min:
-                    workspace.ABmin = ab;
-                    break;
-
-                case MovableValueTypes.Zero:
-                    workspace.ABzero = ab;
-                    break;
-
-                default: throw new ArgumentException("Тип значения не корректен");
-            }
         }
 
         /// <summary>
@@ -242,45 +259,38 @@ namespace ManipulatorControl.BL.Workspace
             SetActiveWorkspace(robotWorkspaces[index]);
         }
 
+        /// <summary>
+        /// Устанавливает рабочую зону <paramref name="workspace"/> на индекс <paramref name="index"/>.
+        /// </summary>
         public void SetWorkspace(int index, RobotWorkspace workspace)
         {
             robotWorkspaces[index] = workspace;
         }
 
-        // Устанавливает заданную рабочую зону в качестве активной рабочей зоны.
-        private void SetActiveWorkspace(RobotWorkspace workspace)
-        {
-            var outOfRange = GetLeversOutOfWorkspaceRange(workspace).Select(lever => lever.ToRuString());
-
-            if (outOfRange.Count() != 0)
-                throw new ArgumentException("Текущее положение плеч робота находится вне рабочей зоны. " + 
-                                            "Необходимо переместить следующие механизмы робота:\n" + string.Join("\n", outOfRange).Trim()); 
-
-            if (!robotWorkspaces.Contains(workspace))
-                robotWorkspaces.Add(workspace);
-
-            parameters.Lever1.Workspace = workspace.Lever1;
-            parameters.Lever2.Workspace = workspace.Lever2;
-            parameters.HorizontalLever.Workspace = workspace.HorizontalLever;
-
-            activeWorkspace = workspace;
-
-            OnActiveWorkspaceChanged(this, EventArgs.Empty);
-        }
-
+        /// <summary>
+        /// Возвращает копию рабочей зоны.
+        /// </summary>
+        /// <param name="index">Индекс рабочей зоны</param>
+        /// <returns>Копия рабочей зоны</returns>
         public RobotWorkspace GetClone(int index)
         {
             return robotWorkspaces[index].Clone() as RobotWorkspace;
         }
 
-        // Устанавливает в качестве рабочей зоны конструктивные параметры робота.
+        /// <summary>
+        /// Устанавливает в качестве рабочей зоны конструктивные параметры робота.
+        /// </summary>
         public void SetDefaultWorkspace()
         {
             RemoveWorkspacesFromDesignParameters(this.parameters);
             this.activeWorkspace = null;
         }
 
-        // Возвращает копию рабочей зоны соответствующую конструктивным параметрам робота.
+        /// <summary>
+        /// Возвращает копию рабочей зоны, соответствующую конструктивным параметрам робота.
+        /// </summary>
+        /// <param name="name">Наименование рабочей зоны</param>
+        /// <returns>Копия рабочей зоны, соответствующая конструктивным параметрам робота</returns>
         public RobotWorkspace GetDesignParametersWorkspaceClone(string name)
         {
             if (parameters == null)
@@ -294,7 +304,11 @@ namespace ManipulatorControl.BL.Workspace
             };
         }
 
-        // Возвращает копию рабочей зоны соответствующую конструктивным параметрам робота.
+        /// <summary>
+        /// Возвращает рабочую зону, соответствующую конструктивным параметрам робота.
+        /// </summary>
+        /// <param name="name">Наименование рабочей зоны</param>
+        /// <returns>Рабочая зона, соответствующую конструктивным параметрам робота.</returns>
         public RobotWorkspace GetDesignParametersWorkspace(string name)
         {
             if (parameters == null)
@@ -312,7 +326,32 @@ namespace ManipulatorControl.BL.Workspace
         {
             return workspace.ABmin >= lever.ABmin && workspace.ABmax <= lever.ABmax;
         }
+        
+        // Устанавливает заданную рабочую зону в качестве активной рабочей зоны.
+        private void SetActiveWorkspace(RobotWorkspace workspace)
+        {
+            var outOfRange = GetLeversOutOfWorkspaceRange(workspace).Select(lever => lever.ToRuString());
 
+            if (outOfRange.Count() != 0)
+                throw new ArgumentException("Текущее положение плеч робота находится вне рабочей зоны. " +
+                                            "Необходимо переместить следующие механизмы робота:\n" + string.Join("\n", outOfRange).Trim());
+
+            if (!robotWorkspaces.Contains(workspace))
+                robotWorkspaces.Add(workspace);
+
+            parameters.Lever1.Workspace = workspace.Lever1;
+            parameters.Lever2.Workspace = workspace.Lever2;
+            parameters.HorizontalLever.Workspace = workspace.HorizontalLever;
+
+            activeWorkspace = workspace;
+
+            OnActiveWorkspaceChanged(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Удаляет рабочие зоны из конструктивных параметров робота, тем самым задает рабочую зону по умолчанию.
+        /// </summary>
+        /// <param name="parameters">Уонструктивные параметры робота</param>
         public static void RemoveWorkspacesFromDesignParameters(DesignParameters parameters)
         {
             parameters.Lever1.Workspace = null;

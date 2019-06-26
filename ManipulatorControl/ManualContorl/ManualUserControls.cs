@@ -1,8 +1,8 @@
-﻿using LptStepperMotorControl.Stepper;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace ManipulatorControl
 {
+#pragma warning disable 1591
     public class ManualUserControls
     {
         public Button Button { get; private set; }

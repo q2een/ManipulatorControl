@@ -108,18 +108,12 @@ namespace ManipulatorControl.View
         {
             get
             {
-                return designParametersTabs.DesignParameters;
+                return designParametersControl.DesignParameters;
             }
 
             set
             {
-                designParametersTabs.DesignParameters = value;
-
-                dataGridView1.Rows.Clear();
-                dataGridView1.Rows.Add();
-                dataGridView1.Rows[0].Cells[0].Value = "Расстояние между точкой подвеса плеча и ходового винта, поворачивающего плечо, мм";
-                //dataGridView1.Rows[0].Cells[1].ValueType = typeof(int);
-                dataGridView1.Rows[0].Cells[1].Value = value.Lever1.AB;
+                designParametersControl.DesignParameters = value;
             }
         }
 
@@ -176,9 +170,14 @@ namespace ManipulatorControl.View
             comboBox.SelectedIndex = pin == 0 ? 0 : cmbItems.IndexOf(pin.ToString());
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnApply_Click(object sender, EventArgs e)
         {
             SaveSettings(this, EventArgs.Empty);
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
         // Обработка события изменения индекса в выпадающем списке.

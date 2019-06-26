@@ -10,6 +10,7 @@ using ManipulatorControl.BL.Settings;
 
 namespace ManipulatorControl.Controls
 {
+#pragma warning disable 1591
     public partial class StepperSettingsPanel : UserControl
     {
         public override string Text

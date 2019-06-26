@@ -1,5 +1,6 @@
 ﻿namespace ManipulatorControl.Controls
 {
+    #pragma warning disable 1591
     partial class StepperSettingsPanel
     {
         /// <summary> 

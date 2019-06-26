@@ -28,11 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabSettings = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.pagePinSettings = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.cmbCEnable = new System.Windows.Forms.ComboBox();
@@ -79,16 +75,12 @@
             this.stepperSettingsPanel2 = new ManipulatorControl.Controls.StepperSettingsPanel();
             this.stepperSettingsPanel1 = new ManipulatorControl.Controls.StepperSettingsPanel();
             this.pageDesignParameters = new System.Windows.Forms.TabPage();
-            this.designParametersTabs = new ManipulatorControl.DesignParametersTabControl();
+            this.designParametersControl = new ManipulatorControl.Controls.DesignParametersControl();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnApply = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabSettings.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.pagePinSettings.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.pageStepperSettings.SuspendLayout();
@@ -98,7 +90,6 @@
             // 
             // tabSettings
             // 
-            this.tabSettings.Controls.Add(this.tabPage1);
             this.tabSettings.Controls.Add(this.pagePinSettings);
             this.tabSettings.Controls.Add(this.pageStepperSettings);
             this.tabSettings.Controls.Add(this.pageDesignParameters);
@@ -109,35 +100,8 @@
             this.tabSettings.Margin = new System.Windows.Forms.Padding(0);
             this.tabSettings.Name = "tabSettings";
             this.tabSettings.SelectedIndex = 0;
-            this.tabSettings.Size = new System.Drawing.Size(937, 506);
+            this.tabSettings.Size = new System.Drawing.Size(837, 529);
             this.tabSettings.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.dataGridView1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 34);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(929, 468);
-            this.tabPage1.TabIndex = 3;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colName,
-            this.colValue});
-            this.dataGridView1.Location = new System.Drawing.Point(28, 20);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(386, 417);
-            this.dataGridView1.TabIndex = 0;
             // 
             // pagePinSettings
             // 
@@ -145,7 +109,7 @@
             this.pagePinSettings.Location = new System.Drawing.Point(4, 34);
             this.pagePinSettings.Name = "pagePinSettings";
             this.pagePinSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.pagePinSettings.Size = new System.Drawing.Size(929, 468);
+            this.pagePinSettings.Size = new System.Drawing.Size(829, 491);
             this.pagePinSettings.TabIndex = 0;
             this.pagePinSettings.Text = "Назначения PIN ";
             this.pagePinSettings.UseVisualStyleBackColor = true;
@@ -212,7 +176,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(923, 462);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(823, 485);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // cmbCEnable
@@ -220,9 +184,9 @@
             this.cmbCEnable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbCEnable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCEnable.FormattingEnabled = true;
-            this.cmbCEnable.Location = new System.Drawing.Point(310, 423);
+            this.cmbCEnable.Location = new System.Drawing.Point(277, 447);
             this.cmbCEnable.Name = "cmbCEnable";
-            this.cmbCEnable.Size = new System.Drawing.Size(301, 24);
+            this.cmbCEnable.Size = new System.Drawing.Size(268, 24);
             this.cmbCEnable.TabIndex = 1;
             this.cmbCEnable.Tag = this.lblCEnable;
             this.cmbCEnable.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -231,9 +195,9 @@
             // 
             this.lblCEnable.AutoSize = true;
             this.lblCEnable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCEnable.Location = new System.Drawing.Point(617, 420);
+            this.lblCEnable.Location = new System.Drawing.Point(551, 444);
             this.lblCEnable.Name = "lblCEnable";
-            this.lblCEnable.Size = new System.Drawing.Size(303, 42);
+            this.lblCEnable.Size = new System.Drawing.Size(269, 41);
             this.lblCEnable.TabIndex = 3;
             this.lblCEnable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -242,9 +206,9 @@
             this.cmbCDir.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbCDir.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCDir.FormattingEnabled = true;
-            this.cmbCDir.Location = new System.Drawing.Point(310, 388);
+            this.cmbCDir.Location = new System.Drawing.Point(277, 410);
             this.cmbCDir.Name = "cmbCDir";
-            this.cmbCDir.Size = new System.Drawing.Size(301, 24);
+            this.cmbCDir.Size = new System.Drawing.Size(268, 24);
             this.cmbCDir.TabIndex = 1;
             this.cmbCDir.Tag = this.lblCDir;
             this.cmbCDir.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -253,9 +217,9 @@
             // 
             this.lblCDir.AutoSize = true;
             this.lblCDir.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCDir.Location = new System.Drawing.Point(617, 385);
+            this.lblCDir.Location = new System.Drawing.Point(551, 407);
             this.lblCDir.Name = "lblCDir";
-            this.lblCDir.Size = new System.Drawing.Size(303, 35);
+            this.lblCDir.Size = new System.Drawing.Size(269, 37);
             this.lblCDir.TabIndex = 3;
             this.lblCDir.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -264,9 +228,9 @@
             this.cmbCStep.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbCStep.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCStep.FormattingEnabled = true;
-            this.cmbCStep.Location = new System.Drawing.Point(310, 353);
+            this.cmbCStep.Location = new System.Drawing.Point(277, 373);
             this.cmbCStep.Name = "cmbCStep";
-            this.cmbCStep.Size = new System.Drawing.Size(301, 24);
+            this.cmbCStep.Size = new System.Drawing.Size(268, 24);
             this.cmbCStep.TabIndex = 1;
             this.cmbCStep.Tag = this.lblCStep;
             this.cmbCStep.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -275,9 +239,9 @@
             // 
             this.lblCStep.AutoSize = true;
             this.lblCStep.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCStep.Location = new System.Drawing.Point(617, 350);
+            this.lblCStep.Location = new System.Drawing.Point(551, 370);
             this.lblCStep.Name = "lblCStep";
-            this.lblCStep.Size = new System.Drawing.Size(303, 35);
+            this.lblCStep.Size = new System.Drawing.Size(269, 37);
             this.lblCStep.TabIndex = 3;
             this.lblCStep.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -286,9 +250,9 @@
             this.cmbZEnable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbZEnable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbZEnable.FormattingEnabled = true;
-            this.cmbZEnable.Location = new System.Drawing.Point(310, 318);
+            this.cmbZEnable.Location = new System.Drawing.Point(277, 336);
             this.cmbZEnable.Name = "cmbZEnable";
-            this.cmbZEnable.Size = new System.Drawing.Size(301, 24);
+            this.cmbZEnable.Size = new System.Drawing.Size(268, 24);
             this.cmbZEnable.TabIndex = 1;
             this.cmbZEnable.Tag = this.lblZEnable;
             this.cmbZEnable.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -297,9 +261,9 @@
             // 
             this.lblZEnable.AutoSize = true;
             this.lblZEnable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblZEnable.Location = new System.Drawing.Point(617, 315);
+            this.lblZEnable.Location = new System.Drawing.Point(551, 333);
             this.lblZEnable.Name = "lblZEnable";
-            this.lblZEnable.Size = new System.Drawing.Size(303, 35);
+            this.lblZEnable.Size = new System.Drawing.Size(269, 37);
             this.lblZEnable.TabIndex = 3;
             this.lblZEnable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -308,9 +272,9 @@
             this.cmbZDir.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbZDir.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbZDir.FormattingEnabled = true;
-            this.cmbZDir.Location = new System.Drawing.Point(310, 283);
+            this.cmbZDir.Location = new System.Drawing.Point(277, 299);
             this.cmbZDir.Name = "cmbZDir";
-            this.cmbZDir.Size = new System.Drawing.Size(301, 24);
+            this.cmbZDir.Size = new System.Drawing.Size(268, 24);
             this.cmbZDir.TabIndex = 1;
             this.cmbZDir.Tag = this.lblZDir;
             this.cmbZDir.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -319,9 +283,9 @@
             // 
             this.lblZDir.AutoSize = true;
             this.lblZDir.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblZDir.Location = new System.Drawing.Point(617, 280);
+            this.lblZDir.Location = new System.Drawing.Point(551, 296);
             this.lblZDir.Name = "lblZDir";
-            this.lblZDir.Size = new System.Drawing.Size(303, 35);
+            this.lblZDir.Size = new System.Drawing.Size(269, 37);
             this.lblZDir.TabIndex = 3;
             this.lblZDir.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -330,9 +294,9 @@
             this.cmbZStep.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbZStep.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbZStep.FormattingEnabled = true;
-            this.cmbZStep.Location = new System.Drawing.Point(310, 248);
+            this.cmbZStep.Location = new System.Drawing.Point(277, 262);
             this.cmbZStep.Name = "cmbZStep";
-            this.cmbZStep.Size = new System.Drawing.Size(301, 24);
+            this.cmbZStep.Size = new System.Drawing.Size(268, 24);
             this.cmbZStep.TabIndex = 1;
             this.cmbZStep.Tag = this.lblZStep;
             this.cmbZStep.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -341,9 +305,9 @@
             // 
             this.lblZStep.AutoSize = true;
             this.lblZStep.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblZStep.Location = new System.Drawing.Point(617, 245);
+            this.lblZStep.Location = new System.Drawing.Point(551, 259);
             this.lblZStep.Name = "lblZStep";
-            this.lblZStep.Size = new System.Drawing.Size(303, 35);
+            this.lblZStep.Size = new System.Drawing.Size(269, 37);
             this.lblZStep.TabIndex = 3;
             this.lblZStep.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -352,9 +316,9 @@
             this.cmbYEnable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbYEnable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbYEnable.FormattingEnabled = true;
-            this.cmbYEnable.Location = new System.Drawing.Point(310, 213);
+            this.cmbYEnable.Location = new System.Drawing.Point(277, 225);
             this.cmbYEnable.Name = "cmbYEnable";
-            this.cmbYEnable.Size = new System.Drawing.Size(301, 24);
+            this.cmbYEnable.Size = new System.Drawing.Size(268, 24);
             this.cmbYEnable.TabIndex = 1;
             this.cmbYEnable.Tag = this.lblYEnable;
             this.cmbYEnable.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -363,9 +327,9 @@
             // 
             this.lblYEnable.AutoSize = true;
             this.lblYEnable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblYEnable.Location = new System.Drawing.Point(617, 210);
+            this.lblYEnable.Location = new System.Drawing.Point(551, 222);
             this.lblYEnable.Name = "lblYEnable";
-            this.lblYEnable.Size = new System.Drawing.Size(303, 35);
+            this.lblYEnable.Size = new System.Drawing.Size(269, 37);
             this.lblYEnable.TabIndex = 3;
             this.lblYEnable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -374,9 +338,9 @@
             this.cmbYDir.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbYDir.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbYDir.FormattingEnabled = true;
-            this.cmbYDir.Location = new System.Drawing.Point(310, 178);
+            this.cmbYDir.Location = new System.Drawing.Point(277, 188);
             this.cmbYDir.Name = "cmbYDir";
-            this.cmbYDir.Size = new System.Drawing.Size(301, 24);
+            this.cmbYDir.Size = new System.Drawing.Size(268, 24);
             this.cmbYDir.TabIndex = 1;
             this.cmbYDir.Tag = this.lblYDir;
             this.cmbYDir.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -385,9 +349,9 @@
             // 
             this.lblYDir.AutoSize = true;
             this.lblYDir.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblYDir.Location = new System.Drawing.Point(617, 175);
+            this.lblYDir.Location = new System.Drawing.Point(551, 185);
             this.lblYDir.Name = "lblYDir";
-            this.lblYDir.Size = new System.Drawing.Size(303, 35);
+            this.lblYDir.Size = new System.Drawing.Size(269, 37);
             this.lblYDir.TabIndex = 3;
             this.lblYDir.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -396,9 +360,9 @@
             this.cmbYStep.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbYStep.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbYStep.FormattingEnabled = true;
-            this.cmbYStep.Location = new System.Drawing.Point(310, 143);
+            this.cmbYStep.Location = new System.Drawing.Point(277, 151);
             this.cmbYStep.Name = "cmbYStep";
-            this.cmbYStep.Size = new System.Drawing.Size(301, 24);
+            this.cmbYStep.Size = new System.Drawing.Size(268, 24);
             this.cmbYStep.TabIndex = 1;
             this.cmbYStep.Tag = this.lblYStep;
             this.cmbYStep.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -407,9 +371,9 @@
             // 
             this.lblYStep.AutoSize = true;
             this.lblYStep.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblYStep.Location = new System.Drawing.Point(617, 140);
+            this.lblYStep.Location = new System.Drawing.Point(551, 148);
             this.lblYStep.Name = "lblYStep";
-            this.lblYStep.Size = new System.Drawing.Size(303, 35);
+            this.lblYStep.Size = new System.Drawing.Size(269, 37);
             this.lblYStep.TabIndex = 3;
             this.lblYStep.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -418,9 +382,9 @@
             this.cmbXEnable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbXEnable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbXEnable.FormattingEnabled = true;
-            this.cmbXEnable.Location = new System.Drawing.Point(310, 108);
+            this.cmbXEnable.Location = new System.Drawing.Point(277, 114);
             this.cmbXEnable.Name = "cmbXEnable";
-            this.cmbXEnable.Size = new System.Drawing.Size(301, 24);
+            this.cmbXEnable.Size = new System.Drawing.Size(268, 24);
             this.cmbXEnable.TabIndex = 1;
             this.cmbXEnable.Tag = this.lblXEnable;
             this.cmbXEnable.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -429,9 +393,9 @@
             // 
             this.lblXEnable.AutoSize = true;
             this.lblXEnable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblXEnable.Location = new System.Drawing.Point(617, 105);
+            this.lblXEnable.Location = new System.Drawing.Point(551, 111);
             this.lblXEnable.Name = "lblXEnable";
-            this.lblXEnable.Size = new System.Drawing.Size(303, 35);
+            this.lblXEnable.Size = new System.Drawing.Size(269, 37);
             this.lblXEnable.TabIndex = 3;
             this.lblXEnable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -440,9 +404,9 @@
             this.cmbXDir.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbXDir.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbXDir.FormattingEnabled = true;
-            this.cmbXDir.Location = new System.Drawing.Point(310, 73);
+            this.cmbXDir.Location = new System.Drawing.Point(277, 77);
             this.cmbXDir.Name = "cmbXDir";
-            this.cmbXDir.Size = new System.Drawing.Size(301, 24);
+            this.cmbXDir.Size = new System.Drawing.Size(268, 24);
             this.cmbXDir.TabIndex = 1;
             this.cmbXDir.Tag = this.lblXDir;
             this.cmbXDir.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -451,9 +415,9 @@
             // 
             this.lblXDir.AutoSize = true;
             this.lblXDir.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblXDir.Location = new System.Drawing.Point(617, 70);
+            this.lblXDir.Location = new System.Drawing.Point(551, 74);
             this.lblXDir.Name = "lblXDir";
-            this.lblXDir.Size = new System.Drawing.Size(303, 35);
+            this.lblXDir.Size = new System.Drawing.Size(269, 37);
             this.lblXDir.TabIndex = 3;
             this.lblXDir.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -462,9 +426,9 @@
             this.cmbXStep.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbXStep.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbXStep.FormattingEnabled = true;
-            this.cmbXStep.Location = new System.Drawing.Point(310, 38);
+            this.cmbXStep.Location = new System.Drawing.Point(277, 40);
             this.cmbXStep.Name = "cmbXStep";
-            this.cmbXStep.Size = new System.Drawing.Size(301, 24);
+            this.cmbXStep.Size = new System.Drawing.Size(268, 24);
             this.cmbXStep.TabIndex = 1;
             this.cmbXStep.Tag = this.lblXStep;
             this.cmbXStep.SelectedIndexChanged += new System.EventHandler(this.StepDirCmb_SelectedIndexChanged);
@@ -474,16 +438,16 @@
             this.lblXStep.AutoSize = true;
             this.lblXStep.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblXStep.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblXStep.Location = new System.Drawing.Point(617, 35);
+            this.lblXStep.Location = new System.Drawing.Point(551, 37);
             this.lblXStep.Name = "lblXStep";
-            this.lblXStep.Size = new System.Drawing.Size(303, 35);
+            this.lblXStep.Size = new System.Drawing.Size(269, 37);
             this.lblXStep.TabIndex = 3;
             this.lblXStep.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(3, 420);
+            this.label12.Location = new System.Drawing.Point(3, 444);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(73, 16);
             this.label12.TabIndex = 0;
@@ -493,7 +457,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(3, 385);
+            this.label11.Location = new System.Drawing.Point(3, 407);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(43, 16);
             this.label11.TabIndex = 0;
@@ -503,7 +467,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 350);
+            this.label10.Location = new System.Drawing.Point(3, 370);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(56, 16);
             this.label10.TabIndex = 0;
@@ -513,7 +477,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 315);
+            this.label9.Location = new System.Drawing.Point(3, 333);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(72, 16);
             this.label9.TabIndex = 0;
@@ -523,7 +487,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 280);
+            this.label8.Location = new System.Drawing.Point(3, 296);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(42, 16);
             this.label8.TabIndex = 0;
@@ -533,7 +497,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 245);
+            this.label7.Location = new System.Drawing.Point(3, 259);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(55, 16);
             this.label7.TabIndex = 0;
@@ -543,7 +507,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 210);
+            this.label6.Location = new System.Drawing.Point(3, 222);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(73, 16);
             this.label6.TabIndex = 0;
@@ -553,7 +517,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 175);
+            this.label5.Location = new System.Drawing.Point(3, 185);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(43, 16);
             this.label5.TabIndex = 0;
@@ -563,7 +527,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 140);
+            this.label4.Location = new System.Drawing.Point(3, 148);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 16);
             this.label4.TabIndex = 0;
@@ -573,7 +537,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 105);
+            this.label3.Location = new System.Drawing.Point(3, 111);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(72, 16);
             this.label3.TabIndex = 0;
@@ -583,7 +547,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 70);
+            this.label2.Location = new System.Drawing.Point(3, 74);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(42, 16);
             this.label2.TabIndex = 0;
@@ -593,7 +557,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 35);
+            this.label1.Location = new System.Drawing.Point(3, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 16);
             this.label1.TabIndex = 0;
@@ -607,9 +571,9 @@
             this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label13.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label13.Location = new System.Drawing.Point(310, 0);
+            this.label13.Location = new System.Drawing.Point(277, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(301, 35);
+            this.label13.Size = new System.Drawing.Size(268, 37);
             this.label13.TabIndex = 2;
             this.label13.Text = "Номер PIN";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -623,7 +587,7 @@
             this.label14.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label14.Location = new System.Drawing.Point(3, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(301, 35);
+            this.label14.Size = new System.Drawing.Size(268, 37);
             this.label14.TabIndex = 2;
             this.label14.Text = "Параметр";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -635,9 +599,9 @@
             this.label15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label15.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label15.Location = new System.Drawing.Point(617, 0);
+            this.label15.Location = new System.Drawing.Point(551, 0);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(303, 35);
+            this.label15.Size = new System.Drawing.Size(269, 37);
             this.label15.TabIndex = 2;
             this.label15.Text = "Текущее значение";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -698,7 +662,7 @@
             // pageDesignParameters
             // 
             this.pageDesignParameters.AutoScroll = true;
-            this.pageDesignParameters.Controls.Add(this.designParametersTabs);
+            this.pageDesignParameters.Controls.Add(this.designParametersControl);
             this.pageDesignParameters.Location = new System.Drawing.Point(4, 34);
             this.pageDesignParameters.Name = "pageDesignParameters";
             this.pageDesignParameters.Padding = new System.Windows.Forms.Padding(3);
@@ -707,56 +671,48 @@
             this.pageDesignParameters.Text = "Конструктивные параметры";
             this.pageDesignParameters.UseVisualStyleBackColor = true;
             // 
-            // designParametersTabs
+            // designParametersControl
             // 
-            this.designParametersTabs.AB = 0;
-            this.designParametersTabs.ABmax = 0;
-            this.designParametersTabs.ABmin = 0;
-            this.designParametersTabs.ABZero = null;
-            this.designParametersTabs.AutoSize = true;
-            this.designParametersTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.designParametersTabs.IsABIncreasesOnStepperCW = false;
-            this.designParametersTabs.L1 = 0;
-            this.designParametersTabs.L2 = 0;
-            this.designParametersTabs.Lc = 0;
-            this.designParametersTabs.Location = new System.Drawing.Point(3, 3);
-            this.designParametersTabs.Margin = new System.Windows.Forms.Padding(4);
-            this.designParametersTabs.Name = "designParametersTabs";
-            this.designParametersTabs.Ro = 0D;
-            this.designParametersTabs.Size = new System.Drawing.Size(923, 462);
-            this.designParametersTabs.TabIndex = 0;
+            this.designParametersControl.DesignParameters = null;
+            this.designParametersControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.designParametersControl.Location = new System.Drawing.Point(3, 3);
+            this.designParametersControl.Margin = new System.Windows.Forms.Padding(5);
+            this.designParametersControl.Name = "designParametersControl";
+            this.designParametersControl.Size = new System.Drawing.Size(923, 462);
+            this.designParametersControl.TabIndex = 2;
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.button3);
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.btnCancel);
+            this.panel1.Controls.Add(this.btnApply);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.panel1.Location = new System.Drawing.Point(0, 506);
+            this.panel1.Location = new System.Drawing.Point(0, 529);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(937, 55);
+            this.panel1.Size = new System.Drawing.Size(837, 55);
             this.panel1.TabIndex = 1;
             // 
-            // button2
+            // btnCancel
             // 
-            this.button2.Location = new System.Drawing.Point(11, 13);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(120, 30);
-            this.button2.TabIndex = 0;
-            this.button2.Text = "По умолчанию";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.Location = new System.Drawing.Point(743, 13);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(83, 30);
+            this.btnCancel.TabIndex = 0;
+            this.btnCancel.Text = "Отмена";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // button3
+            // btnApply
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(843, 13);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(83, 30);
-            this.button3.TabIndex = 0;
-            this.button3.Text = "Отмена";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button1_Click);
+            this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnApply.Location = new System.Drawing.Point(638, 13);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(99, 30);
+            this.btnApply.TabIndex = 0;
+            this.btnApply.Text = "Применить";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // button1
             // 
@@ -767,45 +723,23 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Применить";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // colName
-            // 
-            this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.colName.DefaultCellStyle = dataGridViewCellStyle1;
-            this.colName.HeaderText = "Параметр";
-            this.colName.Name = "colName";
-            this.colName.ReadOnly = true;
-            this.colName.Width = 99;
-            // 
-            // colValue
-            // 
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.colValue.DefaultCellStyle = dataGridViewCellStyle2;
-            this.colValue.HeaderText = "Значение";
-            this.colValue.MaxInputLength = 15;
-            this.colValue.Name = "colValue";
+            this.button1.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(937, 561);
+            this.ClientSize = new System.Drawing.Size(837, 584);
             this.Controls.Add(this.tabSettings);
             this.Controls.Add(this.panel1);
             this.Name = "SettingsForm";
             this.Text = "Параметры";
             this.tabSettings.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.pagePinSettings.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.pageStepperSettings.ResumeLayout(false);
             this.pageDesignParameters.ResumeLayout(false);
-            this.pageDesignParameters.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -857,17 +791,13 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TabPage pageStepperSettings;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnApply;
         private Controls.StepperSettingsPanel stepperSettingsPanel3;
         private Controls.StepperSettingsPanel stepperSettingsPanel2;
         private Controls.StepperSettingsPanel stepperSettingsPanel1;
         private System.Windows.Forms.TabPage pageDesignParameters;
-        private DesignParametersTabControl designParametersTabs;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colValue;
+        private System.Windows.Forms.Button btnCancel;
+        private Controls.DesignParametersControl designParametersControl;
+        private System.Windows.Forms.Button button1;
     }
 }

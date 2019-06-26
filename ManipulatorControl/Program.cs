@@ -1,7 +1,5 @@
 ﻿using ManipulatorControl.Settings;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace ManipulatorControl
@@ -19,12 +17,7 @@ namespace ManipulatorControl
 
             var view = new View.MainForm();
 
-            var presenter = new ManipulatorPresenter(view,new ApplicationPropertiesCurrentPositionLoader(), new MessageService.MessageBoxMessageService());
-             
-            // Для тестирования.
-            if (args.Length == 1)
-                presenter.SetWorkerInterval(int.Parse(args[0]));
-                            
+            var presenter = new ManipulatorPresenter(view, new View.SettingsForm(), new ApplicationPropertiesCurrentPositionLoader(), new MessageService.MessageBoxMessageService());
 
             Application.Run(view);
         }

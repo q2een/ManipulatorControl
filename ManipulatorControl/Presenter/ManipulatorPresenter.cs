@@ -20,8 +20,9 @@ using ManipulatorControl.BL.Settings;
 
 namespace ManipulatorControl
 {
-    // TODO: 
-    // * рабочие зоны робота: проверка текущего положения при задании новой рабочей зоны, переезд к нулевому значению или к ближайшему в границах.
+    /// <summary>
+    /// Предоставляет класс презентера приложения.
+    /// </summary>
     public class ManipulatorPresenter
     {
         private readonly IMessageService messageService;
@@ -46,11 +47,18 @@ namespace ManipulatorControl
         private ScriptExecutor scriptExecutor;
         private List<MovementScript> scripts = new List<MovementScript>();
 
-        public ManipulatorPresenter(IManipulatorControlView view, ICurrentPositionLoader currentPositionLoader,  IMessageService messageService)
+        /// <summary>
+        /// Предоставляет класс презентера приложения.
+        /// </summary>
+        /// <param name="view">Представление приложения</param>
+        /// <param name="settingsView">Представление изменения параметров</param>
+        /// <param name="currentPositionLoader">Объект класса, описывающего механизм получения и сохранения текущего положения робота</param>
+        /// <param name="messageService">Объект класса, описывающего механизм обмены сообщения с пользователем</param>
+        public ManipulatorPresenter(IManipulatorControlView view, ISettingsView settingsView, ICurrentPositionLoader currentPositionLoader, IMessageService messageService)
         {
             this.view = view;
             this.currentPositionLoader = currentPositionLoader;
-            this.settings = new SettingsForm();
+            this.settings = settingsView;
             this.messageService = messageService;
 
             this.parameters = LoadDesignParameters();
@@ -144,11 +152,6 @@ namespace ManipulatorControl
     
         }
 
-        public void SetWorkerInterval(int interval)
-        {
-            movement.SetStepsInterval(interval);
-        }
-  
         private void SetCurrentPositionOnView()
         {
             view.SetCurrentPosition(new LeverPosition(LeverType.Horizontal, movement.GetLeverPosition(LeverType.Horizontal)));

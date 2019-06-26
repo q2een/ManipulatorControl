@@ -11,8 +11,14 @@ namespace ManipulatorControl.BL.Script
     {
         #region Свойства.
 
+        /// <summary>
+        /// Возвращает экземпляр класса выполняющегося сценария.
+        /// </summary>
         public MovementScript MovementScript { get; private set; }
 
+        /// <summary>
+        /// Возвращает флаг, указывающий на выполнение сценария.
+        /// </summary>
         public bool IsExecuting
         {
             get
@@ -46,20 +52,38 @@ namespace ManipulatorControl.BL.Script
             }
         }
 
+        /// <summary>
+        /// Возвращает ошибку выполнения сценария, если такова имеется.
+        /// </summary>
         public Exception Exception { get; private set; }
 
         #endregion
 
         #region События.
 
+        /// <summary>
+        /// Происходит когда перемещение по одному шагу сценария выполнено.
+        /// </summary>
         public event EventHandler<LeverScriptPosition> StepPassed = delegate { };
+
+        /// <summary>
+        /// Происходит перед началом выполнения сценария.
+        /// </summary>
         public event EventHandler OnExecutingStart = delegate { };
+
+        /// <summary>
+        /// Происходит после окончания выполнения сценария.
+        /// </summary>
         public event EventHandler OnExecutingEnd = delegate { };
 
         #endregion
 
         #region Конструкторы.
 
+        /// <summary>
+        /// Предоставляет класс для выполнения сценария.
+        /// </summary>
+        /// <param name="movement">Экземпляр класса для перемещения робота</param>
         public ScriptExecutor(RobotMovement movement)
         {
             this.movement = movement;

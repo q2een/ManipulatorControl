@@ -7,6 +7,7 @@ using System.ComponentModel;
 
 namespace ManipulatorControl
 {
+#pragma warning disable 1591
     /// <summary>
     /// <c>EditorCodeBox</c> - Элемент управления, для редактирования Gcode-текста с нумерацией строк.
     /// </summary>

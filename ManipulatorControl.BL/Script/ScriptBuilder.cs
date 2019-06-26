@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 namespace ManipulatorControl.BL.Script
 {
@@ -20,8 +19,19 @@ namespace ManipulatorControl.BL.Script
 
         private LeverScriptPosition scriptPosition;
 
+        /// <summary>
+        /// Происходит при изменении траектории.
+        /// </summary>
         public event EventHandler OnPathChanged = delegate { };
+        
+        /// <summary>
+        /// Происходит при новой начальной точке сценария.
+        /// </summary>
         public event EventHandler OnNewStartPoint = delegate { };
+
+        /// <summary>
+        /// Происходит при новой конечной точке сценария.
+        /// </summary>
         public event EventHandler OnNewEndPoint = delegate { };
 
         /// <summary>
@@ -46,6 +56,11 @@ namespace ManipulatorControl.BL.Script
             }
         }
 
+        /// <summary>
+        /// Предоставляет класс для создания сценария.
+        /// </summary>
+        /// <param name="movement">Экземпляр класса для перемещения робота</param>
+        /// <param name="scriptName">Наименование сценария</param>
         public ScriptBuilder(RobotMovement movement, string scriptName)
         {
             this.movement = movement;

@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace ManipulatorControl
 {
+#pragma warning disable 1591
     public class ManualControlItem
     {
         public LeverType Type { get; set; }
