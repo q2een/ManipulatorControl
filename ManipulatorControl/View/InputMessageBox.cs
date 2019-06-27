@@ -2,6 +2,7 @@
 
 namespace ManipulatorControl.View
 {
+    #pragma warning disable 1591
     public partial class InputMessageBox : Form
     {
         public InputMessageBox()

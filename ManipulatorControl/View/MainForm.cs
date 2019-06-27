@@ -13,6 +13,10 @@ using System.Windows.Forms;
 
 namespace ManipulatorControl.View
 {
+    #pragma warning disable 1591
+    /// <summary>
+    /// Предоставляет класс, реализующий главное представление приложения в виде Windows Forms.
+    /// </summary>
     public partial class MainForm : Form, IManipulatorControlView
     {
         private bool isHotKeyMode, isManualControlMode, isEditWorkspaceMode;

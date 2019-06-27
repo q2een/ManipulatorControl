@@ -15,15 +15,23 @@ using UM160CalculationLib;
 
 namespace ManipulatorControl.View
 {
+    /// <summary>
+    /// Предоставляет класс, реализующий окно изменения параметров.
+    /// </summary>
     public partial class SettingsForm : Form, ISettingsView
     {
         private readonly List<string> cmbItems = new List<string> { "Не задан", "1", "2", "3", "4", "5", "6", "7", "8", "9", "14", "16", "17" };
-        List<ComboBox> comboBoxes, stepDirCmbs;
-
+        private List<ComboBox> comboBoxes, stepDirCmbs;    
         private readonly StepperSettingsPanel[] steppersPanels;
 
+        /// <summary>
+        /// Происходит при сохранении параметров пользователем.
+        /// </summary>
         public event EventHandler SaveSettings = delegate { };
 
+        /// <summary>
+        /// Предоставляет класс, реализующий окно изменения параметров.
+        /// </summary>
         public SettingsForm()
         {
             InitializeComponent();
@@ -32,10 +40,11 @@ namespace ManipulatorControl.View
             stepDirCmbs = comboBoxes.Except(new ComboBox[] { cmbXEnable, cmbYEnable, cmbZEnable, cmbCEnable }).ToList();
             steppersPanels = new[] { stepperSettingsPanel1, stepperSettingsPanel2, stepperSettingsPanel3 };
             comboBoxes.ForEach(cmb => { cmb.Items.AddRange(cmbItems.ToArray()); cmb.SelectedIndex = 0; });
-
-
         }
 
+        /// <summary>
+        /// Возвращает или задает коллекцию PIN для подключения платы драйверов ШД.
+        /// </summary>
         public List<StepDirName> StepDirNames
         {
             get
@@ -76,6 +85,9 @@ namespace ManipulatorControl.View
             }
         }
 
+        /// <summary>
+        /// Возвращает или задает коллекцию параметров шаговых двигателей.
+        /// </summary>
         public List<LeverStepperSettings> LeverSteppers
         {
             get
@@ -104,6 +116,9 @@ namespace ManipulatorControl.View
             }
         }
 
+        /// <summary>
+        /// Возвращает или задает конструктивные параметры робота-манипулятора.
+        /// </summary>
         public DesignParameters DesignParameters
         {
             get
@@ -117,6 +132,9 @@ namespace ManipulatorControl.View
             }
         }
 
+        /// <summary>
+        /// Отображает текущее окно.
+        /// </summary>
         void ISettingsView.Show()
         {
             this.ShowDialog();

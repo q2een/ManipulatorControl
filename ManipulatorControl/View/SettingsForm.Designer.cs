@@ -1,5 +1,8 @@
 ﻿namespace ManipulatorControl.View
 {
+    /// <summary>
+    /// Предоставляет класс, реализующий окно изменения параметров.
+    /// </summary>
     partial class SettingsForm
     {
         /// <summary>
@@ -615,7 +618,7 @@
             this.pageStepperSettings.Location = new System.Drawing.Point(4, 34);
             this.pageStepperSettings.Name = "pageStepperSettings";
             this.pageStepperSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.pageStepperSettings.Size = new System.Drawing.Size(929, 468);
+            this.pageStepperSettings.Size = new System.Drawing.Size(829, 491);
             this.pageStepperSettings.TabIndex = 1;
             this.pageStepperSettings.Text = "Шаговые двигатели";
             this.pageStepperSettings.UseVisualStyleBackColor = true;
@@ -666,7 +669,7 @@
             this.pageDesignParameters.Location = new System.Drawing.Point(4, 34);
             this.pageDesignParameters.Name = "pageDesignParameters";
             this.pageDesignParameters.Padding = new System.Windows.Forms.Padding(3);
-            this.pageDesignParameters.Size = new System.Drawing.Size(929, 468);
+            this.pageDesignParameters.Size = new System.Drawing.Size(829, 491);
             this.pageDesignParameters.TabIndex = 2;
             this.pageDesignParameters.Text = "Конструктивные параметры";
             this.pageDesignParameters.UseVisualStyleBackColor = true;
@@ -678,7 +681,7 @@
             this.designParametersControl.Location = new System.Drawing.Point(3, 3);
             this.designParametersControl.Margin = new System.Windows.Forms.Padding(5);
             this.designParametersControl.Name = "designParametersControl";
-            this.designParametersControl.Size = new System.Drawing.Size(923, 462);
+            this.designParametersControl.Size = new System.Drawing.Size(823, 485);
             this.designParametersControl.TabIndex = 2;
             // 
             // panel1
