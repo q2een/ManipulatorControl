@@ -286,6 +286,14 @@ namespace ManipulatorControl.BL
             }            
         }
 
+        /// <summary>
+        /// Обновляет текущее положение центра схвата в системе координат.
+        /// </summary>
+        public void UpdateLocation()
+        {
+            Location = Calculation.GetCurrentLocation();
+        }
+
         private void ChangeLeverPosition(LeverType type, long stepsCount)
         {
             var lever = Calculation.GetRobotLeverByType(type);
@@ -294,7 +302,7 @@ namespace ManipulatorControl.BL
 
             Calculation.SetNewLeverPosition(type, stepsCount);
 
-            Location = Calculation.GetCurrentLocation();
+            UpdateLocation();
 
             var newValue = lever.AB;
 

@@ -130,26 +130,7 @@ namespace ManipulatorControl
 
             view.SetWorkspaces(workspaceManager.RobotWorkspaces, workspaceManager.ActiveWorkspaceIndex);
 
-            SetCurrentPositionOnView();
-
-            //StringBuilder sb = new StringBuilder();
-
-
-
-            //for (int i = 320; i <= 1100; i++)
-            //{
-            //    for (int j = 320; j < 1026; j++)
-            //    {
-            //        double x = 0, y = 0;
-
-            //        movement.Calculation.GetXYByABValues(i, j, out x, out y);
-
-            //        sb.AppendLine(x + " | " + y);
-            //    }
-            //}
-
-            //File.WriteAllText("3.txt", sb.ToString());
-    
+            SetCurrentPositionOnView();    
         }
 
         private void SetCurrentPositionOnView()
@@ -227,12 +208,12 @@ namespace ManipulatorControl
             GetSavedCurrentPositionFromDesignParameters(designParameters);
 
             workspaceManager.DesignParametersWorkspace = workspaceManager.RobotWorkspaces.First();
+
             view.SetWorkspaces(workspaceManager.RobotWorkspaces, workspaceManager.ActiveWorkspace != null ? workspaceManager.RobotWorkspaces.IndexOf(workspaceManager.ActiveWorkspace) : 0);
             SetCurrentPositionOnView();
-
             view.SetZeroPositionState(movement.IsOnZeroPosition(LeverType.Horizontal), movement.IsOnZeroPosition(LeverType.Lever1) && movement.IsOnZeroPosition(LeverType.Lever2));
 
-            Movement_LocationChanged(false, movement.Calculation.GetCurrentLocation());
+            movement.UpdateLocation();
         }
 
         private T Load<T>(string path, params JsonConverter[] converters)
